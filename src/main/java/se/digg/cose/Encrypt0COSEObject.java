@@ -87,7 +87,7 @@ public class Encrypt0COSEObject extends EncryptCommon {
 
     CBORObject obj = CBORObject.NewArray();
     if (objProtected.size() > 0) obj.Add(objProtected.EncodeToBytes());
-    else obj.Add(CBORObject.FromObject(new byte[0]));
+    else obj.Add(CBORObject.FromByteArray(new byte[0]));
 
     obj.Add(objUnprotected);
 

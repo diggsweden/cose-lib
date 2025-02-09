@@ -169,7 +169,7 @@ public class Attribute {
    */
   public void addAttribute(HeaderKeys label, byte[] value, int where)
     throws CoseException {
-    addAttribute(label.AsCBOR(), CBORObject.FromObject(value), where);
+    addAttribute(label.AsCBOR(), CBORObject.FromByteArray(value), where);
   }
 
   /**

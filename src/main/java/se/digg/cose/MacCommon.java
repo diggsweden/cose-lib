@@ -34,7 +34,7 @@ public abstract class MacCommon extends COSEObject {
   }
 
   protected void CreateWithKey(byte[] rgbKey) throws CoseException {
-    CBORObject algX = findAttribute(CBORObject.FromObject(1)); //HeaderKeys.Algorithm);
+    CBORObject algX = findAttribute(CBORObject.FromInt32(1)); //HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
     if (rgbContent == null) throw new CoseException("No Content Specified");
@@ -64,7 +64,7 @@ public abstract class MacCommon extends COSEObject {
     int i;
     byte[] rgbTest;
 
-    CBORObject algX = findAttribute(CBORObject.FromObject(1)); //HeaderKeys.Algorithm);
+    CBORObject algX = findAttribute(CBORObject.FromInt32(1)); //HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
     switch (alg) {
@@ -102,8 +102,8 @@ public abstract class MacCommon extends COSEObject {
 
     obj.Add(strContext);
     obj.Add(rgbProtected);
-    if (externalData != null) obj.Add(CBORObject.FromObject(externalData));
-    else obj.Add(CBORObject.FromObject(new byte[0]));
+    if (externalData != null) obj.Add(CBORObject.FromByteArray(externalData));
+    else obj.Add(CBORObject.FromByteArray(new byte[0]));
     obj.Add(rgbContent);
 
     return obj.EncodeToBytes();

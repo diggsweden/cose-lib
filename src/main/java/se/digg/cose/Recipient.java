@@ -77,7 +77,7 @@ public class Recipient extends COSEObject {
   protected CBORObject EncodeCBORObject() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
     if (objProtected.size() > 0) obj.Add(objProtected.EncodeToBytes());
-    else obj.Add(CBORObject.FromObject(new byte[0]));
+    else obj.Add(CBORObject.FromByteArray(new byte[0]));
 
     obj.Add(objUnprotected);
     obj.Add(rgbEncrypted);
@@ -273,7 +273,7 @@ public class Recipient extends COSEObject {
           random.nextBytes(rgbAPU);
           addAttribute(
             HeaderKeys.HKDF_Context_PartyU_nonce.AsCBOR(),
-            CBORObject.FromObject(rgbAPU),
+            CBORObject.FromByteArray(rgbAPU),
             UNPROTECTED
           );
         }
@@ -302,7 +302,7 @@ public class Recipient extends COSEObject {
           random.nextBytes(rgbAPU);
           addAttribute(
             HeaderKeys.HKDF_Context_PartyU_nonce.AsCBOR(),
-            CBORObject.FromObject(rgbAPU),
+            CBORObject.FromByteArray(rgbAPU),
             UNPROTECTED
           );
         }
@@ -331,7 +331,7 @@ public class Recipient extends COSEObject {
           random.nextBytes(rgbAPU);
           addAttribute(
             HeaderKeys.HKDF_Context_PartyU_nonce.AsCBOR(),
-            CBORObject.FromObject(rgbAPU),
+            CBORObject.FromByteArray(rgbAPU),
             UNPROTECTED
           );
         }
@@ -433,7 +433,7 @@ public class Recipient extends COSEObject {
           random.nextBytes(rgbAPU);
           addAttribute(
             HeaderKeys.HKDF_Context_PartyU_nonce.AsCBOR(),
-            CBORObject.FromObject(rgbAPU),
+            CBORObject.FromByteArray(rgbAPU),
             UNPROTECTED
           );
         }
@@ -451,7 +451,7 @@ public class Recipient extends COSEObject {
           random.nextBytes(rgbAPU);
           addAttribute(
             HeaderKeys.HKDF_Context_PartyU_nonce.AsCBOR(),
-            CBORObject.FromObject(rgbAPU),
+            CBORObject.FromByteArray(rgbAPU),
             UNPROTECTED
           );
         }
@@ -700,7 +700,7 @@ public class Recipient extends COSEObject {
     //  fourth element is - Supplimental Public Info
     info = CBORObject.NewArray();
     contextArray.Add(info);
-    info.Add(CBORObject.FromObject(cbitKey));
+    info.Add(CBORObject.FromInt32(cbitKey));
     if (objProtected.size() == 0) info.Add(new byte[0]);
     else info.Add(objProtected.EncodeToBytes());
     obj = findAttribute(HeaderKeys.HKDF_SuppPub_Other.AsCBOR());

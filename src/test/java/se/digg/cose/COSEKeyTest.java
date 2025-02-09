@@ -255,9 +255,9 @@ public class COSEKeyTest extends TestBase {
     String idStr = "testId";
     byte[] bStr = StandardCharsets.UTF_8.encode(idStr).array();
     COSEKey key = new COSEKey();
-    CBORObject id = CBORObject.FromObject(bStr);
+    CBORObject id = CBORObject.FromByteArray(bStr);
     key.add(KeyKeys.KeyId, id);
-    Assert.assertTrue(key.HasKeyID(idStr));
+    Assert.assertTrue(key.HasKeyID(idStr.getBytes()));
     Assert.assertTrue(key.HasKeyID(bStr));
   }
 
@@ -270,7 +270,7 @@ public class COSEKeyTest extends TestBase {
   @Test
   public void testHasKeyOp_value() {
     COSEKey key = new COSEKey();
-    key.add(KeyKeys.Key_Ops, CBORObject.FromObject(2));
+    key.add(KeyKeys.Key_Ops, CBORObject.FromInt32(2));
     Assert.assertTrue(key.HasKeyOp(2));
   }
 

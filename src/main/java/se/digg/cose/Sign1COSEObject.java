@@ -94,7 +94,7 @@ public class Sign1COSEObject extends SignCommon {
     CBORObject obj = CBORObject.NewArray();
     obj.Add(contextString);
     if (objProtected.size() > 0) obj.Add(rgbProtected);
-    else obj.Add(CBORObject.FromObject(new byte[0]));
+    else obj.Add(CBORObject.FromByteArray(new byte[0]));
     obj.Add(externalData);
     obj.Add(rgbContent);
     return validateSignature(obj.EncodeToBytes(), rgbSignature, cnKey);

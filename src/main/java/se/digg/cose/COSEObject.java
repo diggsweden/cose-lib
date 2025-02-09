@@ -216,7 +216,7 @@ public abstract class COSEObject extends Attribute {
     obj = EncodeCBORObject();
 
     if (emitTag) {
-      obj = CBORObject.FromObjectAndTag(obj, coseObjectTag.value);
+      obj = CBORObject.FromCBORObjectAndTag(obj, coseObjectTag.value);
     }
 
     return obj;

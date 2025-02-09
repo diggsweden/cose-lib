@@ -44,22 +44,22 @@ public enum KeyKeys {
 
   private final CBORObject value;
 
-  public static final CBORObject KeyType_OKP = CBORObject.FromObject(1);
-  public static final CBORObject KeyType_EC2 = CBORObject.FromObject(2);
-  public static final CBORObject KeyType_Octet = CBORObject.FromObject(4);
-  public static final CBORObject KeyType_RSA = CBORObject.FromObject(3);
+  public static final CBORObject KeyType_OKP = CBORObject.FromInt32(1);
+  public static final CBORObject KeyType_EC2 = CBORObject.FromInt32(2);
+  public static final CBORObject KeyType_Octet = CBORObject.FromInt32(4);
+  public static final CBORObject KeyType_RSA = CBORObject.FromInt32(3);
 
-  public static final CBORObject EC2_P256 = CBORObject.FromObject(1);
-  public static final CBORObject EC2_P384 = CBORObject.FromObject(2);
-  public static final CBORObject EC2_P521 = CBORObject.FromObject(3);
+  public static final CBORObject EC2_P256 = CBORObject.FromInt32(1);
+  public static final CBORObject EC2_P384 = CBORObject.FromInt32(2);
+  public static final CBORObject EC2_P521 = CBORObject.FromInt32(3);
 
-  public static final CBORObject OKP_X25519 = CBORObject.FromObject(4);
-  public static final CBORObject OKP_X448 = CBORObject.FromObject(5);
-  public static final CBORObject OKP_Ed25519 = CBORObject.FromObject(6);
-  public static final CBORObject OKP_Ed448 = CBORObject.FromObject(7);
+  public static final CBORObject OKP_X25519 = CBORObject.FromInt32(4);
+  public static final CBORObject OKP_X448 = CBORObject.FromInt32(5);
+  public static final CBORObject OKP_Ed25519 = CBORObject.FromInt32(6);
+  public static final CBORObject OKP_Ed448 = CBORObject.FromInt32(7);
 
   KeyKeys(int val) {
-    this.value = CBORObject.FromObject(val);
+    this.value = CBORObject.FromInt32(val);
   }
 
   public CBORObject AsCBOR() {

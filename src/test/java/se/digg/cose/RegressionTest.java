@@ -168,7 +168,7 @@ public class RegressionTest extends TestBase {
 
     COSEKey cnKey = BuildKey(cnRecipients.get("key"), true);
 
-    CBORObject kk = cnKey.get(CBORObject.FromObject(-1));
+    CBORObject kk = cnKey.get(CBORObject.FromInt32(-1));
 
     msg.encrypt(kk.GetByteString());
 
@@ -215,7 +215,7 @@ public class RegressionTest extends TestBase {
 
       COSEKey cnKey = BuildKey(cnRecipients.get("key"), true);
 
-      CBORObject kk = cnKey.get(CBORObject.FromObject(-1));
+      CBORObject kk = cnKey.get(CBORObject.FromInt32(-1));
 
       cnFail = cnRecipients.get("fail");
 
@@ -343,7 +343,7 @@ public class RegressionTest extends TestBase {
 
     COSEKey cnKey = BuildKey(cnRecipients.get("key"), true);
 
-    CBORObject kk = cnKey.get(CBORObject.FromObject(-1));
+    CBORObject kk = cnKey.get(CBORObject.FromInt32(-1));
 
     msg.Create(kk.GetByteString());
 
@@ -384,7 +384,7 @@ public class RegressionTest extends TestBase {
 
       COSEKey cnKey = BuildKey(cnRecipients.get("key"), true);
 
-      CBORObject kk = cnKey.get(CBORObject.FromObject(-1));
+      CBORObject kk = cnKey.get(CBORObject.FromInt32(-1));
 
       pFail = cnRecipients.get("fail");
 
@@ -803,80 +803,80 @@ public class RegressionTest extends TestBase {
           break;
         case "kid":
           cnKey = HeaderKeys.KID.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "spk_kid":
           cnKey = HeaderKeys.ECDH_SKID.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "IV_hex":
           cnKey = HeaderKeys.IV.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             hexStringToByteArray(cnAttributes.get(attr).AsString())
           );
           break;
         case "partialIV_hex":
           cnKey = HeaderKeys.PARTIAL_IV.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             hexStringToByteArray(cnAttributes.get(attr).AsString())
           );
           break;
         case "salt":
           cnKey = HeaderKeys.HKDF_Salt.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "apu_id":
           cnKey = HeaderKeys.HKDF_Context_PartyU_ID.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "apv_id":
           cnKey = HeaderKeys.HKDF_Context_PartyV_ID.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "apu_nonce":
         case "apu_nonce_hex":
           cnKey = HeaderKeys.HKDF_Context_PartyU_nonce.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "apv_nonce":
           cnKey = HeaderKeys.HKDF_Context_PartyV_nonce.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "apu_other":
           cnKey = HeaderKeys.HKDF_Context_PartyU_Other.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "apv_other":
           cnKey = HeaderKeys.HKDF_Context_PartyV_Other.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "pub_other":
           cnKey = HeaderKeys.HKDF_SuppPub_Other.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
         case "priv_other":
           cnKey = HeaderKeys.HKDF_SuppPriv_Other.AsCBOR();
-          cnValue = CBORObject.FromObject(
+          cnValue = CBORObject.FromByteArray(
             cnAttributes.get(attr).AsString().getBytes()
           );
           break;
@@ -923,29 +923,29 @@ public class RegressionTest extends TestBase {
         case "kty":
           switch (cnValue.AsString()) {
             case "EC":
-              cnKeyOut.set(CBORObject.FromObject(1), CBORObject.FromObject(2));
+              cnKeyOut.set(CBORObject.FromInt32(1), CBORObject.FromInt32(2));
               break;
             case "OKP":
-              cnKeyOut.set(CBORObject.FromObject(1), KeyKeys.KeyType_OKP);
+              cnKeyOut.set(CBORObject.FromInt32(1), KeyKeys.KeyType_OKP);
               break;
             case "oct":
-              cnKeyOut.set(CBORObject.FromObject(1), CBORObject.FromObject(4));
+              cnKeyOut.set(CBORObject.FromInt32(1), CBORObject.FromInt32(4));
               break;
             case "RSA":
-              cnKeyOut.set(CBORObject.FromObject(1), KeyKeys.KeyType_RSA);
+              cnKeyOut.set(CBORObject.FromInt32(1), KeyKeys.KeyType_RSA);
               break;
           }
           break;
         case "crv":
           switch (cnValue.AsString()) {
             case "P-256":
-              cnValue = CBORObject.FromObject(1);
+              cnValue = CBORObject.FromInt32(1);
               break;
             case "P-384":
-              cnValue = CBORObject.FromObject(2);
+              cnValue = CBORObject.FromInt32(2);
               break;
             case "P-521":
-              cnValue = CBORObject.FromObject(3);
+              cnValue = CBORObject.FromInt32(3);
               break;
             case "Ed25519":
               cnValue = KeyKeys.OKP_Ed25519;
@@ -963,12 +963,12 @@ public class RegressionTest extends TestBase {
               break;
           }
 
-          cnKeyOut.set(CBORObject.FromObject(-1), cnValue);
+          cnKeyOut.set(CBORObject.FromInt32(-1), cnValue);
           break;
         case "x":
           cnKeyOut.set(
             KeyKeys.EC2_X.AsCBOR(),
-            CBORObject.FromObject(
+            CBORObject.FromByteArray(
               Base64.getUrlDecoder().decode(cnValue.AsString())
             )
           );
@@ -976,13 +976,13 @@ public class RegressionTest extends TestBase {
         case "x_hex":
           cnKeyOut.set(
             KeyKeys.EC2_X.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "y":
           cnKeyOut.set(
             KeyKeys.EC2_Y.AsCBOR(),
-            CBORObject.FromObject(
+            CBORObject.FromByteArray(
               Base64.getUrlDecoder().decode(cnValue.AsString())
             )
           );
@@ -990,14 +990,14 @@ public class RegressionTest extends TestBase {
         case "y_hex":
           cnKeyOut.set(
             KeyKeys.EC2_Y.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "d":
           if (!fPublicKey) {
             cnKeyOut.set(
               KeyKeys.EC2_D.AsCBOR(),
-              CBORObject.FromObject(
+              CBORObject.FromByteArray(
                 Base64.getUrlDecoder().decode(cnValue.AsString())
               )
             );
@@ -1007,35 +1007,35 @@ public class RegressionTest extends TestBase {
           if (keyIn.get("kty").AsString().equals("RSA")) {
             cnKeyOut.set(
               KeyKeys.RSA_D.AsCBOR(),
-              CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+              CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
             );
             break;
           }
           if (!fPublicKey) {
             cnKeyOut.set(
               KeyKeys.EC2_D.AsCBOR(),
-              CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+              CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
             );
           }
           break;
         case "k":
           cnKeyOut.set(
-            CBORObject.FromObject(-1),
-            CBORObject.FromObject(
+            CBORObject.FromInt32(-1),
+            CBORObject.FromByteArray(
               Base64.getUrlDecoder().decode(cnValue.AsString())
             )
           );
           break;
         case "k_hex":
           cnKeyOut.set(
-            CBORObject.FromObject(-1),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromInt32(-1),
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "kid":
           cnKeyOut.set(
             CBORObject.FromObject(KeyKeys.KeyId),
-            CBORObject.FromObject(
+            CBORObject.FromByteArray(
               StandardCharsets.UTF_8.encode(cnValue.AsString()).array()
             )
           );
@@ -1043,49 +1043,49 @@ public class RegressionTest extends TestBase {
         case "kid_hex":
           cnKeyOut.set(
             CBORObject.FromObject(KeyKeys.KeyId),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "n_hex":
           cnKeyOut.set(
             KeyKeys.RSA_N.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "e_hex":
           cnKeyOut.set(
             KeyKeys.RSA_E.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "p_hex":
           cnKeyOut.set(
             KeyKeys.RSA_P.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "q_hex":
           cnKeyOut.set(
             KeyKeys.RSA_Q.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "dP_hex":
           cnKeyOut.set(
             KeyKeys.RSA_DP.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "dQ_hex":
           cnKeyOut.set(
             KeyKeys.RSA_DQ.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
         case "qi_hex":
           cnKeyOut.set(
             KeyKeys.RSA_QI.AsCBOR(),
-            CBORObject.FromObject(hexStringToByteArray(cnValue.AsString()))
+            CBORObject.FromByteArray(hexStringToByteArray(cnValue.AsString()))
           );
           break;
       }

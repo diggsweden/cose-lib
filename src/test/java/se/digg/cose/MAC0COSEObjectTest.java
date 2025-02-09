@@ -106,7 +106,7 @@ public class MAC0COSEObjectTest extends TestBase {
   public void setUp() {
     cnKey256 = CBORObject.NewMap();
     cnKey256.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_Octet);
-    cnKey256.Add(KeyKeys.Octet_K.AsCBOR(), CBORObject.FromObject(rgbKey256));
+    cnKey256.Add(KeyKeys.Octet_K.AsCBOR(), CBORObject.FromByteArray(rgbKey256));
   }
 
   @After
@@ -156,7 +156,7 @@ public class MAC0COSEObjectTest extends TestBase {
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
       HeaderKeys.Algorithm,
-      CBORObject.FromObject("Unknown"),
+      CBORObject.FromString("Unknown"),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -233,7 +233,7 @@ public class MAC0COSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadProtected2() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.False));
+    obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -248,7 +248,7 @@ public class MAC0COSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadUnprotected() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -263,7 +263,7 @@ public class MAC0COSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadContent() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -278,7 +278,7 @@ public class MAC0COSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadRecipients() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(new byte[0]);
     obj.Add(CBORObject.False);

@@ -48,7 +48,7 @@ public enum HeaderKeys {
   private CBORObject value;
 
   HeaderKeys(int val) {
-    this.value = CBORObject.FromObject(val);
+    this.value = CBORObject.FromInt32(val);
   }
 
   public CBORObject AsCBOR() {

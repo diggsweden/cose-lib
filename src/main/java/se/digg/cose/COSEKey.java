@@ -340,7 +340,7 @@ public class COSEKey {
   }
 
   public boolean HasKeyID(byte[] id) {
-    CBORObject thatObj = (id == null) ? null : CBORObject.FromObject(id);
+    CBORObject thatObj = (id == null) ? null : CBORObject.FromByteArray(id);
     CBORObject thisObj = get(KeyKeys.KeyId);
     boolean result;
     if (thatObj == null) {
@@ -594,8 +594,8 @@ public class COSEKey {
      * params);
      * byte[] rgbX = pubKey.getQ().normalize().getXCoord().getEncoded();
      * byte[] rgbY = pubKey.getQ().normalize().getYCoord().getEncoded();
-     * add(KeyKeys.EC2_X, CBORObject.FromObject(rgbX));
-     * add(KeyKeys.EC2_Y, CBORObject.FromObject(rgbY));
+     * add(KeyKeys.EC2_X, CBORObject.FromByteArray(rgbX));
+     * add(KeyKeys.EC2_Y, CBORObject.FromByteArray(rgbY));
      * } else {
      * // todo: validate public on curve
      * }
@@ -770,9 +770,9 @@ public class COSEKey {
 
       key.add(KeyKeys.KeyType, KeyKeys.KeyType_EC2);
       key.add(KeyKeys.EC2_Curve, curve);
-      key.add(KeyKeys.EC2_X, CBORObject.FromObject(rgbX));
-      key.add(KeyKeys.EC2_Y, CBORObject.FromObject(rgbY));
-      key.add(KeyKeys.EC2_D, CBORObject.FromObject(rgbD));
+      key.add(KeyKeys.EC2_X, CBORObject.FromByteArray(rgbX));
+      key.add(KeyKeys.EC2_Y, CBORObject.FromByteArray(rgbY));
+      key.add(KeyKeys.EC2_D, CBORObject.FromByteArray(rgbD));
       key.publicKey = keyPair.getPublic();
       key.privateKey = keyPair.getPrivate();
 
@@ -842,9 +842,9 @@ public class COSEKey {
 
       key.add(KeyKeys.KeyType, KeyKeys.KeyType_EC2);
       key.add(KeyKeys.EC2_Curve, curve);
-      key.add(KeyKeys.EC2_X, CBORObject.FromObject(rgbX));
-      key.add(KeyKeys.EC2_Y, CBORObject.FromObject(rgbY));
-      key.add(KeyKeys.EC2_D, CBORObject.FromObject(rgbD));
+      key.add(KeyKeys.EC2_X, CBORObject.FromByteArray(rgbX));
+      key.add(KeyKeys.EC2_Y, CBORObject.FromByteArray(rgbY));
+      key.add(KeyKeys.EC2_D, CBORObject.FromByteArray(rgbD));
       key.publicKey = keyPair.getPublic();
       key.privateKey = keyPair.getPrivate();
 
@@ -1085,8 +1085,8 @@ public class COSEKey {
 
       key.add(KeyKeys.KeyType, KeyKeys.KeyType_OKP);
       key.add(KeyKeys.OKP_Curve, curve);
-      key.add(KeyKeys.OKP_X, CBORObject.FromObject(rgbX));
-      key.add(KeyKeys.OKP_D, CBORObject.FromObject(rgbD));
+      key.add(KeyKeys.OKP_X, CBORObject.FromByteArray(rgbX));
+      key.add(KeyKeys.OKP_D, CBORObject.FromByteArray(rgbD));
       key.publicKey = keyPair.getPublic();
       key.privateKey = keyPair.getPrivate();
 
@@ -1252,35 +1252,35 @@ public class COSEKey {
       key.add(KeyKeys.KeyType, KeyKeys.KeyType_RSA);
       key.add(
         KeyKeys.RSA_N,
-        CBORObject.FromObject(priv.getModulus().toByteArray())
+        CBORObject.FromByteArray(priv.getModulus().toByteArray())
       );
       key.add(
         KeyKeys.RSA_E,
-        CBORObject.FromObject(priv.getPublicExponent().toByteArray())
+        CBORObject.FromByteArray(priv.getPublicExponent().toByteArray())
       );
       key.add(
         KeyKeys.RSA_D,
-        CBORObject.FromObject(priv.getPrivateExponent().toByteArray())
+        CBORObject.FromByteArray(priv.getPrivateExponent().toByteArray())
       );
       key.add(
         KeyKeys.RSA_P,
-        CBORObject.FromObject(priv.getPrimeP().toByteArray())
+        CBORObject.FromByteArray(priv.getPrimeP().toByteArray())
       );
       key.add(
         KeyKeys.RSA_Q,
-        CBORObject.FromObject(priv.getPrimeQ().toByteArray())
+        CBORObject.FromByteArray(priv.getPrimeQ().toByteArray())
       );
       key.add(
         KeyKeys.RSA_DP,
-        CBORObject.FromObject(priv.getPrimeExponentP().toByteArray())
+        CBORObject.FromByteArray(priv.getPrimeExponentP().toByteArray())
       );
       key.add(
         KeyKeys.RSA_DQ,
-        CBORObject.FromObject(priv.getPrimeExponentQ().toByteArray())
+        CBORObject.FromByteArray(priv.getPrimeExponentQ().toByteArray())
       );
       key.add(
         KeyKeys.RSA_QI,
-        CBORObject.FromObject(priv.getCrtCoefficient().toByteArray())
+        CBORObject.FromByteArray(priv.getCrtCoefficient().toByteArray())
       );
 
       key.publicKey = keyPair.getPublic();

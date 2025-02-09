@@ -186,7 +186,7 @@ public class Sign1COSEObjectTest extends TestBase {
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
       HeaderKeys.Algorithm,
-      CBORObject.FromObject("Unknown"),
+      CBORObject.FromString("Unknown"),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -293,7 +293,7 @@ public class Sign1COSEObjectTest extends TestBase {
   @Test
   public void decodeBadProtected2() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.False.EncodeToBytes()));
+    obj.Add(CBORObject.FromByteArray(CBORObject.False.EncodeToBytes()));
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -308,7 +308,7 @@ public class Sign1COSEObjectTest extends TestBase {
   @Test
   public void decodeBadUnprotected() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -323,7 +323,7 @@ public class Sign1COSEObjectTest extends TestBase {
   @Test
   public void decodeBadContent() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -338,7 +338,7 @@ public class Sign1COSEObjectTest extends TestBase {
   @Test
   public void decodeBadSignature() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(new byte[0]);
     obj.Add(CBORObject.False);

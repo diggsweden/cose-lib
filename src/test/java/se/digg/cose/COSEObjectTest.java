@@ -74,7 +74,7 @@ public class COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -105,7 +105,7 @@ public class COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);

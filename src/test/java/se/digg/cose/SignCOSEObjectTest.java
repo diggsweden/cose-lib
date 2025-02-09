@@ -153,7 +153,7 @@ public class SignCOSEObjectTest extends TestBase {
   @Test
   public void signDecodeBadProtected2() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.False));
+    obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -168,7 +168,7 @@ public class SignCOSEObjectTest extends TestBase {
   @Test
   public void signDecodeBadUnprotected() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -183,7 +183,7 @@ public class SignCOSEObjectTest extends TestBase {
   @Test
   public void signDecodeBadContent() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -198,7 +198,7 @@ public class SignCOSEObjectTest extends TestBase {
   @Test
   public void signDecodeBadRecipients() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(new byte[0]);
     obj.Add(CBORObject.False);

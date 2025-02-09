@@ -94,7 +94,7 @@ public class SignerTest extends TestBase {
   @Test
   public void signerDecodeBadProtected2() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.False));
+    obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
 
@@ -108,7 +108,7 @@ public class SignerTest extends TestBase {
   @Test
   public void signerDecodeBadUnprotected() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
 
@@ -122,7 +122,7 @@ public class SignerTest extends TestBase {
   @Test
   public void signerDecodeBadSignature() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(CBORObject.False);
 

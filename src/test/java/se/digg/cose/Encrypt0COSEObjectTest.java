@@ -130,7 +130,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -164,7 +164,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
       HeaderKeys.Algorithm,
-      CBORObject.FromObject("Unknown"),
+      CBORObject.FromString("Unknown"),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -242,7 +242,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject("IV"),
+      CBORObject.FromString("IV"),
       Attribute.UNPROTECTED
     );
     msg.SetContent(rgbContent);
@@ -276,7 +276,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -297,7 +297,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.UNPROTECTED
     );
     msg.SetContent(rgbContent);
@@ -322,7 +322,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.UNPROTECTED
     );
     msg.SetContent(rgbContent);
@@ -345,7 +345,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
     );
     msg.addAttribute(
       HeaderKeys.IV,
-      CBORObject.FromObject(rgbIV96),
+      CBORObject.FromByteArray(rgbIV96),
       Attribute.UNPROTECTED
     );
     msg.SetContent(rgbContent);
@@ -400,7 +400,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
   @Test
   public void encryptDecodeBadProtected2() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.False));
+    obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
 
@@ -414,7 +414,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
   @Test
   public void encryptDecodeBadUnprotected() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
 
@@ -428,7 +428,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
   @Test
   public void encryptDecodeBadContent() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(CBORObject.False);
 
@@ -442,7 +442,7 @@ public class Encrypt0COSEObjectTest extends TestBase {
   @Test
   public void encryptDecodeBadTag() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(new byte[0]);
 

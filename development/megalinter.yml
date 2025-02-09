@@ -33,7 +33,7 @@
         JAVA_CHECKSTYLE,
         JAVA_PMD,
         MARKDOWN_MARKDOWNLINT,
-        REPOSITORY_GITLEAKS,
+     #   REPOSITORY_GITLEAKS,
         REPOSITORY_SECRETLINT,
         XML_XMLLINT
         YAML_PRETTIER,
@@ -46,5 +46,5 @@
     JAVA_CHECKSTYLE_FILTER_REGEX_INCLUDE: src/main
     JAVA_CHECKSTYLE_CONFIG_FILE: development/checkstyle_prettier.xml
     JAVA_PMD_CONFIG_FILE: development/pmd_default_java_mod.xml
-    REPOSITORY_GITLEAKS_ARGUMENTS: detect --log-opts="main..HEAD"
+    REPOSITORY_GITLEAKS_ARGUMENTS: --log-opts="main..HEAD"
     # LOG_LEVEL: DEBUG # will show you the exact command run

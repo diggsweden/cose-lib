@@ -17,5 +17,5 @@ policies:
       body:
         required: false
       conventional:
-        types: ["chore", "docs","ci","perf", "refactor", "style", "test", "release"]
+        types: ["chore","build", "docs","ci","perf", "refactor", "style", "test", "release"]
         scopes: [".*"]

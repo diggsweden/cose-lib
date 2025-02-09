@@ -55,6 +55,6 @@ public class CounterSign1 extends Signer {
       );
     }
 
-    return CBORObject.FromObject(rgbSignature);
+    return CBORObject.FromByteArray(rgbSignature);
   }
 }

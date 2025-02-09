@@ -122,7 +122,7 @@ public class MACCOSEObjectTest extends TestBase {
     );
     CBORObject key256 = CBORObject.NewMap();
     key256.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_Octet);
-    key256.Add(KeyKeys.Octet_K.AsCBOR(), CBORObject.FromObject(rgbKey256));
+    key256.Add(KeyKeys.Octet_K.AsCBOR(), CBORObject.FromByteArray(rgbKey256));
     cnKey256 = new COSEKey(key256);
     recipient256.SetKey(cnKey256);
   }
@@ -230,7 +230,7 @@ public class MACCOSEObjectTest extends TestBase {
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
       HeaderKeys.Algorithm,
-      CBORObject.FromObject("Unknown"),
+      CBORObject.FromString("Unknown"),
       Attribute.PROTECTED
     );
     msg.SetContent(rgbContent);
@@ -310,7 +310,7 @@ public class MACCOSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadProtected2() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.False));
+    obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -326,7 +326,7 @@ public class MACCOSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadUnprotected() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -342,7 +342,7 @@ public class MACCOSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadContent() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
@@ -358,9 +358,9 @@ public class MACCOSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadTag() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
-    obj.Add(CBORObject.FromObject(rgbContent));
+    obj.Add(CBORObject.FromByteArray(rgbContent));
     obj.Add(CBORObject.False);
     obj.Add(CBORObject.False);
 
@@ -374,10 +374,10 @@ public class MACCOSEObjectTest extends TestBase {
   @Test
   public void macDecodeBadRecipients() throws CoseException {
     CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.FromObject(CBORObject.NewArray()).EncodeToBytes());
+    obj.Add(CBORObject.NewArray()).EncodeToBytes();
     obj.Add(CBORObject.NewMap());
-    obj.Add(CBORObject.FromObject(rgbContent));
-    obj.Add(CBORObject.FromObject(rgbContent));
+    obj.Add(CBORObject.FromByteArray(rgbContent));
+    obj.Add(CBORObject.FromByteArray(rgbContent));
     obj.Add(CBORObject.False);
 
     thrown.expect(CoseException.class);

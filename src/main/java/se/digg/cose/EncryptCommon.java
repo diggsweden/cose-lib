@@ -173,7 +173,7 @@ public abstract class EncryptCommon extends COSEObject {
     if (iv == null) {
       byte[] tmp = new byte[ivLen];
       random.nextBytes(tmp);
-      iv = CBORObject.FromObject(tmp);
+      iv = CBORObject.FromByteArray(tmp);
       addAttribute(HeaderKeys.IV, iv, UNPROTECTED);
     } else {
       if (iv.getType() != CBORType.ByteString) {
@@ -270,7 +270,7 @@ public abstract class EncryptCommon extends COSEObject {
       // generate IV
       byte[] tmp = new byte[AES_GCM_IV_LENGTH / 8];
       random.nextBytes(tmp);
-      iv = CBORObject.FromObject(tmp);
+      iv = CBORObject.FromByteArray(tmp);
       addAttribute(HeaderKeys.IV, iv, PROTECTED);
     } else {
       if (iv.getType() != CBORType.ByteString) {
@@ -310,7 +310,7 @@ public abstract class EncryptCommon extends COSEObject {
     if (objProtected.size() == 0) rgbProtected = new byte[0];
     else rgbProtected = objProtected.EncodeToBytes();
     obj.Add(rgbProtected);
-    obj.Add(CBORObject.FromObject(externalData));
+    obj.Add(CBORObject.FromByteArray(externalData));
     return obj.EncodeToBytes();
   }
 

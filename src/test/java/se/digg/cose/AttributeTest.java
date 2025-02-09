@@ -41,7 +41,7 @@ public class AttributeTest extends TestBase {
 
   @Test
   public void testAddAttribute_1() throws Exception {
-    CBORObject label = CBORObject.FromObject(new byte[1]);
+    CBORObject label = CBORObject.FromByteArray(new byte[1]);
     CBORObject value = null;
     int where = Attribute.PROTECTED;
     Attribute instance = new Attribute();
@@ -54,8 +54,8 @@ public class AttributeTest extends TestBase {
 
   @Test
   public void testAddAttribute_2() throws Exception {
-    CBORObject label = CBORObject.FromObject(1);
-    CBORObject value = CBORObject.FromObject(2);
+    CBORObject label = CBORObject.FromInt32(1);
+    CBORObject value = CBORObject.FromInt32(2);
     int where = 0;
     Attribute instance = new Attribute();
 
