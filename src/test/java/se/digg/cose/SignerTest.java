@@ -5,20 +5,17 @@
 
 package se.digg.cose;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import com.upokecenter.cbor.CBORObject;
-import org.junit.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import se.digg.cose.COSEKey;
-import se.digg.cose.CoseException;
-import se.digg.cose.Signer;
 
 /**
  *

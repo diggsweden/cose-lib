@@ -134,7 +134,7 @@ public class Signer extends Attribute {
     if (countersignature != null) {
       if (
         (countersignature.getType() != CBORType.Array) ||
-        (countersignature.getValues().isEmpty())
+        countersignature.getValues().isEmpty()
       ) {
         throw new CoseException("Invalid countersignature attribute");
       }
@@ -146,12 +146,10 @@ public class Signer extends Attribute {
           }
 
           CounterSign cs = new CounterSign(csObj);
-          cs.setObject(this);
           this.addCountersignature(cs);
         }
       } else {
         CounterSign cs = new CounterSign(countersignature);
-        cs.setObject(this);
         this.addCountersignature(cs);
       }
     }
@@ -166,7 +164,6 @@ public class Signer extends Attribute {
       }
 
       CounterSign1 cs = new CounterSign1(countersignature.GetByteString());
-      cs.setObject(this);
       this.counterSign1 = cs;
     }
   }

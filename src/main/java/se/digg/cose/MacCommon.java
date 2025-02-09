@@ -132,7 +132,6 @@ public abstract class MacCommon extends COSEObject {
       );
       byte[] val = BuildContentBytes();
       int blockLen = cbcmac.getBlockSize();
-      int tagLen = alg.getTagSize() / 8;
 
       int dataLen = val.length, dataPad = 16 - (val.length % 16);
       if (dataPad != 16) {

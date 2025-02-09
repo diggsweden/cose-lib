@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The COSEObject class provides a common class that all of the COSE message classes
- * inherit from.  It provides the function used for decoding all of the known
+ * The COSEObject class provides a common class that all of the COSE message
+ * classes
+ * inherit from. It provides the function used for decoding all of the known
  * messages.
  *
  * @author jimsch
@@ -42,8 +43,8 @@ public abstract class COSEObject extends Attribute {
   protected byte[] rgbContent = null;
 
   /**
-   * Decode a COSE message object.  This function assumes that the message
-   * has a leading CBOR tag to identify the message type.  If this is not
+   * Decode a COSE message object. This function assumes that the message
+   * has a leading CBOR tag to identify the message type. If this is not
    * true then use {#link DecodeFromBytes(byte[], COSEObjectTag)}.
    *
    * @param rgbData byte stream to be decoded
@@ -57,10 +58,10 @@ public abstract class COSEObject extends Attribute {
 
   /**
    * Decode a COSE message object. Use a value of {@code COSEObjectTag.Unknown}
-   * to decode a generic structure with tagging.  Use a specific value if
+   * to decode a generic structure with tagging. Use a specific value if
    * the tagging is absent or if a known structure is passed in.
    *
-   * @param rgbData byte stream to be decoded
+   * @param rgbData    byte stream to be decoded
    * @param defaultTag assumed message type to be decoded
    * @return the decoded message object
    * @throws CoseException on a decode failure.
@@ -134,7 +135,7 @@ public abstract class COSEObject extends Attribute {
     if (countersignature != null) {
       if (
         (countersignature.getType() != CBORType.Array) ||
-        (countersignature.getValues().isEmpty())
+        countersignature.getValues().isEmpty()
       ) {
         throw new CoseException("Invalid countersignature attribute");
       }
@@ -146,12 +147,10 @@ public abstract class COSEObject extends Attribute {
           }
 
           CounterSign cs = new CounterSign(obj);
-          cs.setObject(msg);
           msg.addCountersignature(cs);
         }
       } else {
         CounterSign cs = new CounterSign(countersignature);
-        cs.setObject(msg);
         msg.addCountersignature(cs);
       }
     }
@@ -166,14 +165,14 @@ public abstract class COSEObject extends Attribute {
       }
 
       CounterSign1 cs = new CounterSign1(countersignature.GetByteString());
-      cs.setObject(msg);
       msg.counterSign1 = cs;
     }
     return msg;
   }
 
   /**
-   * Encode the message to a byte array.  This function will force cryptographic operations to be executed as needed.
+   * Encode the message to a byte array. This function will force cryptographic
+   * operations to be executed as needed.
    *
    * @return byte encoded object
    * @throws CoseException Internal COSE Exception
@@ -183,7 +182,8 @@ public abstract class COSEObject extends Attribute {
   }
 
   /**
-   * Given a CBOR tree, parse the message.  This is an abstract function that is implemented for each different supported COSE message.
+   * Given a CBOR tree, parse the message. This is an abstract function that is
+   * implemented for each different supported COSE message.
    *
    * @param messageObject CBORObject to be converted to a message.
    * @throws CoseException Internal COSE Exception
@@ -193,8 +193,10 @@ public abstract class COSEObject extends Attribute {
     throws CoseException;
 
   /**
-   * Encode the COSE message object to a CBORObject tree.  This function call will force cryptographic operations to be executed as needed.
-   * This is an internal function, as such it does not add the tag on the front and is implemented on a per message object.
+   * Encode the COSE message object to a CBORObject tree. This function call will
+   * force cryptographic operations to be executed as needed.
+   * This is an internal function, as such it does not add the tag on the front
+   * and is implemented on a per message object.
    *
    * @return CBORObject representing the message.
    * @throws CoseException Internal COSE Exception
@@ -202,7 +204,8 @@ public abstract class COSEObject extends Attribute {
   protected abstract CBORObject EncodeCBORObject() throws CoseException;
 
   /**
-   * Encode the COSE message object to a CBORObject tree.  This function call will force cryptographic operations to be executed as needed.
+   * Encode the COSE message object to a CBORObject tree. This function call will
+   * force cryptographic operations to be executed as needed.
    *
    * @return CBORObject representing the message.
    * @throws CoseException Internal COSE Exception
@@ -238,8 +241,9 @@ public abstract class COSEObject extends Attribute {
   }
 
   /**
-   * Set the content bytes of the message.  If the message was transmitted with
-   * detached content, this must be called before doing cryptographic processing on the message.
+   * Set the content bytes of the message. If the message was transmitted with
+   * detached content, this must be called before doing cryptographic processing
+   * on the message.
    *
    * @param rgbData bytes to set as the content
    */
@@ -248,7 +252,8 @@ public abstract class COSEObject extends Attribute {
   }
 
   /**
-   * Set the content bytes as a text string.  The string will be encoded using UTF8 into a byte string.
+   * Set the content bytes as a text string. The string will be encoded using UTF8
+   * into a byte string.
    *
    * @param strData string to set as the content
    */

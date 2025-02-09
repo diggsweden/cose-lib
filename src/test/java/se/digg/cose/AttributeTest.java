@@ -5,7 +5,7 @@
 
 package se.digg.cose;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 import com.upokecenter.cbor.CBORObject;
 import org.junit.After;
@@ -15,11 +15,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import se.digg.cose.AlgorithmID;
-import se.digg.cose.Attribute;
-import se.digg.cose.CoseException;
-import se.digg.cose.HeaderKeys;
-import se.digg.cose.MAC0COSEObject;
 
 /**
  *
@@ -118,30 +113,27 @@ public class AttributeTest extends TestBase {
 
     cn = instance.findAttribute(HeaderKeys.Algorithm, Attribute.PROTECTED);
     assertSame(cn, AlgorithmID.AES_CBC_MAC_128_128.AsCBOR());
-    assert (null ==
-      instance.findAttribute(HeaderKeys.Algorithm, Attribute.UNPROTECTED));
-    assert (null ==
-      instance.findAttribute(HeaderKeys.Algorithm, Attribute.DO_NOT_SEND));
+    assert null ==
+    instance.findAttribute(HeaderKeys.Algorithm, Attribute.UNPROTECTED);
+    assert null ==
+    instance.findAttribute(HeaderKeys.Algorithm, Attribute.DO_NOT_SEND);
 
     cn = instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.UNPROTECTED);
     assertSame(cn, AlgorithmID.AES_CBC_MAC_128_64.AsCBOR());
-    assert (null ==
-      instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.PROTECTED));
-    assert (null ==
-      instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.DO_NOT_SEND));
+    assert null ==
+    instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.PROTECTED);
+    assert null ==
+    instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.DO_NOT_SEND);
 
     cn = instance.findAttribute(
       HeaderKeys.CounterSignature,
       Attribute.DO_NOT_SEND
     );
     assertSame(cn, AlgorithmID.AES_CBC_MAC_256_64.AsCBOR());
-    assert (null ==
-      instance.findAttribute(
-        HeaderKeys.CounterSignature,
-        Attribute.UNPROTECTED
-      ));
-    assert (null ==
-      instance.findAttribute(HeaderKeys.CounterSignature, Attribute.PROTECTED));
+    assert null ==
+    instance.findAttribute(HeaderKeys.CounterSignature, Attribute.UNPROTECTED);
+    assert null ==
+    instance.findAttribute(HeaderKeys.CounterSignature, Attribute.PROTECTED);
   }
 
   @Test
@@ -174,17 +166,17 @@ public class AttributeTest extends TestBase {
 
     cn = instance.findAttribute(HeaderKeys.Algorithm, Attribute.PROTECTED);
     assertSame(cn, AlgorithmID.ECDSA_256.AsCBOR());
-    assert (null ==
-      instance.findAttribute(HeaderKeys.Algorithm, Attribute.UNPROTECTED));
-    assert (null ==
-      instance.findAttribute(HeaderKeys.Algorithm, Attribute.DO_NOT_SEND));
+    assert null ==
+    instance.findAttribute(HeaderKeys.Algorithm, Attribute.UNPROTECTED);
+    assert null ==
+    instance.findAttribute(HeaderKeys.Algorithm, Attribute.DO_NOT_SEND);
 
     cn = instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.PROTECTED);
     assertSame(cn, AlgorithmID.ECDH_ES_HKDF_256.AsCBOR());
-    assert (null ==
-      instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.UNPROTECTED));
-    assert (null ==
-      instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.DO_NOT_SEND));
+    assert null ==
+    instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.UNPROTECTED);
+    assert null ==
+    instance.findAttribute(HeaderKeys.CONTENT_TYPE, Attribute.DO_NOT_SEND);
   }
 
   @Test
@@ -203,6 +195,6 @@ public class AttributeTest extends TestBase {
 
     instance.removeAttribute(HeaderKeys.Algorithm);
     cn = instance.findAttribute(HeaderKeys.Algorithm);
-    assert (cn == null);
+    assert cn == null;
   }
 }

@@ -155,7 +155,6 @@ public class ASN1 {
 
   private static final byte[] SequenceTag = new byte[] { 0x30 };
   private static final byte[] OctetStringTag = new byte[] { 0x4 };
-  private static final byte[] BitStringTag = new byte[] { 0x3 };
   private static final int IntegerTag = 2;
 
   /**
@@ -164,12 +163,13 @@ public class ASN1 {
    * @param oid the OID to check
    * @return if it is matching Ed25519, Ed448, X25519 or X448
    */
+  @SuppressWarnings("PMD")
   public static boolean isEdXOid(byte[] oid) {
     return (
-      Arrays.equals(oid, ASN1.Oid_Ed25519) ||
-      Arrays.equals(oid, ASN1.Oid_Ed448) ||
-      Arrays.equals(oid, ASN1.Oid_X25519) ||
-      Arrays.equals(oid, ASN1.Oid_X448)
+      Arrays.equals(oid, Oid_Ed25519) ||
+      Arrays.equals(oid, Oid_Ed448) ||
+      Arrays.equals(oid, Oid_X25519) ||
+      Arrays.equals(oid, Oid_X448)
     );
   }
 

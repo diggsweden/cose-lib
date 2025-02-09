@@ -9,14 +9,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import se.digg.cose.AlgorithmID;
-import se.digg.cose.Attribute;
-import se.digg.cose.COSEKey;
-import se.digg.cose.COSEObject;
-import se.digg.cose.CoseException;
-import se.digg.cose.HeaderKeys;
-import se.digg.cose.KeyKeys;
-import se.digg.cose.Sign1COSEObject;
 
 /**
  *
@@ -41,15 +33,15 @@ public class Sign1WikiTest extends TestBase {
   @Test
   public void testSignAMessage() throws CoseException {
     byte[] result = SignAMessage("This is lots of content");
-    assert (VerifyAMessage(result, signingKey));
-    assert (!VerifyAMessage(result, sign2Key));
+    assert VerifyAMessage(result, signingKey);
+    assert !VerifyAMessage(result, sign2Key);
   }
 
   public static byte[] SignAMessage(String ContentToSign) throws CoseException {
-    //  Create the signed message
+    // Create the signed message
     Sign1COSEObject msg = new Sign1COSEObject();
 
-    //  Add the content to the message
+    // Add the content to the message
     msg.SetContent(ContentToSign);
     msg.addAttribute(
       HeaderKeys.Algorithm,
@@ -57,10 +49,10 @@ public class Sign1WikiTest extends TestBase {
       Attribute.PROTECTED
     );
 
-    //  Force the message to be signed
+    // Force the message to be signed
     msg.sign(signingKey);
 
-    //  Now serialize out the message
+    // Now serialize out the message
     return msg.EncodeToBytes();
   }
 

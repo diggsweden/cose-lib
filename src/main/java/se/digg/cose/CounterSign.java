@@ -54,15 +54,4 @@ public class CounterSign extends Signer {
 
     return validate(rgbBodyProtect, message.rgbContent);
   }
-
-  private COSEObject m_msgToSign;
-  private Signer m_signerToSign;
-
-  public void setObject(COSEObject msg) {
-    m_msgToSign = msg;
-  }
-
-  public void setObject(Signer signer) {
-    m_signerToSign = signer;
-  }
 }

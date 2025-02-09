@@ -13,8 +13,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import se.digg.cose.CoseException;
-import se.digg.cose.CounterSign;
 
 /**
  *

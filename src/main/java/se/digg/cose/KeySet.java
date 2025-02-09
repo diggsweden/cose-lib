@@ -30,7 +30,9 @@ public class KeySet {
     for (int i = 0; i < keysIn.size(); i++) {
       try {
         keys.add(new COSEKey(keysIn.get(i)));
-      } catch (CoseException e) {}
+      } catch (CoseException e) {
+        System.out.println("This exception should likely be logged or handled");
+      }
     }
   }
 

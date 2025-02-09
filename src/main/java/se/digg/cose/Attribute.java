@@ -5,7 +5,8 @@
 
 package se.digg.cose;
 
-import com.upokecenter.cbor.*;
+import com.upokecenter.cbor.CBORObject;
+import com.upokecenter.cbor.CBORType;
 
 /**
  * Internal class which supports the protected and unprotected attribute maps that

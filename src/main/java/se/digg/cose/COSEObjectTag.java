@@ -25,7 +25,7 @@ public enum COSEObjectTag {
   }
 
   public static COSEObjectTag FromInt(int i) throws CoseException {
-    for (COSEObjectTag m : COSEObjectTag.values()) {
+    for (COSEObjectTag m : values()) {
       if (i == m.value) return m;
     }
     throw new CoseException("Not a COSEObject tag number");

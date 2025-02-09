@@ -47,4 +47,5 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # shellcheck disable=SC2086 
           mvn $MAVEN_CLI_OPTS test

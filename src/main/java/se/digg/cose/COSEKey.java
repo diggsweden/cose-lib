@@ -71,7 +71,8 @@ public class COSEKey {
 
   /**
    * Create a COSEKey object from Java Public/Private keys.
-   * @param pubKey - public key to use - may be null
+   *
+   * @param pubKey  - public key to use - may be null
    * @param privKey - private key to use - may be null
    * @throws CoseException Internal COSE Exception
    */
@@ -108,7 +109,7 @@ public class COSEKey {
             KeyKeys.EC2_X.AsCBOR(),
             Arrays.copyOfRange(keyData, 2, keyData.length)
           );
-          keyMap.Add(KeyKeys.EC2_Y.AsCBOR(), keyData[1] == 2 ? false : true);
+          keyMap.Add(KeyKeys.EC2_Y.AsCBOR(), keyData[1] != 2);
         } else if (keyData[1] == 4) {
           int keyLength = (keyData.length - 2) / 2;
           keyMap.Add(
@@ -265,7 +266,7 @@ public class COSEKey {
         if (pkdl.get(0).tag != 4) throw new CoseException(
           "Invalid PKCS8 structure"
         );
-        byte[] keyData = (byte[]) (pkdl.get(0).value);
+        byte[] keyData = (byte[]) pkdl.get(0).value;
         keyMap.Add(KeyKeys.OKP_D.AsCBOR(), keyData);
       } else {
         throw new CoseException("Unsupported Algorithm");
@@ -296,17 +297,20 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned algorithm with the provided value, indicating if the values are the
+   * Compares the key's assigned algorithm with the provided value, indicating if
+   * the values are the
    * same.
    *
    * @param algorithmId
-   *          the algorithm to compare or {@code null} to check for no assignment.
-   * @return {@code true} if the current key has the provided algorithm assigned, or {@code false}
+   *                    the algorithm to compare or {@code null} to check for no
+   *                    assignment.
+   * @return {@code true} if the current key has the provided algorithm assigned,
+   *         or {@code false}
    *         otherwise
    */
   public boolean HasAlgorithmID(AlgorithmID algorithmId) {
     CBORObject thisObj = get(KeyKeys.Algorithm);
-    CBORObject thatObj = (algorithmId == null ? null : algorithmId.AsCBOR());
+    CBORObject thatObj = algorithmId == null ? null : algorithmId.AsCBOR();
     boolean result;
 
     if (thatObj == null) {
@@ -318,12 +322,15 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned identifier with the provided value, indicating if the values are
+   * Compares the key's assigned identifier with the provided value, indicating if
+   * the values are
    * the same.
    *
    * @param id
-   *          the identifier to compare or {@code null} to check for no assignment.
-   * @return {@code true} if the current key has the provided identifier assigned, or {@code false}
+   *           the identifier to compare or {@code null} to check for no
+   *           assignment.
+   * @return {@code true} if the current key has the provided identifier assigned,
+   *         or {@code false}
    *         otherwise
    */
   @Deprecated
@@ -345,12 +352,15 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned key type with the provided value, indicating if the values are the
+   * Compares the key's assigned key type with the provided value, indicating if
+   * the values are the
    * same.
    *
    * @param keyTypeObj
-   *          the key type to compare or {@code null} to check for no assignment.
-   * @return {@code true} if the current key has the provided identifier assigned, or {@code false}
+   *                   the key type to compare or {@code null} to check for no
+   *                   assignment.
+   * @return {@code true} if the current key has the provided identifier assigned,
+   *         or {@code false}
    *         otherwise
    */
   public boolean HasKeyType(CBORObject keyTypeObj) {
@@ -366,13 +376,16 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned key operations with the provided value, indicating if the provided
+   * Compares the key's assigned key operations with the provided value,
+   * indicating if the provided
    * value was found in the key operation values assigned to the key.
    *
    * @param that
-   *          the integer operation value to attempt to find in the values provided by the key or
-   *          {@code null} to check for no assignment.
-   * @return {@code true} if the current key has the provided value assigned, or {@code false}
+   *             the integer operation value to attempt to find in the values
+   *             provided by the key or
+   *             {@code null} to check for no assignment.
+   * @return {@code true} if the current key has the provided value assigned, or
+   *         {@code false}
    *         otherwise
    */
   public boolean HasKeyOp(Integer that) {
@@ -404,14 +417,14 @@ public class COSEKey {
   private void CheckKeyState() throws CoseException {
     CBORObject val;
 
-    //  Must have a key type
-    val = COSEKey.this.get(KeyKeys.KeyType);
+    // Must have a key type
+    val = get(KeyKeys.KeyType);
     if (
       (val == null) || (val.getType() != CBORType.Integer)
     ) throw new CoseException("Missing or incorrect key type field");
 
     if (val.equals(KeyKeys.KeyType_Octet)) {
-      val = COSEKey.this.get(KeyKeys.Octet_K);
+      val = get(KeyKeys.Octet_K);
       if (
         (val == null) || (val.getType() != CBORType.ByteString)
       ) throw new CoseException("Malformed key structure");
@@ -425,9 +438,10 @@ public class COSEKey {
   }
 
   private void CheckECKey() throws CoseException {
-    // ECParameterSpec         params = null; //   new ECDomainParameters(curve.getCurve(), curve.getG(), curve.getN(), curve.getH());
+    // ECParameterSpec params = null; // new ECDomainParameters(curve.getCurve(),
+    // curve.getG(), curve.getN(), curve.getH());
     boolean needPublic = false;
-    // ECPrivateKeySpec        privKeySpec = null;
+    // ECPrivateKeySpec privKeySpec = null;
     CBORObject val;
 
     byte[] oid;
@@ -495,7 +509,8 @@ public class COSEKey {
       ) throw new CoseException("Malformed key structure");
 
       if (privateKey != null && needPublic) {
-        byte[] pkcs8 = privateKey.getEncoded();
+        privateKey.getEncoded();
+
         return;
         // todo: calculate (and populate) public from private
       }
@@ -536,57 +551,62 @@ public class COSEKey {
       throw new CoseException("Internal error on SPKI", e);
     }
     /*
-        catch (NoSuchProviderException e) {
-            throw new CoseException("BC not found");
-        }
-        */
+     * catch (NoSuchProviderException e) {
+     * throw new CoseException("BC not found");
+     * }
+     */
     /*
-        X9ECParameters          curve = GetCurve();
-        ECDomainParameters      params = new ECDomainParameters(curve.getCurve(), curve.getG(), curve.getN(), curve.getH());
-        boolean                 needPublic = false;
-        ECPrivateKeyParameters  privKey = null;
-        ECPublicKeyParameters   pubKey = null;
-        CBORObject              val;
-
-        val = COSEKey.this.get(KeyKeys.EC2_D);
-        if (val != null) {
-            if (val.getType() != CBORType.ByteString) throw new CoseException("Malformed key structure");
-            privKey = new ECPrivateKeyParameters(new BigInteger(1, val.GetByteString()),
-                                                    params);
-        }
-
-        val = COSEKey.this.get(KeyKeys.EC2_X);
-        if (val == null) {
-            if (privKey == null) throw new CoseException("Malformed key structure");
-            else needPublic = true;
-        }
-        else if (val.getType() != CBORType.ByteString) throw new CoseException("Malformed key structure");
-
-        val = COSEKey.this.get(KeyKeys.EC2_Y);
-        if (val == null) {
-            if (privKey == null) throw new CoseException("Malformed key structure");
-            else needPublic = true;
-        }
-        else if ((val.getType() != CBORType.ByteString) && (val.getType() != CBORType.Boolean)) throw new CoseException("Malformed key structure");
-
-        if (privKey != null && needPublic) {
-            // todo: calculate (and populate) public from private
-            pubKey = new ECPublicKeyParameters(params.getG().multiply(privKey.getD()), params);
-            byte[] rgbX = pubKey.getQ().normalize().getXCoord().getEncoded();
-            byte[] rgbY = pubKey.getQ().normalize().getYCoord().getEncoded();
-            add(KeyKeys.EC2_X, CBORObject.FromObject(rgbX));
-            add(KeyKeys.EC2_Y, CBORObject.FromObject(rgbY));
-        } else {
-            // todo: validate public on curve
-        }
-        */
+     * X9ECParameters curve = GetCurve();
+     * ECDomainParameters params = new ECDomainParameters(curve.getCurve(),
+     * curve.getG(), curve.getN(), curve.getH());
+     * boolean needPublic = false;
+     * ECPrivateKeyParameters privKey = null;
+     * ECPublicKeyParameters pubKey = null;
+     * CBORObject val;
+     *
+     * val = COSEKey.this.get(KeyKeys.EC2_D);
+     * if (val != null) {
+     * if (val.getType() != CBORType.ByteString) throw new
+     * CoseException("Malformed key structure");
+     * privKey = new ECPrivateKeyParameters(new BigInteger(1, val.GetByteString()),
+     * params);
+     * }
+     *
+     * val = COSEKey.this.get(KeyKeys.EC2_X);
+     * if (val == null) {
+     * if (privKey == null) throw new CoseException("Malformed key structure");
+     * else needPublic = true;
+     * }
+     * else if (val.getType() != CBORType.ByteString) throw new
+     * CoseException("Malformed key structure");
+     *
+     * val = COSEKey.this.get(KeyKeys.EC2_Y);
+     * if (val == null) {
+     * if (privKey == null) throw new CoseException("Malformed key structure");
+     * else needPublic = true;
+     * }
+     * else if ((val.getType() != CBORType.ByteString) && (val.getType() !=
+     * CBORType.Boolean)) throw new CoseException("Malformed key structure");
+     *
+     * if (privKey != null && needPublic) {
+     * // todo: calculate (and populate) public from private
+     * pubKey = new ECPublicKeyParameters(params.getG().multiply(privKey.getD()),
+     * params);
+     * byte[] rgbX = pubKey.getQ().normalize().getXCoord().getEncoded();
+     * byte[] rgbY = pubKey.getQ().normalize().getYCoord().getEncoded();
+     * add(KeyKeys.EC2_X, CBORObject.FromObject(rgbX));
+     * add(KeyKeys.EC2_Y, CBORObject.FromObject(rgbY));
+     * } else {
+     * // todo: validate public on curve
+     * }
+     */
   }
 
   public ECGenParameterSpec GetCurve2() throws CoseException {
-    if (
-      COSEKey.this.get(KeyKeys.KeyType) != KeyKeys.KeyType_EC2
-    ) throw new CoseException("Not an EC2 key");
-    CBORObject cnCurve = COSEKey.this.get(KeyKeys.EC2_Curve);
+    if (get(KeyKeys.KeyType) != KeyKeys.KeyType_EC2) throw new CoseException(
+      "Not an EC2 key"
+    );
+    CBORObject cnCurve = get(KeyKeys.EC2_Curve);
 
     if (cnCurve == KeyKeys.EC2_P256) return new ECGenParameterSpec("secp256r1");
     if (cnCurve == KeyKeys.EC2_P384) return new ECGenParameterSpec("secp384r1");
@@ -601,10 +621,11 @@ public class COSEKey {
 
   /**
    * Generate a random key pair based on the given algorithm.
-   * Some algorithm can take a parameter. For example, the RSA_PSS family of algorithm
+   * Some algorithm can take a parameter. For example, the RSA_PSS family of
+   * algorithm
    * can take the RSA key size as a parameter.
    *
-   * @param algorithm the algorithm to generate a key pair for
+   * @param algorithm  the algorithm to generate a key pair for
    * @param parameters optional parameters to the key pair generator
    * @return the generated Key Pair
    * @throws CoseException
@@ -616,12 +637,13 @@ public class COSEKey {
 
   /**
    * Generate a random key pair based on the given algorithm.
-   * Some algorithm can take a parameter. For example, the RSA_PSS family of algorithm
+   * Some algorithm can take a parameter. For example, the RSA_PSS family of
+   * algorithm
    * can take the RSA key size as a parameter.
    *
-   * @param algorithm the algorithm to generate a key pair for
+   * @param algorithm  the algorithm to generate a key pair for
    * @param parameters optional parameters to the key pair generator
-   * @param provider JCA provider to use
+   * @param provider   JCA provider to use
    * @return the generated Key Pair
    * @throws CoseException
    */
@@ -835,7 +857,7 @@ public class COSEKey {
   }
 
   /**
-   * Create a COSEKey object with only the public fields.  Filters out the
+   * Create a COSEKey object with only the public fields. Filters out the
    * private key fields but leaves all positive number labels and text labels
    * along with negative number labels that are public fields.
    *
@@ -860,7 +882,7 @@ public class COSEKey {
       return null;
     }
 
-    //  Allow them to use the same underlying public key object
+    // Allow them to use the same underlying public key object
 
     newKey.publicKey = publicKey;
 
@@ -920,8 +942,10 @@ public class COSEKey {
   /**
    * Return the user data field.
    *
-   * The user data object allows for an application to associate a piece of arbitrary
+   * The user data object allows for an application to associate a piece of
+   * arbitrary
    * data with a key and retrieve it later.
+   *
    * @return the user data object
    */
   public Object getUserData() {
@@ -931,8 +955,10 @@ public class COSEKey {
   /**
    * Set the user data field.
    *
-   * The user data field allows for an application to associate a piece of arbitrary
+   * The user data field allows for an application to associate a piece of
+   * arbitrary
    * data with a key and retrieve it later.
+   *
    * @param newData Data field to be saved.
    */
   public void setUserData(Object newData) {
@@ -1000,8 +1026,7 @@ public class COSEKey {
       );
 
       if (privateKey != null && needPublic) {
-        byte[] pkcs8 = privateKey.getEncoded();
-        return;
+        privateKey.getEncoded();
         // todo: calculate (and populate) public from private
       }
 

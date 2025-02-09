@@ -31,17 +31,6 @@ public class CounterSign1 extends Signer {
     objProtected.Clear();
   }
 
-  private COSEObject m_msgToSign;
-  private Signer m_signerToSign;
-
-  public void setObject(COSEObject msg) {
-    m_msgToSign = msg;
-  }
-
-  public void setObject(Signer signer) {
-    m_signerToSign = signer;
-  }
-
   public void setKey(COSEKey key) {
     cnKey = key;
   }

@@ -5,7 +5,9 @@
 
 package se.digg.cose;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import com.upokecenter.cbor.CBORObject;
 import com.upokecenter.cbor.CBORType;
@@ -29,10 +31,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import se.digg.cose.AlgorithmID;
-import se.digg.cose.COSEKey;
-import se.digg.cose.CoseException;
-import se.digg.cose.KeyKeys;
 
 /**
  *
@@ -190,7 +188,7 @@ public class COSEKeyTest extends TestBase {
     assertEquals(result.getFormat(), "X.509");
 
     byte[] rgbSPKI = result.getEncoded();
-    String f = byteArrayToHex(rgbSPKI);
+    byteArrayToHex(rgbSPKI);
     assertEquals(rgbSPKI.length, 91);
 
     KeyFactory kFactory = KeyFactory.getInstance(
@@ -198,7 +196,7 @@ public class COSEKeyTest extends TestBase {
       new BouncyCastleProvider()
     );
     X509EncodedKeySpec spec = new X509EncodedKeySpec(rgbSPKI);
-    PublicKey pubKey = (PublicKey) kFactory.generatePublic(spec);
+    kFactory.generatePublic(spec);
   }
 
   /**
@@ -214,7 +212,7 @@ public class COSEKeyTest extends TestBase {
     assertEquals(result.getFormat(), "PKCS#8");
 
     byte[] rgbPrivate = result.getEncoded();
-    String x = byteArrayToHex(rgbPrivate);
+    byteArrayToHex(rgbPrivate);
 
     /*
         
@@ -229,7 +227,7 @@ public class COSEKeyTest extends TestBase {
     );
 
     PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(rgbPrivate);
-    PrivateKey pubKey = (PrivateKey) kFactory.generatePrivate(spec);
+    kFactory.generatePrivate(spec);
   }
 
   @Test
@@ -297,9 +295,9 @@ public class COSEKeyTest extends TestBase {
 
     KeyPair keyPair = gen.genKeyPair();
 
-    COSEKey pubKey = new COSEKey(keyPair.getPublic(), null);
-    COSEKey privKey = new COSEKey(null, keyPair.getPrivate());
-    COSEKey bothKey = new COSEKey(keyPair.getPublic(), keyPair.getPrivate());
+    new COSEKey(keyPair.getPublic(), null);
+    new COSEKey(null, keyPair.getPrivate());
+    new COSEKey(keyPair.getPublic(), keyPair.getPrivate());
   }
 
   @Test

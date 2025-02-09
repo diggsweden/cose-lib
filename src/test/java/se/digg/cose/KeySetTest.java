@@ -8,12 +8,6 @@ package se.digg.cose;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
-import se.digg.cose.AlgorithmID;
-import se.digg.cose.COSEKey;
-import se.digg.cose.CoseException;
-import se.digg.cose.KeyKeys;
-import se.digg.cose.KeySet;
-import se.digg.cose.KeySetCollector;
 
 public class KeySetTest extends TestBase {
 

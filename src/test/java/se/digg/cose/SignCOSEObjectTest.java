@@ -5,21 +5,18 @@
 
 package se.digg.cose;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import com.upokecenter.cbor.CBORObject;
-import org.junit.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import se.digg.cose.COSEObject;
-import se.digg.cose.COSEObjectTag;
-import se.digg.cose.CoseException;
-import se.digg.cose.SignCOSEObject;
-import se.digg.cose.Signer;
 
 /**
  *
@@ -123,7 +120,7 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("COSEObject is not a COSE security COSEObject");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 
   @Test
@@ -135,7 +132,7 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("Invalid SignCOSEObject structure");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 
   @Test
@@ -150,7 +147,7 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("Invalid SignCOSEObject structure");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 
   @Test
@@ -165,7 +162,7 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("Invalid SignCOSEObject structure");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 
   @Test
@@ -180,7 +177,7 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("Invalid SignCOSEObject structure");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 
   @Test
@@ -195,7 +192,7 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("Invalid SignCOSEObject structure");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 
   @Test
@@ -210,6 +207,6 @@ public class SignCOSEObjectTest extends TestBase {
     thrown.expectMessage("Invalid SignCOSEObject structure");
 
     byte[] rgb = obj.EncodeToBytes();
-    COSEObject msg = COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
+    COSEObject.DecodeFromBytes(rgb, COSEObjectTag.Sign);
   }
 }

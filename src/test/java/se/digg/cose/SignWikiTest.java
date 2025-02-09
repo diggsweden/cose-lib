@@ -5,21 +5,14 @@
 
 package se.digg.cose;
 
-import com.upokecenter.cbor.*;
+import com.upokecenter.cbor.CBORObject;
+import com.upokecenter.cbor.CBORType;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.*;
-import org.junit.rules.*;
-import se.digg.cose.AlgorithmID;
-import se.digg.cose.Attribute;
-import se.digg.cose.COSEKey;
-import se.digg.cose.COSEObject;
-import se.digg.cose.CoseException;
-import se.digg.cose.HeaderKeys;
-import se.digg.cose.KeyKeys;
-import se.digg.cose.KeySet;
-import se.digg.cose.SignCOSEObject;
-import se.digg.cose.Signer;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  *
@@ -44,17 +37,17 @@ public class SignWikiTest extends TestBase {
   @Test
   public void testSignAMessage() throws CoseException {
     byte[] result = SignAMessage("This is lots of content");
-    assert (VerifyAMessage(result, signingKey));
+    assert VerifyAMessage(result, signingKey);
   }
 
   public static byte[] SignAMessage(String ContentToSign) throws CoseException {
-    //  Create the signed message
+    // Create the signed message
     SignCOSEObject msg = new SignCOSEObject();
 
-    //  Add the content to the message
+    // Add the content to the message
     msg.SetContent(ContentToSign);
 
-    //  Create the signer for the message
+    // Create the signer for the message
     Signer signer = new Signer();
     signer.setKey(signingKey);
     signer.addAttribute(
@@ -71,10 +64,10 @@ public class SignWikiTest extends TestBase {
 
     msg.AddSigner(signer);
 
-    //  Force the message to be signed
+    // Force the message to be signed
     msg.sign();
 
-    //  Now serialize out the message
+    // Now serialize out the message
     return msg.EncodeToBytes();
   }
 
@@ -83,7 +76,7 @@ public class SignWikiTest extends TestBase {
 
     try {
       SignCOSEObject msg = (SignCOSEObject) COSEObject.DecodeFromBytes(message);
-      Signer signer = msg.getSigner((0));
+      Signer signer = msg.getSigner(0);
       signer.setKey(key);
 
       result = msg.validate(signer);
@@ -107,23 +100,23 @@ public class SignWikiTest extends TestBase {
     keyset.add(sign3Key);
 
     byte[] result = MultiSignMessage("This is lots of content", keys);
-    assert (MultiValidateSignedMessage(result, keyset, true));
-    assert (MultiValidateSignedMessage(result, keyset, false));
+    assert MultiValidateSignedMessage(result, keyset, true);
+    assert MultiValidateSignedMessage(result, keyset, false);
 
     keyset.remove(sign3Key);
-    assert (!MultiValidateSignedMessage(result, keyset, true));
+    assert !MultiValidateSignedMessage(result, keyset, true);
   }
 
   public static byte[] MultiSignMessage(String ContentToSign, COSEKey[] keys)
     throws CoseException {
-    //  Create the signed message
+    // Create the signed message
     SignCOSEObject msg = new SignCOSEObject();
 
-    //  Add the content to the message
+    // Add the content to the message
     msg.SetContent(ContentToSign);
 
     for (COSEKey key : keys) {
-      //  Create the signer for the message
+      // Create the signer for the message
       Signer signer = new Signer();
       signer.setKey(key);
       signer.addAttribute(
@@ -141,10 +134,10 @@ public class SignWikiTest extends TestBase {
       msg.AddSigner(signer);
     }
 
-    //  Force the message to be signed
+    // Force the message to be signed
     msg.sign();
 
-    //  Now serialize out the message
+    // Now serialize out the message
     return msg.EncodeToBytes();
   }
 
@@ -153,30 +146,29 @@ public class SignWikiTest extends TestBase {
     KeySet keys,
     boolean needAllToPass
   ) {
-    boolean returnValue = false;
     try {
-      //  Decode the message
+      // Decode the message
       SignCOSEObject msg = (SignCOSEObject) COSEObject.DecodeFromBytes(message);
 
-      //  Enumerate through all of the signers
+      // Enumerate through all of the signers
 
       for (Signer s : msg.getSignerList()) {
         boolean fSignerValidates = false;
 
-        //  Look for the key identifier and algorithm for the signer
+        // Look for the key identifier and algorithm for the signer
 
         CBORObject kid = s.findAttribute(HeaderKeys.KID);
         CBORObject alg = s.findAttribute(HeaderKeys.Algorithm);
 
-        //  Create two lists of keys
-        //   Those that have a matching kid value
-        //   Those that either do not match or do not have a kid value
+        // Create two lists of keys
+        // Those that have a matching kid value
+        // Those that either do not match or do not have a kid value
 
         List<COSEKey> keysWithKid = new ArrayList<COSEKey>();
         List<COSEKey> keysWithoutKid = new ArrayList<COSEKey>();
 
         for (COSEKey k : keys.getList()) {
-          //  If the key has an algorithm, it must match the one used in the signature
+          // If the key has an algorithm, it must match the one used in the signature
 
           CBORObject keyAlg = k.get(KeyKeys.Algorithm);
           if ((keyAlg != null) && !keyAlg.equals(alg)) continue;
@@ -202,21 +194,21 @@ public class SignWikiTest extends TestBase {
             } else continue;
           }
 
-          //  Compare the key ids and divide into two lists
+          // Compare the key ids and divide into two lists
 
           CBORObject o = k.get(KeyKeys.KeyId);
           if (o != null) {
             if (kid.equals(o)) {
               keysWithKid.add(k);
             } else {
-              //  Some implementations will require kid matches
-              //  In which case this line should be removed
+              // Some implementations will require kid matches
+              // In which case this line should be removed
               keysWithoutKid.add(k);
             }
           } else keysWithoutKid.add(k);
         }
 
-        //  Check kid matches first as the list should be short
+        // Check kid matches first as the list should be short
 
         for (COSEKey k : keysWithKid) {
           s.setKey(k);
@@ -228,11 +220,13 @@ public class SignWikiTest extends TestBase {
               s.clearKey();
               break;
             }
-          } catch (CoseException e) {}
+          } catch (CoseException e) {
+            System.out.println("TestEx");
+          }
           s.clearKey();
         }
 
-        //  If we did not validate the signature, try the keys w/o a kid
+        // If we did not validate the signature, try the keys w/o a kid
 
         if (!fSignerValidates) {
           for (COSEKey k : keysWithoutKid) {
@@ -245,24 +239,28 @@ public class SignWikiTest extends TestBase {
                 s.clearKey();
                 break;
               }
-            } catch (CoseException e) {}
+            } catch (CoseException e) {
+              System.out.println(
+                "This should most likely be handled or logged"
+              );
+            }
             s.clearKey();
           }
         }
 
-        //  If we need all signatures to validate then we can return failure
+        // If we need all signatures to validate then we can return failure
 
         if (needAllToPass) {
           if (!fSignerValidates) return false;
         }
-        //  If we need only one to pass then we can return success
+        // If we need only one to pass then we can return success
         else if (fSignerValidates) return true;
       }
     } catch (CoseException e) {
       return false;
     }
-    //  If this is true, then we did not return false because one signature failed.
-    //  If this is false, then we never found a successful signture
+    // If this is true, then we did not return false because one signature failed.
+    // If this is false, then we never found a successful signture
     return needAllToPass;
   }
 }
