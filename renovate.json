@@ -12,34 +12,42 @@
   "commitMessageLowerCase": "auto",
   "commitBody": "Signed-off-by: {{{gitAuthor}}}",
   "vulnerabilityAlerts": {
-    "labels": ["security"],
+    "labels": [
+      "security"
+    ],
     "enabled": true,
     "automerge": true
   },
   "packageRules": [
     {
-      "matchManagers": ["github-actions"],
-      "addLabels": ["actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "addLabels": [
+        "actions"
+      ],
       "pinDigests": true,
       "groupName": "github actions"
     },
     {
-      "matchManagers": ["github-actions"],
-      "matchPackageNames": ["slsa-framework/slsa-github-generator"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "slsa-framework/slsa-github-generator"
+      ],
       "pinDigests": false
     },
     {
       "description": "Maven Build Plugins",
       "groupName": "maven build plugins",
-      "matchPackagePatterns": [
-        "^org\\.apache\\.maven\\.plugins:"
-      ],
       "matchPackageNames": [
         "org.apache.maven.plugins:maven-compiler-plugin",
         "org.apache.maven.plugins:maven-source-plugin",
         "org.apache.maven.plugins:maven-javadoc-plugin",
         "org.apache.maven.plugins:maven-gpg-plugin",
-        "org.apache.maven.plugins:maven-enforcer-plugin"
+        "org.apache.maven.plugins:maven-enforcer-plugin",
+        "/^org\\.apache\\.maven\\.plugins:/"
       ]
     },
     {
@@ -48,7 +56,9 @@
       "matchPackageNames": [
         "junit:junit"
       ],
-      "labels": ["test"]
+      "labels": [
+        "test"
+      ]
     },
     {
       "description": "Bouncy Castle dependencies",
