@@ -134,6 +134,7 @@ public class COSEKey {
           throw new CoseException("Invalid SPKI structure");
         }
 
+        keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_RSA);
         keyMap.Add(KeyKeys.RSA_N.AsCBOR(), n.value);
         keyMap.Add(KeyKeys.RSA_E.AsCBOR(), e.value);
       } else if (ASN1.isEdXOid(alg.get(0).value)) {
