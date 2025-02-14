@@ -15,33 +15,31 @@ import java.util.stream.Collector;
 
 public class KeySetCollector implements Collector<COSEKey, KeySet, KeySet> {
 
-  @Override
-  public Supplier<KeySet> supplier() {
-    return KeySet::new;
-  }
+    @Override
+    public Supplier<KeySet> supplier() {
+        return KeySet::new;
+    }
 
-  @Override
-  public BiConsumer<KeySet, COSEKey> accumulator() {
-    return (acc, elem) -> acc.add(elem);
-  }
+    @Override
+    public BiConsumer<KeySet, COSEKey> accumulator() {
+        return (acc, elem) -> acc.add(elem);
+    }
 
-  @Override
-  public BinaryOperator<KeySet> combiner() {
-    // parallel streams are not supported
-    return (acc1, acc2) -> {
-      throw new UnsupportedOperationException(
-        "parallel streams are not supported"
-      );
-    };
-  }
+    @Override
+    public BinaryOperator<KeySet> combiner() {
+        // parallel streams are not supported
+        return (acc1, acc2) -> {
+            throw new UnsupportedOperationException("parallel streams are not supported");
+        };
+    }
 
-  @Override
-  public Function<KeySet, KeySet> finisher() {
-    return acc -> acc;
-  }
+    @Override
+    public Function<KeySet, KeySet> finisher() {
+        return acc -> acc;
+    }
 
-  @Override
-  public Set<Collector.Characteristics> characteristics() {
-    return Collections.emptySet();
-  }
+    @Override
+    public Set<Collector.Characteristics> characteristics() {
+        return Collections.emptySet();
+    }
 }

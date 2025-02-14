@@ -12,17 +12,17 @@ import java.security.Provider;
  */
 public class CryptoContext {
 
-  private Provider provider;
+    private Provider provider;
 
-  public CryptoContext(Provider provider) {
-    this.provider = provider;
-  }
+    public CryptoContext(Provider provider) {
+        this.provider = provider;
+    }
 
-  public Provider getProvider() {
-    return provider;
-  }
+    public Provider getProvider() {
+        return provider;
+    }
 
-  public void setProvider(Provider provider) {
-    this.provider = provider;
-  }
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
 }

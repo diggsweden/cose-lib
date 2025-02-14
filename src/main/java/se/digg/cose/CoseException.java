@@ -11,11 +11,11 @@ package se.digg.cose;
  */
 public class CoseException extends Exception {
 
-  public CoseException(String message) {
-    super(message);
-  }
+    public CoseException(String message) {
+        super(message);
+    }
 
-  public CoseException(String message, Exception ex) {
-    super(message, ex);
-  }
+    public CoseException(String message, Exception ex) {
+        super(message, ex);
+    }
 }

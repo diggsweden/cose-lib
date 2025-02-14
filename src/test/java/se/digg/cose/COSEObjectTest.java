@@ -23,141 +23,103 @@ import org.junit.rules.ExpectedException;
  */
 public class COSEObjectTest extends TestBase {
 
-  byte[] rgbKey128 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-  };
-  byte[] rgbContent = new byte[] { 1, 2, 3, 4, 5, 6, 7 };
-  byte[] rgbIV96 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    byte[] rgbKey128 = { 'a', 'b', 'c', 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+    byte[] rgbContent = new byte[] { 1, 2, 3, 4, 5, 6, 7 };
+    byte[] rgbIV96 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-  public COSEObjectTest() {}
+    public COSEObjectTest() {}
 
-  @BeforeClass
-  public static void setUpClass() {}
+    @BeforeClass
+    public static void setUpClass() {}
 
-  @AfterClass
-  public static void tearDownClass() {}
+    @AfterClass
+    public static void tearDownClass() {}
 
-  @Before
-  public void setUp() {}
+    @Before
+    public void setUp() {}
 
-  @After
-  public void tearDown() {}
+    @After
+    public void tearDown() {}
 
-  /**
-   * Test of DecodeFromBytes method, of class COSEObject.
-   */
-  @Test
-  public void testDecodeUnknown() throws Exception {
-    Encrypt0COSEObject msg = new Encrypt0COSEObject(false, true);
-    msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
-    msg.addAttribute(
-      HeaderKeys.IV,
-      CBORObject.FromByteArray(rgbIV96),
-      Attribute.PROTECTED
-    );
-    msg.SetContent(rgbContent);
-    msg.encrypt(rgbKey128);
-    byte[] rgbMsg = msg.EncodeToBytes();
+    /**
+     * Test of DecodeFromBytes method, of class COSEObject.
+     */
+    @Test
+    public void testDecodeUnknown() throws Exception {
+        Encrypt0COSEObject msg = new Encrypt0COSEObject(false, true);
+        msg.addAttribute(HeaderKeys.Algorithm, AlgorithmID.AES_GCM_128.AsCBOR(), Attribute.PROTECTED);
+        msg.addAttribute(HeaderKeys.IV, CBORObject.FromByteArray(rgbIV96), Attribute.PROTECTED);
+        msg.SetContent(rgbContent);
+        msg.encrypt(rgbKey128);
+        byte[] rgbMsg = msg.EncodeToBytes();
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage(
-      "COSEObject was not tagged and no default tagging option given"
-    );
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("COSEObject was not tagged and no default tagging option given");
 
-    msg = (Encrypt0COSEObject) COSEObject.DecodeFromBytes(
-      rgbMsg,
-      COSEObjectTag.Unknown
-    );
-  }
+        msg = (Encrypt0COSEObject) COSEObject.DecodeFromBytes(rgbMsg, COSEObjectTag.Unknown);
+    }
 
-  /**
-   * Test of DecodeFromBytes method, of class COSEObject.
-   */
-  @Test
-  public void testDecodeFromBytes_byteArr_MessageTag() throws Exception {
-    Encrypt0COSEObject msg = new Encrypt0COSEObject(true, false);
-    msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
-    msg.addAttribute(
-      HeaderKeys.IV,
-      CBORObject.FromByteArray(rgbIV96),
-      Attribute.PROTECTED
-    );
-    msg.SetContent(rgbContent);
-    msg.encrypt(rgbKey128);
-    byte[] rgbMsg = msg.EncodeToBytes();
+    /**
+     * Test of DecodeFromBytes method, of class COSEObject.
+     */
+    @Test
+    public void testDecodeFromBytes_byteArr_MessageTag() throws Exception {
+        Encrypt0COSEObject msg = new Encrypt0COSEObject(true, false);
+        msg.addAttribute(HeaderKeys.Algorithm, AlgorithmID.AES_GCM_128.AsCBOR(), Attribute.PROTECTED);
+        msg.addAttribute(HeaderKeys.IV, CBORObject.FromByteArray(rgbIV96), Attribute.PROTECTED);
+        msg.SetContent(rgbContent);
+        msg.encrypt(rgbKey128);
+        byte[] rgbMsg = msg.EncodeToBytes();
 
-    msg = (Encrypt0COSEObject) COSEObject.DecodeFromBytes(rgbMsg);
-    assertEquals(false, msg.HasContent());
-  }
+        msg = (Encrypt0COSEObject) COSEObject.DecodeFromBytes(rgbMsg);
+        assertEquals(false, msg.HasContent());
+    }
 
-  /**
-   * Test of HasContent method, of class COSEObject.
-   */
-  @Test
-  public void testHasContent() {
-    System.out.println("HasContent");
-    COSEObject instance = new Encrypt0COSEObject();
-    boolean expResult = false;
-    boolean result = instance.HasContent();
-    assertEquals(expResult, result);
+    /**
+     * Test of HasContent method, of class COSEObject.
+     */
+    @Test
+    public void testHasContent() {
+        System.out.println("HasContent");
+        COSEObject instance = new Encrypt0COSEObject();
+        boolean expResult = false;
+        boolean result = instance.HasContent();
+        assertEquals(expResult, result);
 
-    instance.SetContent(new byte[10]);
-    result = instance.HasContent();
-    assertEquals(true, result);
-  }
+        instance.SetContent(new byte[10]);
+        result = instance.HasContent();
+        assertEquals(true, result);
+    }
 
-  /**
-   * Test of SetContent method, of class COSEObject.
-   */
-  @Test
-  public void testSetContent_byteArr() {
-    System.out.println("SetContent");
-    byte[] rgbData = new byte[] { 1, 2, 3, 4, 5, 6, 7 };
-    COSEObject instance = new Encrypt0COSEObject();
-    instance.SetContent(rgbData);
+    /**
+     * Test of SetContent method, of class COSEObject.
+     */
+    @Test
+    public void testSetContent_byteArr() {
+        System.out.println("SetContent");
+        byte[] rgbData = new byte[] { 1, 2, 3, 4, 5, 6, 7 };
+        COSEObject instance = new Encrypt0COSEObject();
+        instance.SetContent(rgbData);
 
-    byte[] result = instance.GetContent();
-    assertArrayEquals(result, rgbData);
-  }
+        byte[] result = instance.GetContent();
+        assertArrayEquals(result, rgbData);
+    }
 
-  /**
-   * Test of SetContent method, of class COSEObject.
-   */
-  @Test
-  public void testSetContent_String() {
-    System.out.println("SetContent");
-    String strData = "12345678";
-    byte[] rgbData = new byte[] { 49, 50, 51, 52, 53, 54, 55, 56 };
+    /**
+     * Test of SetContent method, of class COSEObject.
+     */
+    @Test
+    public void testSetContent_String() {
+        System.out.println("SetContent");
+        String strData = "12345678";
+        byte[] rgbData = new byte[] { 49, 50, 51, 52, 53, 54, 55, 56 };
 
-    COSEObject instance = new Encrypt0COSEObject();
-    instance.SetContent(strData);
-    byte[] result = instance.GetContent();
-    assertArrayEquals(result, rgbData);
-  }
+        COSEObject instance = new Encrypt0COSEObject();
+        instance.SetContent(strData);
+        byte[] result = instance.GetContent();
+        assertArrayEquals(result, rgbData);
+    }
 }

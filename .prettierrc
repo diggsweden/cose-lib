@@ -1,0 +1,25 @@
+{
+  "arrowParens": "avoid",
+  "tabWidth": 4,
+  "useTabs": false,
+  "endOfLine": "lf",
+  "printWidth": 120,
+  "singleQuote": false,
+  "trailingComma": "none",
+   "insertPragma": false,
+  "xmlWhitespaceSensitivity": "ignore",
+  "htmlWhitespaceSensitivity": "css",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "proseWrap": "preserve",
+  "singleAttributePerLine": true,
+  "overrides": [
+    {
+      "files": ["*.yaml","*.yml"],
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
+  
+}

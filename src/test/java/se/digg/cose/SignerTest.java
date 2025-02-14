@@ -23,113 +23,113 @@ import org.junit.rules.ExpectedException;
  */
 public class SignerTest extends TestBase {
 
-  public SignerTest() {}
+    public SignerTest() {}
 
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-  @BeforeClass
-  public static void setUpClass() {}
+    @BeforeClass
+    public static void setUpClass() {}
 
-  @AfterClass
-  public static void tearDownClass() {}
+    @AfterClass
+    public static void tearDownClass() {}
 
-  @Before
-  public void setUp() {}
+    @Before
+    public void setUp() {}
 
-  @After
-  public void tearDown() {}
+    @After
+    public void tearDown() {}
 
-  /**
-   * Test of setKey method, of class Signer.
-   */
-  @Ignore
-  @Test
-  public void testSetKey() throws CoseException {
-    System.out.println("setKey");
-    COSEKey cnKey = null;
-    Signer instance = new Signer();
-    instance.setKey(cnKey);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
+    /**
+     * Test of setKey method, of class Signer.
+     */
+    @Ignore
+    @Test
+    public void testSetKey() throws CoseException {
+        System.out.println("setKey");
+        COSEKey cnKey = null;
+        Signer instance = new Signer();
+        instance.setKey(cnKey);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 
-  @Test
-  public void signerDecodeWrongBasis() throws CoseException {
-    CBORObject obj = CBORObject.NewMap();
+    @Test
+    public void signerDecodeWrongBasis() throws CoseException {
+        CBORObject obj = CBORObject.NewMap();
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage("Invalid Signer structure");
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("Invalid Signer structure");
 
-    Signer sig = new Signer();
-    sig.DecodeFromCBORObject(obj);
-  }
+        Signer sig = new Signer();
+        sig.DecodeFromCBORObject(obj);
+    }
 
-  @Test
-  public void signerDecodeWrongCount() throws CoseException {
-    CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.False);
+    @Test
+    public void signerDecodeWrongCount() throws CoseException {
+        CBORObject obj = CBORObject.NewArray();
+        obj.Add(CBORObject.False);
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage("Invalid Signer structure");
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("Invalid Signer structure");
 
-    Signer sig = new Signer();
-    sig.DecodeFromCBORObject(obj);
-  }
+        Signer sig = new Signer();
+        sig.DecodeFromCBORObject(obj);
+    }
 
-  @Test
-  public void signerDecodeBadProtected() throws CoseException {
-    CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.False);
-    obj.Add(CBORObject.False);
-    obj.Add(CBORObject.False);
+    @Test
+    public void signerDecodeBadProtected() throws CoseException {
+        CBORObject obj = CBORObject.NewArray();
+        obj.Add(CBORObject.False);
+        obj.Add(CBORObject.False);
+        obj.Add(CBORObject.False);
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage("Invalid Signer structure");
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("Invalid Signer structure");
 
-    Signer sig = new Signer();
-    sig.DecodeFromCBORObject(obj);
-  }
+        Signer sig = new Signer();
+        sig.DecodeFromCBORObject(obj);
+    }
 
-  @Test
-  public void signerDecodeBadProtected2() throws CoseException {
-    CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.False);
-    obj.Add(CBORObject.False);
-    obj.Add(CBORObject.False);
+    @Test
+    public void signerDecodeBadProtected2() throws CoseException {
+        CBORObject obj = CBORObject.NewArray();
+        obj.Add(CBORObject.False);
+        obj.Add(CBORObject.False);
+        obj.Add(CBORObject.False);
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage("Invalid Signer structure");
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("Invalid Signer structure");
 
-    Signer sig = new Signer();
-    sig.DecodeFromCBORObject(obj);
-  }
+        Signer sig = new Signer();
+        sig.DecodeFromCBORObject(obj);
+    }
 
-  @Test
-  public void signerDecodeBadUnprotected() throws CoseException {
-    CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.NewArray()).EncodeToBytes();
-    obj.Add(CBORObject.False);
-    obj.Add(CBORObject.False);
+    @Test
+    public void signerDecodeBadUnprotected() throws CoseException {
+        CBORObject obj = CBORObject.NewArray();
+        obj.Add(CBORObject.NewArray()).EncodeToBytes();
+        obj.Add(CBORObject.False);
+        obj.Add(CBORObject.False);
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage("Invalid Signer structure");
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("Invalid Signer structure");
 
-    Signer sig = new Signer();
-    sig.DecodeFromCBORObject(obj);
-  }
+        Signer sig = new Signer();
+        sig.DecodeFromCBORObject(obj);
+    }
 
-  @Test
-  public void signerDecodeBadSignature() throws CoseException {
-    CBORObject obj = CBORObject.NewArray();
-    obj.Add(CBORObject.NewArray()).EncodeToBytes();
-    obj.Add(CBORObject.NewMap());
-    obj.Add(CBORObject.False);
+    @Test
+    public void signerDecodeBadSignature() throws CoseException {
+        CBORObject obj = CBORObject.NewArray();
+        obj.Add(CBORObject.NewArray()).EncodeToBytes();
+        obj.Add(CBORObject.NewMap());
+        obj.Add(CBORObject.False);
 
-    thrown.expect(CoseException.class);
-    thrown.expectMessage("Invalid Signer structure");
+        thrown.expect(CoseException.class);
+        thrown.expectMessage("Invalid Signer structure");
 
-    Signer sig = new Signer();
-    sig.DecodeFromCBORObject(obj);
-  }
+        Signer sig = new Signer();
+        sig.DecodeFromCBORObject(obj);
+    }
 }
