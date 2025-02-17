@@ -21,9 +21,15 @@ public enum HeaderKeys {
   PARTIAL_IV(6),
   CounterSignature0(9),
 
-  /** An unordered bag of X.509 certificates. Encoded as bstring or an array when more than one certificate is conveyed */
+  /**
+   * An unordered bag of X.509 certificates. Encoded as bstring or an array when more than one
+   * certificate is conveyed
+   */
   x5bag(32),
-  /** An ordered chain of X.509 certificates. Encoded as bstring or an array when more than one certificate is conveyed */
+  /**
+   * An ordered chain of X.509 certificates. Encoded as bstring or an array when more than one
+   * certificate is conveyed
+   */
   x5chain(33),
   /** Hash of an X.509 certificate */
   x5t(34),

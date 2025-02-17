@@ -100,6 +100,7 @@ public class COSEKeyTest extends TestBase {
 
   /**
    * Test of get method, of class COSEKey.
+   *
    * @throws java.lang.Exception
    */
   @Ignore
@@ -117,6 +118,7 @@ public class COSEKeyTest extends TestBase {
 
   /**
    * Test of generateKey method, of class COSEKey.
+   *
    * @throws java.lang.Exception
    */
   @Ignore
@@ -178,6 +180,7 @@ public class COSEKeyTest extends TestBase {
 
   /**
    * Test of AsPublicKey method, of class COSEKey.
+   *
    * @throws java.lang.Exception
    */
   @Test
@@ -192,15 +195,15 @@ public class COSEKeyTest extends TestBase {
     assertEquals(rgbSPKI.length, 91);
 
     KeyFactory kFactory = KeyFactory.getInstance(
-      "EC",
-      new BouncyCastleProvider()
-    );
+        "EC",
+        new BouncyCastleProvider());
     X509EncodedKeySpec spec = new X509EncodedKeySpec(rgbSPKI);
     kFactory.generatePublic(spec);
   }
 
   /**
    * Test of AsPrivateKey method, of class COSEKey.
+   *
    * @throws java.lang.Exception
    */
   @Test
@@ -215,16 +218,14 @@ public class COSEKeyTest extends TestBase {
     byteArrayToHex(rgbPrivate);
 
     /*
-        
-        THis seems to go boom on jdk 9
-        KeyPairGenerator kpgen = KeyPairGenerator.getInstance("EC");
-        
-        */
+     *
+     * THis seems to go boom on jdk 9 KeyPairGenerator kpgen = KeyPairGenerator.getInstance("EC");
+     *
+     */
 
     KeyFactory kFactory = KeyFactory.getInstance(
-      "EC",
-      new BouncyCastleProvider()
-    );
+        "EC",
+        new BouncyCastleProvider());
 
     PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(rgbPrivate);
     kFactory.generatePrivate(spec);
@@ -288,7 +289,7 @@ public class COSEKeyTest extends TestBase {
 
   @Test
   public void testFromPublic()
-    throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, CoseException {
+      throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, CoseException {
     ECGenParameterSpec paramSpec = new ECGenParameterSpec("P-256");
     KeyPairGenerator gen = KeyPairGenerator.getInstance("EC");
     gen.initialize(paramSpec);
@@ -306,23 +307,17 @@ public class COSEKeyTest extends TestBase {
     cborKey.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_EC2);
     cborKey.Add(KeyKeys.EC2_Curve.AsCBOR(), KeyKeys.EC2_P256);
     cborKey.Add(
-      KeyKeys.EC2_D.AsCBOR(),
-      hexStringToByteArray(
-        "6c1382765aec5358f117733d281c1c7bdc39884d04a45a1e6c67c858bc206c19"
-      )
-    );
+        KeyKeys.EC2_D.AsCBOR(),
+        hexStringToByteArray(
+            "6c1382765aec5358f117733d281c1c7bdc39884d04a45a1e6c67c858bc206c19"));
     cborKey.Add(
-      KeyKeys.EC2_Y.AsCBOR(),
-      hexStringToByteArray(
-        "60f7f1a780d8a783bfb7a2dd6b2796e8128dbbcef9d3d168db9529971a36e7b9"
-      )
-    );
+        KeyKeys.EC2_Y.AsCBOR(),
+        hexStringToByteArray(
+            "60f7f1a780d8a783bfb7a2dd6b2796e8128dbbcef9d3d168db9529971a36e7b9"));
     cborKey.Add(
-      KeyKeys.EC2_X.AsCBOR(),
-      hexStringToByteArray(
-        "143329cce7868e416927599cf65a34f3ce2ffda55a7eca69ed8919a394d42f0f"
-      )
-    );
+        KeyKeys.EC2_X.AsCBOR(),
+        hexStringToByteArray(
+            "143329cce7868e416927599cf65a34f3ce2ffda55a7eca69ed8919a394d42f0f"));
 
     COSEKey oneKey = new COSEKey(cborKey);
     PublicKey pubKey = oneKey.AsPublicKey();
@@ -330,29 +325,24 @@ public class COSEKeyTest extends TestBase {
 
     COSEKey oneKey2 = new COSEKey(pubKey, privKey);
     Assert.assertEquals(
-      oneKey2.get(KeyKeys.KeyType),
-      oneKey.get(KeyKeys.KeyType)
-    );
+        oneKey2.get(KeyKeys.KeyType),
+        oneKey.get(KeyKeys.KeyType));
     Assert.assertEquals(
-      oneKey2.get(KeyKeys.EC2_Curve),
-      oneKey2.get(KeyKeys.EC2_Curve)
-    );
+        oneKey2.get(KeyKeys.EC2_Curve),
+        oneKey2.get(KeyKeys.EC2_Curve));
     Assert.assertArrayEquals(
-      oneKey2.get(KeyKeys.EC2_X).GetByteString(),
-      oneKey.get(KeyKeys.EC2_X).GetByteString()
-    );
+        oneKey2.get(KeyKeys.EC2_X).GetByteString(),
+        oneKey.get(KeyKeys.EC2_X).GetByteString());
     if (oneKey2.get(KeyKeys.EC2_Y).getType() == CBORType.ByteString) {
       Assert.assertArrayEquals(
-        oneKey2.get(KeyKeys.EC2_Y).GetByteString(),
-        oneKey.get(KeyKeys.EC2_Y).GetByteString()
-      );
+          oneKey2.get(KeyKeys.EC2_Y).GetByteString(),
+          oneKey.get(KeyKeys.EC2_Y).GetByteString());
     } else {
       Assert.assertTrue("Need to implement this", false);
     }
     Assert.assertArrayEquals(
-      oneKey2.get(KeyKeys.EC2_D).GetByteString(),
-      oneKey.get(KeyKeys.EC2_D).GetByteString()
-    );
+        oneKey2.get(KeyKeys.EC2_D).GetByteString(),
+        oneKey.get(KeyKeys.EC2_D).GetByteString());
   }
 
   @Test
@@ -363,8 +353,8 @@ public class COSEKeyTest extends TestBase {
     Assert.assertEquals(keyOne.AsPublicKey(), keyTwo.AsPublicKey());
     Assert.assertEquals(keyOne.AsPrivateKey(), keyTwo.AsPrivateKey());
 
-    Consumer<KeyKeys> assertSameKey = (KeyKeys k) ->
-      Assert.assertEquals(keyOne.get(k), keyTwo.get(k));
+    Consumer<KeyKeys> assertSameKey =
+        (KeyKeys k) -> Assert.assertEquals(keyOne.get(k), keyTwo.get(k));
     assertSameKey.accept(KeyKeys.RSA_N);
     assertSameKey.accept(KeyKeys.RSA_E);
     assertSameKey.accept(KeyKeys.RSA_D);
@@ -382,15 +372,16 @@ public class COSEKeyTest extends TestBase {
 
     Assert.assertEquals(keyOne.AsPublicKey(), keyTwo.AsPublicKey());
 
-    Consumer<KeyKeys> assertSameKey = (KeyKeys k) ->
-      Assert.assertEquals(keyOne.get(k), keyTwo.get(k));
+    Consumer<KeyKeys> assertSameKey =
+        (KeyKeys k) -> Assert.assertEquals(keyOne.get(k), keyTwo.get(k));
     assertSameKey.accept(KeyKeys.RSA_N);
     assertSameKey.accept(KeyKeys.RSA_E);
   }
 
   static String byteArrayToHex(byte[] a) {
     StringBuilder sb = new StringBuilder(a.length * 2);
-    for (byte b : a) sb.append(String.format("%02x", b & 0xff));
+    for (byte b : a)
+      sb.append(String.format("%02x", b & 0xff));
     return sb.toString();
   }
 
@@ -399,7 +390,7 @@ public class COSEKeyTest extends TestBase {
     byte[] data = new byte[len / 2];
     for (int i = 0; i < len; i += 2) {
       data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) +
-        Character.digit(s.charAt(i + 1), 16));
+          Character.digit(s.charAt(i + 1), 16));
     }
     return data;
   }

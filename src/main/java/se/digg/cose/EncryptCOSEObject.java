@@ -54,11 +54,13 @@ public class EncryptCOSEObject extends EncryptCommon {
         break;
       } else if (r.recipientList.size() > 0) {
         rgbKey = r.decrypt(alg, whom);
-        if (rgbKey != null) break;
+        if (rgbKey != null)
+          break;
       }
     }
 
-    if (rgbKey == null) throw new CoseException("Recipient key not found");
+    if (rgbKey == null)
+      throw new CoseException("Recipient key not found");
     return super.decryptWithKey(rgbKey);
   }
 
@@ -68,15 +70,15 @@ public class EncryptCOSEObject extends EncryptCommon {
 
     int recipientTypes = 0;
 
-    if (recipientList.isEmpty()) throw new CoseException(
-      "No recipients supplied"
-    );
+    if (recipientList.isEmpty())
+      throw new CoseException(
+          "No recipients supplied");
     for (Recipient r : recipientList) {
       switch (r.getRecipientType()) {
         case 1:
-          if ((recipientTypes & 1) != 0) throw new CoseException(
-            "Cannot have two direct recipients"
-          );
+          if ((recipientTypes & 1) != 0)
+            throw new CoseException(
+                "Cannot have two direct recipients");
           recipientTypes |= 1;
           rgbKey = r.getKey(alg);
           break;
@@ -85,9 +87,9 @@ public class EncryptCOSEObject extends EncryptCommon {
       }
     }
 
-    if (recipientTypes == 3) throw new CoseException(
-      "Do not mix direct and indirect recipients"
-    );
+    if (recipientTypes == 3)
+      throw new CoseException(
+          "Do not mix direct and indirect recipients");
 
     if (recipientTypes == 2) {
       rgbKey = new byte[alg.getKeySize() / 8];
@@ -104,26 +106,31 @@ public class EncryptCOSEObject extends EncryptCommon {
 
   @Override
   public void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 4) throw new CoseException("Invalid Encrypt structure");
+    if (obj.size() != 4)
+      throw new CoseException("Invalid Encrypt structure");
 
     if (obj.get(0).getType() == CBORType.ByteString) {
-      if (obj.get(0).GetByteString().length == 0) objProtected =
-        CBORObject.NewMap();
-      else objProtected = CBORObject.DecodeFromBytes(
-        obj.get(0).GetByteString()
-      );
-    } else throw new CoseException("Invalid Encrypt structure");
+      if (obj.get(0).GetByteString().length == 0)
+        objProtected =
+            CBORObject.NewMap();
+      else
+        objProtected = CBORObject.DecodeFromBytes(
+            obj.get(0).GetByteString());
+    } else
+      throw new CoseException("Invalid Encrypt structure");
 
     if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    } else throw new CoseException("Invalid Encrypt structure");
+    } else
+      throw new CoseException("Invalid Encrypt structure");
 
-    if (obj.get(2).getType() == CBORType.ByteString) rgbEncrypt = obj
-      .get(2)
-      .GetByteString();
-    else if (!obj.get(2).isNull()) throw new CoseException(
-      "Invalid Encrypt structure"
-    );
+    if (obj.get(2).getType() == CBORType.ByteString)
+      rgbEncrypt = obj
+          .get(2)
+          .GetByteString();
+    else if (!obj.get(2).isNull())
+      throw new CoseException(
+          "Invalid Encrypt structure");
 
     if (obj.get(3).getType() == CBORType.Array) {
       for (int i = 0; i < obj.get(3).size(); i++) {
@@ -131,18 +138,21 @@ public class EncryptCOSEObject extends EncryptCommon {
         recipient.DecodeFromCBORObject(obj.get(3).get(i));
         recipientList.add(recipient);
       }
-    } else throw new CoseException("Invalid Encrypt structure");
+    } else
+      throw new CoseException("Invalid Encrypt structure");
   }
 
   @Override
   protected CBORObject EncodeCBORObject() throws CoseException {
-    if (rgbEncrypt == null) throw new CoseException(
-      "Compute function not called"
-    );
+    if (rgbEncrypt == null)
+      throw new CoseException(
+          "Compute function not called");
 
     CBORObject obj = CBORObject.NewArray();
-    if (objProtected.size() > 0) obj.Add(objProtected.EncodeToBytes());
-    else obj.Add(CBORObject.FromByteArray(new byte[0]));
+    if (objProtected.size() > 0)
+      obj.Add(objProtected.EncodeToBytes());
+    else
+      obj.Add(CBORObject.FromByteArray(new byte[0]));
 
     obj.Add(objUnprotected);
     obj.Add(rgbEncrypt);

@@ -39,18 +39,22 @@ public class CounterSign extends Signer {
 
   public void Sign(COSEObject message) throws CoseException {
     byte[] rgbBodyProtect;
-    if (message.objProtected.size() > 0) rgbBodyProtect =
-      message.objProtected.EncodeToBytes();
-    else rgbBodyProtect = new byte[0];
+    if (message.objProtected.size() > 0)
+      rgbBodyProtect =
+          message.objProtected.EncodeToBytes();
+    else
+      rgbBodyProtect = new byte[0];
 
     sign(rgbBodyProtect, message.rgbContent);
   }
 
   public boolean Validate(COSEObject message) throws CoseException {
     byte[] rgbBodyProtect;
-    if (message.objProtected.size() > 0) rgbBodyProtect =
-      message.objProtected.EncodeToBytes();
-    else rgbBodyProtect = new byte[0];
+    if (message.objProtected.size() > 0)
+      rgbBodyProtect =
+          message.objProtected.EncodeToBytes();
+    else
+      rgbBodyProtect = new byte[0];
 
     return validate(rgbBodyProtect, message.rgbContent);
   }

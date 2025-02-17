@@ -51,16 +51,15 @@ public class SignWikiTest extends TestBase {
     Signer signer = new Signer();
     signer.setKey(signingKey);
     signer.addAttribute(
-      HeaderKeys.Algorithm,
-      signingKey.get(KeyKeys.Algorithm),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        signingKey.get(KeyKeys.Algorithm),
+        Attribute.PROTECTED);
     CBORObject o = signingKey.get(KeyKeys.KeyId);
-    if (o != null) signer.addAttribute(
-      HeaderKeys.KID,
-      o,
-      Attribute.UNPROTECTED
-    );
+    if (o != null)
+      signer.addAttribute(
+          HeaderKeys.KID,
+          o,
+          Attribute.UNPROTECTED);
 
     msg.AddSigner(signer);
 
@@ -108,7 +107,7 @@ public class SignWikiTest extends TestBase {
   }
 
   public static byte[] MultiSignMessage(String ContentToSign, COSEKey[] keys)
-    throws CoseException {
+      throws CoseException {
     // Create the signed message
     SignCOSEObject msg = new SignCOSEObject();
 
@@ -120,16 +119,15 @@ public class SignWikiTest extends TestBase {
       Signer signer = new Signer();
       signer.setKey(key);
       signer.addAttribute(
-        HeaderKeys.Algorithm,
-        key.get(KeyKeys.Algorithm),
-        Attribute.PROTECTED
-      );
+          HeaderKeys.Algorithm,
+          key.get(KeyKeys.Algorithm),
+          Attribute.PROTECTED);
       CBORObject o = key.get(KeyKeys.KeyId);
-      if (o != null) signer.addAttribute(
-        HeaderKeys.KID,
-        o,
-        Attribute.UNPROTECTED
-      );
+      if (o != null)
+        signer.addAttribute(
+            HeaderKeys.KID,
+            o,
+            Attribute.UNPROTECTED);
 
       msg.AddSigner(signer);
     }
@@ -142,10 +140,9 @@ public class SignWikiTest extends TestBase {
   }
 
   public static boolean MultiValidateSignedMessage(
-    byte[] message,
-    KeySet keys,
-    boolean needAllToPass
-  ) {
+      byte[] message,
+      KeySet keys,
+      boolean needAllToPass) {
     try {
       // Decode the message
       SignCOSEObject msg = (SignCOSEObject) COSEObject.DecodeFromBytes(message);
@@ -171,27 +168,29 @@ public class SignWikiTest extends TestBase {
           // If the key has an algorithm, it must match the one used in the signature
 
           CBORObject keyAlg = k.get(KeyKeys.Algorithm);
-          if ((keyAlg != null) && !keyAlg.equals(alg)) continue;
+          if ((keyAlg != null) && !keyAlg.equals(alg))
+            continue;
 
           // If the key has a key_ops field, then it must allow signature verification
 
           CBORObject ops = k.get(KeyKeys.Key_Ops);
           if (ops != null) {
             if (ops.getType() == CBORType.Integer) {
-              if (ops.AsInt32() != 2) continue;
+              if (ops.AsInt32() != 2)
+                continue;
             } else if (ops.getType() == CBORType.Array) {
               boolean found = false;
               for (int i = 0; i < ops.size(); i++) {
-                if (
-                  (ops.get(i).getType() == CBORType.Integer) &&
-                  (ops.get(i).AsInt32() == 2)
-                ) {
+                if ((ops.get(i).getType() == CBORType.Integer) &&
+                    (ops.get(i).AsInt32() == 2)) {
                   found = true;
                   break;
                 }
               }
-              if (!found) continue;
-            } else continue;
+              if (!found)
+                continue;
+            } else
+              continue;
           }
 
           // Compare the key ids and divide into two lists
@@ -205,7 +204,8 @@ public class SignWikiTest extends TestBase {
               // In which case this line should be removed
               keysWithoutKid.add(k);
             }
-          } else keysWithoutKid.add(k);
+          } else
+            keysWithoutKid.add(k);
         }
 
         // Check kid matches first as the list should be short
@@ -241,8 +241,7 @@ public class SignWikiTest extends TestBase {
               }
             } catch (CoseException e) {
               System.out.println(
-                "This should most likely be handled or logged"
-              );
+                  "This should most likely be handled or logged");
             }
             s.clearKey();
           }
@@ -251,10 +250,12 @@ public class SignWikiTest extends TestBase {
         // If we need all signatures to validate then we can return failure
 
         if (needAllToPass) {
-          if (!fSignerValidates) return false;
+          if (!fSignerValidates)
+            return false;
         }
         // If we need only one to pass then we can return success
-        else if (fSignerValidates) return true;
+        else if (fSignerValidates)
+          return true;
       }
     } catch (CoseException e) {
       return false;

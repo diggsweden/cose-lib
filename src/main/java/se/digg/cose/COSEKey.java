@@ -61,9 +61,9 @@ public class COSEKey {
   }
 
   public COSEKey(CBORObject keyData) throws CoseException {
-    if (keyData.getType() != CBORType.Map) throw new CoseException(
-      "Key data is malformed"
-    );
+    if (keyData.getType() != CBORType.Map)
+      throw new CoseException(
+          "Key data is malformed");
 
     keyMap = keyData;
     CheckKeyState();
@@ -72,7 +72,7 @@ public class COSEKey {
   /**
    * Create a COSEKey object from Java Public/Private keys.
    *
-   * @param pubKey  - public key to use - may be null
+   * @param pubKey - public key to use - may be null
    * @param privKey - private key to use - may be null
    * @throws CoseException Internal COSE Exception
    */
@@ -81,46 +81,45 @@ public class COSEKey {
 
     if (pubKey != null) {
       ArrayList<ASN1.TagValue> spki = ASN1.DecodeSubjectPublicKeyInfo(
-        pubKey.getEncoded()
-      );
+          pubKey.getEncoded());
       ArrayList<ASN1.TagValue> alg = spki.get(0).list;
       if (Arrays.equals(alg.get(0).value, ASN1.oid_ecPublicKey)) {
         byte[] oid = (byte[]) alg.get(1).value;
-        if (oid == null) throw new CoseException("Invalid SPKI structure");
+        if (oid == null)
+          throw new CoseException("Invalid SPKI structure");
         // EC2 Key
         keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_EC2);
-        if (Arrays.equals(oid, ASN1.Oid_secp256r1)) keyMap.Add(
-          KeyKeys.EC2_Curve.AsCBOR(),
-          KeyKeys.EC2_P256
-        );
-        else if (Arrays.equals(oid, ASN1.Oid_secp384r1)) keyMap.Add(
-          KeyKeys.EC2_Curve.AsCBOR(),
-          KeyKeys.EC2_P384
-        );
-        else if (Arrays.equals(oid, ASN1.Oid_secp521r1)) keyMap.Add(
-          KeyKeys.EC2_Curve.AsCBOR(),
-          KeyKeys.EC2_P521
-        );
-        else throw new CoseException("Unsupported curve");
+        if (Arrays.equals(oid, ASN1.Oid_secp256r1))
+          keyMap.Add(
+              KeyKeys.EC2_Curve.AsCBOR(),
+              KeyKeys.EC2_P256);
+        else if (Arrays.equals(oid, ASN1.Oid_secp384r1))
+          keyMap.Add(
+              KeyKeys.EC2_Curve.AsCBOR(),
+              KeyKeys.EC2_P384);
+        else if (Arrays.equals(oid, ASN1.Oid_secp521r1))
+          keyMap.Add(
+              KeyKeys.EC2_Curve.AsCBOR(),
+              KeyKeys.EC2_P521);
+        else
+          throw new CoseException("Unsupported curve");
 
         byte[] keyData = (byte[]) spki.get(1).value;
         if (keyData[1] == 2 || keyData[1] == 3) {
           keyMap.Add(
-            KeyKeys.EC2_X.AsCBOR(),
-            Arrays.copyOfRange(keyData, 2, keyData.length)
-          );
+              KeyKeys.EC2_X.AsCBOR(),
+              Arrays.copyOfRange(keyData, 2, keyData.length));
           keyMap.Add(KeyKeys.EC2_Y.AsCBOR(), keyData[1] != 2);
         } else if (keyData[1] == 4) {
           int keyLength = (keyData.length - 2) / 2;
           keyMap.Add(
-            KeyKeys.EC2_X.AsCBOR(),
-            Arrays.copyOfRange(keyData, 2, 2 + keyLength)
-          );
+              KeyKeys.EC2_X.AsCBOR(),
+              Arrays.copyOfRange(keyData, 2, 2 + keyLength));
           keyMap.Add(
-            KeyKeys.EC2_Y.AsCBOR(),
-            Arrays.copyOfRange(keyData, 2 + keyLength, keyData.length)
-          );
-        } else throw new CoseException("Invalid key data");
+              KeyKeys.EC2_Y.AsCBOR(),
+              Arrays.copyOfRange(keyData, 2 + keyLength, keyData.length));
+        } else
+          throw new CoseException("Invalid key data");
       } else if (Arrays.equals(alg.get(0).value, ASN1.Oid_rsaEncryption)) {
         ASN1.TagValue compound = ASN1.DecodeCompound(1, spki.get(1).value);
         if (compound.list == null || compound.list.size() != 2) {
@@ -139,36 +138,38 @@ public class COSEKey {
         keyMap.Add(KeyKeys.RSA_E.AsCBOR(), e.value);
       } else if (ASN1.isEdXOid(alg.get(0).value)) {
         byte[] oid = (byte[]) alg.get(0).value;
-        if (oid == null) throw new CoseException("Invalid SPKI structure");
+        if (oid == null)
+          throw new CoseException("Invalid SPKI structure");
 
         // OKP Key
         keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_OKP);
         keyMap.Add(KeyKeys.Algorithm.AsCBOR(), AlgorithmID.EDDSA.AsCBOR());
-        if (Arrays.equals(oid, ASN1.Oid_X25519)) keyMap.Add(
-          KeyKeys.OKP_Curve.AsCBOR(),
-          KeyKeys.OKP_X25519
-        );
-        else if (Arrays.equals(oid, ASN1.Oid_X448)) keyMap.Add(
-          KeyKeys.OKP_Curve.AsCBOR(),
-          KeyKeys.OKP_X448
-        );
-        else if (Arrays.equals(oid, ASN1.Oid_Ed25519)) keyMap.Add(
-          KeyKeys.OKP_Curve.AsCBOR(),
-          KeyKeys.OKP_Ed25519
-        );
-        else if (Arrays.equals(oid, ASN1.Oid_Ed448)) keyMap.Add(
-          KeyKeys.OKP_Curve.AsCBOR(),
-          KeyKeys.OKP_Ed448
-        );
-        else throw new CoseException("Unsupported curve");
+        if (Arrays.equals(oid, ASN1.Oid_X25519))
+          keyMap.Add(
+              KeyKeys.OKP_Curve.AsCBOR(),
+              KeyKeys.OKP_X25519);
+        else if (Arrays.equals(oid, ASN1.Oid_X448))
+          keyMap.Add(
+              KeyKeys.OKP_Curve.AsCBOR(),
+              KeyKeys.OKP_X448);
+        else if (Arrays.equals(oid, ASN1.Oid_Ed25519))
+          keyMap.Add(
+              KeyKeys.OKP_Curve.AsCBOR(),
+              KeyKeys.OKP_Ed25519);
+        else if (Arrays.equals(oid, ASN1.Oid_Ed448))
+          keyMap.Add(
+              KeyKeys.OKP_Curve.AsCBOR(),
+              KeyKeys.OKP_Ed448);
+        else
+          throw new CoseException("Unsupported curve");
 
         byte[] keyData = (byte[]) spki.get(1).value;
         if (keyData[0] == 0) {
           keyMap.Add(
-            KeyKeys.OKP_X.AsCBOR(),
-            Arrays.copyOfRange(keyData, 1, keyData.length)
-          );
-        } else throw new CoseException("Invalid key data");
+              KeyKeys.OKP_X.AsCBOR(),
+              Arrays.copyOfRange(keyData, 1, keyData.length));
+        } else
+          throw new CoseException("Invalid key data");
       } else {
         throw new CoseException("Unsupported Algorithm");
       }
@@ -178,32 +179,33 @@ public class COSEKey {
 
     if (privKey != null) {
       ArrayList<ASN1.TagValue> pkl = ASN1.DecodePKCS8Structure(
-        privKey.getEncoded()
-      );
-      if (pkl.get(0).tag != 2) throw new CoseException(
-        "Invalid PKCS8 structure"
-      );
+          privKey.getEncoded());
+      if (pkl.get(0).tag != 2)
+        throw new CoseException(
+            "Invalid PKCS8 structure");
       ArrayList<ASN1.TagValue> alg = pkl.get(1).list;
 
       if (Arrays.equals(alg.get(0).value, ASN1.oid_ecPublicKey)) {
         byte[] oid = (byte[]) alg.get(1).value;
-        if (oid == null) throw new CoseException("Invalid PKCS8 structure");
+        if (oid == null)
+          throw new CoseException("Invalid PKCS8 structure");
         // EC2 Key
         if (!keyMap.ContainsKey(KeyKeys.KeyType.AsCBOR())) {
           keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_EC2);
-          if (Arrays.equals(oid, ASN1.Oid_secp256r1)) keyMap.Add(
-            KeyKeys.EC2_Curve.AsCBOR(),
-            KeyKeys.EC2_P256
-          );
-          else if (Arrays.equals(oid, ASN1.Oid_secp384r1)) keyMap.Add(
-            KeyKeys.EC2_Curve.AsCBOR(),
-            KeyKeys.EC2_P384
-          );
-          else if (Arrays.equals(oid, ASN1.Oid_secp521r1)) keyMap.Add(
-            KeyKeys.EC2_Curve.AsCBOR(),
-            KeyKeys.EC2_P521
-          );
-          else throw new CoseException("Unsupported curve");
+          if (Arrays.equals(oid, ASN1.Oid_secp256r1))
+            keyMap.Add(
+                KeyKeys.EC2_Curve.AsCBOR(),
+                KeyKeys.EC2_P256);
+          else if (Arrays.equals(oid, ASN1.Oid_secp384r1))
+            keyMap.Add(
+                KeyKeys.EC2_Curve.AsCBOR(),
+                KeyKeys.EC2_P384);
+          else if (Arrays.equals(oid, ASN1.Oid_secp521r1))
+            keyMap.Add(
+                KeyKeys.EC2_Curve.AsCBOR(),
+                KeyKeys.EC2_P521);
+          else
+            throw new CoseException("Unsupported curve");
         } else {
           if (!this.get(KeyKeys.KeyType).equals(KeyKeys.KeyType_EC2)) {
             throw new CoseException("Public/Private key don't match");
@@ -211,9 +213,9 @@ public class COSEKey {
         }
 
         ArrayList<ASN1.TagValue> pkdl = ASN1.DecodePKCS8EC(pkl);
-        if (pkdl.get(1).tag != 4) throw new CoseException(
-          "Invalid PKCS8 structure"
-        );
+        if (pkdl.get(1).tag != 4)
+          throw new CoseException(
+              "Invalid PKCS8 structure");
         byte[] keyData = pkdl.get(1).value;
         keyMap.Add(KeyKeys.EC2_D.AsCBOR(), keyData);
       } else if (Arrays.equals(alg.get(0).value, ASN1.Oid_rsaEncryption)) {
@@ -236,27 +238,29 @@ public class COSEKey {
         // todo multi prime keys
       } else if (ASN1.isEdXOid(alg.get(0).value)) {
         byte[] oid = (byte[]) alg.get(0).value;
-        if (oid == null) throw new CoseException("Invalid PKCS8 structure");
+        if (oid == null)
+          throw new CoseException("Invalid PKCS8 structure");
         // OKP Key
         if (!keyMap.ContainsKey(KeyKeys.KeyType.AsCBOR())) {
           keyMap.Add(KeyKeys.Algorithm.AsCBOR(), AlgorithmID.EDDSA.AsCBOR());
-          if (Arrays.equals(oid, ASN1.Oid_X25519)) keyMap.Add(
-            KeyKeys.OKP_Curve.AsCBOR(),
-            KeyKeys.OKP_X25519
-          );
-          else if (Arrays.equals(oid, ASN1.Oid_X448)) keyMap.Add(
-            KeyKeys.OKP_Curve.AsCBOR(),
-            KeyKeys.OKP_X448
-          );
-          else if (Arrays.equals(oid, ASN1.Oid_Ed25519)) keyMap.Add(
-            KeyKeys.OKP_Curve.AsCBOR(),
-            KeyKeys.OKP_Ed25519
-          );
-          else if (Arrays.equals(oid, ASN1.Oid_Ed448)) keyMap.Add(
-            KeyKeys.OKP_Curve.AsCBOR(),
-            KeyKeys.OKP_Ed448
-          );
-          else throw new CoseException("Unsupported curve");
+          if (Arrays.equals(oid, ASN1.Oid_X25519))
+            keyMap.Add(
+                KeyKeys.OKP_Curve.AsCBOR(),
+                KeyKeys.OKP_X25519);
+          else if (Arrays.equals(oid, ASN1.Oid_X448))
+            keyMap.Add(
+                KeyKeys.OKP_Curve.AsCBOR(),
+                KeyKeys.OKP_X448);
+          else if (Arrays.equals(oid, ASN1.Oid_Ed25519))
+            keyMap.Add(
+                KeyKeys.OKP_Curve.AsCBOR(),
+                KeyKeys.OKP_Ed25519);
+          else if (Arrays.equals(oid, ASN1.Oid_Ed448))
+            keyMap.Add(
+                KeyKeys.OKP_Curve.AsCBOR(),
+                KeyKeys.OKP_Ed448);
+          else
+            throw new CoseException("Unsupported curve");
         } else {
           if (!this.get(KeyKeys.KeyType).equals(KeyKeys.KeyType_OKP)) {
             throw new CoseException("Public/Private key don't match");
@@ -264,9 +268,9 @@ public class COSEKey {
         }
 
         ArrayList<ASN1.TagValue> pkdl = ASN1.DecodePKCS8EC(pkl);
-        if (pkdl.get(0).tag != 4) throw new CoseException(
-          "Invalid PKCS8 structure"
-        );
+        if (pkdl.get(0).tag != 4)
+          throw new CoseException(
+              "Invalid PKCS8 structure");
         byte[] keyData = (byte[]) pkdl.get(0).value;
         keyMap.Add(KeyKeys.OKP_D.AsCBOR(), keyData);
       } else {
@@ -290,23 +294,18 @@ public class COSEKey {
   }
 
   public CBORObject get(CBORObject keyValue) throws CoseException {
-    if (
-      (keyValue.getType() != CBORType.Integer) &&
-      (keyValue.getType() != CBORType.TextString)
-    ) throw new CoseException("keyValue type is incorrect");
+    if ((keyValue.getType() != CBORType.Integer) &&
+        (keyValue.getType() != CBORType.TextString))
+      throw new CoseException("keyValue type is incorrect");
     return keyMap.get(keyValue);
   }
 
   /**
-   * Compares the key's assigned algorithm with the provided value, indicating if
-   * the values are the
+   * Compares the key's assigned algorithm with the provided value, indicating if the values are the
    * same.
    *
-   * @param algorithmId
-   *                    the algorithm to compare or {@code null} to check for no
-   *                    assignment.
-   * @return {@code true} if the current key has the provided algorithm assigned,
-   *         or {@code false}
+   * @param algorithmId the algorithm to compare or {@code null} to check for no assignment.
+   * @return {@code true} if the current key has the provided algorithm assigned, or {@code false}
    *         otherwise
    */
   public boolean HasAlgorithmID(AlgorithmID algorithmId) {
@@ -323,15 +322,11 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned identifier with the provided value, indicating if
-   * the values are
+   * Compares the key's assigned identifier with the provided value, indicating if the values are
    * the same.
    *
-   * @param id
-   *           the identifier to compare or {@code null} to check for no
-   *           assignment.
-   * @return {@code true} if the current key has the provided identifier assigned,
-   *         or {@code false}
+   * @param id the identifier to compare or {@code null} to check for no assignment.
+   * @return {@code true} if the current key has the provided identifier assigned, or {@code false}
    *         otherwise
    */
   @Deprecated
@@ -353,15 +348,11 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned key type with the provided value, indicating if
-   * the values are the
+   * Compares the key's assigned key type with the provided value, indicating if the values are the
    * same.
    *
-   * @param keyTypeObj
-   *                   the key type to compare or {@code null} to check for no
-   *                   assignment.
-   * @return {@code true} if the current key has the provided identifier assigned,
-   *         or {@code false}
+   * @param keyTypeObj the key type to compare or {@code null} to check for no assignment.
+   * @return {@code true} if the current key has the provided identifier assigned, or {@code false}
    *         otherwise
    */
   public boolean HasKeyType(CBORObject keyTypeObj) {
@@ -377,16 +368,12 @@ public class COSEKey {
   }
 
   /**
-   * Compares the key's assigned key operations with the provided value,
-   * indicating if the provided
+   * Compares the key's assigned key operations with the provided value, indicating if the provided
    * value was found in the key operation values assigned to the key.
    *
-   * @param that
-   *             the integer operation value to attempt to find in the values
-   *             provided by the key or
-   *             {@code null} to check for no assignment.
-   * @return {@code true} if the current key has the provided value assigned, or
-   *         {@code false}
+   * @param that the integer operation value to attempt to find in the values provided by the key or
+   *        {@code null} to check for no assignment.
+   * @return {@code true} if the current key has the provided value assigned, or {@code false}
    *         otherwise
    */
   public boolean HasKeyOp(Integer that) {
@@ -402,10 +389,8 @@ public class COSEKey {
         }
       } else if (thisObj.getType() == CBORType.Array) {
         for (int i = 0; i < thisObj.size(); i++) {
-          if (
-            (thisObj.get(i).getType() == CBORType.Integer) &&
-            (thisObj.get(i).AsInt32() == that)
-          ) {
+          if ((thisObj.get(i).getType() == CBORType.Integer) &&
+              (thisObj.get(i).AsInt32() == that)) {
             result = true;
             break;
           }
@@ -420,22 +405,21 @@ public class COSEKey {
 
     // Must have a key type
     val = get(KeyKeys.KeyType);
-    if (
-      (val == null) || (val.getType() != CBORType.Integer)
-    ) throw new CoseException("Missing or incorrect key type field");
+    if ((val == null) || (val.getType() != CBORType.Integer))
+      throw new CoseException("Missing or incorrect key type field");
 
     if (val.equals(KeyKeys.KeyType_Octet)) {
       val = get(KeyKeys.Octet_K);
-      if (
-        (val == null) || (val.getType() != CBORType.ByteString)
-      ) throw new CoseException("Malformed key structure");
+      if ((val == null) || (val.getType() != CBORType.ByteString))
+        throw new CoseException("Malformed key structure");
     } else if (val.equals(KeyKeys.KeyType_EC2)) {
       CheckECKey();
     } else if (val.equals(KeyKeys.KeyType_OKP)) {
       CheckOkpKey();
     } else if (val.equals(KeyKeys.KeyType_RSA)) {
       CheckRsaKey();
-    } else throw new CoseException("Unsupported key type");
+    } else
+      throw new CoseException("Unsupported key type");
   }
 
   private void CheckECKey() throws CoseException {
@@ -460,24 +444,22 @@ public class COSEKey {
     try {
       val = this.get(KeyKeys.EC2_D);
       if (val != null) {
-        if (val.getType() != CBORType.ByteString) throw new CoseException(
-          "Malformed key structure"
-        );
+        if (val.getType() != CBORType.ByteString)
+          throw new CoseException(
+              "Malformed key structure");
         try {
           byte[] privateBytes = ASN1.EncodeEcPrivateKey(
-            oid,
-            val.GetByteString(),
-            null
-          );
+              oid,
+              val.GetByteString(),
+              null);
           byte[] pkcs8 = ASN1.EncodePKCS8(
-            ASN1.AlgorithmIdentifier(ASN1.oid_ecPublicKey, oid),
-            privateBytes,
-            null
-          );
+              ASN1.AlgorithmIdentifier(ASN1.oid_ecPublicKey, oid),
+              privateBytes,
+              null);
 
           KeyFactory fact = cryptoContext.getProvider() != null
-            ? KeyFactory.getInstance("EC", cryptoContext.getProvider())
-            : KeyFactory.getInstance("EC");
+              ? KeyFactory.getInstance("EC", cryptoContext.getProvider())
+              : KeyFactory.getInstance("EC");
           KeySpec keyspec = new PKCS8EncodedKeySpec(pkcs8);
 
           privateKey = fact.generatePrivate(keyspec);
@@ -490,24 +472,25 @@ public class COSEKey {
 
       val = this.get(KeyKeys.EC2_X);
       if (val == null) {
-        if (privateKey == null) throw new CoseException(
-          "Malformed key structure"
-        );
-        else needPublic = true;
-      } else if (val.getType() != CBORType.ByteString) throw new CoseException(
-        "Malformed key structure"
-      );
+        if (privateKey == null)
+          throw new CoseException(
+              "Malformed key structure");
+        else
+          needPublic = true;
+      } else if (val.getType() != CBORType.ByteString)
+        throw new CoseException(
+            "Malformed key structure");
 
       val = this.get(KeyKeys.EC2_Y);
       if (val == null) {
-        if (privateKey == null) throw new CoseException(
-          "Malformed key structure"
-        );
-        else needPublic = true;
-      } else if (
-        (val.getType() != CBORType.ByteString) &&
-        (val.getType() != CBORType.Boolean)
-      ) throw new CoseException("Malformed key structure");
+        if (privateKey == null)
+          throw new CoseException(
+              "Malformed key structure");
+        else
+          needPublic = true;
+      } else if ((val.getType() != CBORType.ByteString) &&
+          (val.getType() != CBORType.Boolean))
+        throw new CoseException("Malformed key structure");
 
       if (privateKey != null && needPublic) {
         privateKey.getEncoded();
@@ -526,7 +509,7 @@ public class COSEKey {
           rgbKey = new byte[X.length + 1];
           System.arraycopy(X, 0, rgbKey, 1, X.length);
           rgbKey[0] = (byte) (2 +
-            (this.get(KeyKeys.EC2_Y).AsBoolean() ? 1 : 0));
+              (this.get(KeyKeys.EC2_Y).AsBoolean() ? 1 : 0));
         } else {
           byte[] Y = this.get(KeyKeys.EC2_Y).GetByteString();
           rgbKey = new byte[X.length + Y.length + 1];
@@ -536,14 +519,13 @@ public class COSEKey {
         }
 
         spki = ASN1.EncodeSubjectPublicKeyInfo(
-          ASN1.AlgorithmIdentifier(ASN1.oid_ecPublicKey, oid),
-          rgbKey
-        );
+            ASN1.AlgorithmIdentifier(ASN1.oid_ecPublicKey, oid),
+            rgbKey);
       }
 
       KeyFactory fact = cryptoContext.getProvider() != null
-        ? KeyFactory.getInstance("EC", cryptoContext.getProvider())
-        : KeyFactory.getInstance("EC");
+          ? KeyFactory.getInstance("EC", cryptoContext.getProvider())
+          : KeyFactory.getInstance("EC");
       KeySpec keyspec = new X509EncodedKeySpec(spki);
       publicKey = fact.generatePublic(keyspec);
     } catch (NoSuchAlgorithmException e) {
@@ -552,107 +534,84 @@ public class COSEKey {
       throw new CoseException("Internal error on SPKI", e);
     }
     /*
-     * catch (NoSuchProviderException e) {
-     * throw new CoseException("BC not found");
-     * }
+     * catch (NoSuchProviderException e) { throw new CoseException("BC not found"); }
      */
     /*
-     * X9ECParameters curve = GetCurve();
-     * ECDomainParameters params = new ECDomainParameters(curve.getCurve(),
-     * curve.getG(), curve.getN(), curve.getH());
-     * boolean needPublic = false;
-     * ECPrivateKeyParameters privKey = null;
-     * ECPublicKeyParameters pubKey = null;
-     * CBORObject val;
+     * X9ECParameters curve = GetCurve(); ECDomainParameters params = new
+     * ECDomainParameters(curve.getCurve(), curve.getG(), curve.getN(), curve.getH()); boolean
+     * needPublic = false; ECPrivateKeyParameters privKey = null; ECPublicKeyParameters pubKey =
+     * null; CBORObject val;
      *
-     * val = COSEKey.this.get(KeyKeys.EC2_D);
-     * if (val != null) {
-     * if (val.getType() != CBORType.ByteString) throw new
-     * CoseException("Malformed key structure");
-     * privKey = new ECPrivateKeyParameters(new BigInteger(1, val.GetByteString()),
-     * params);
-     * }
+     * val = COSEKey.this.get(KeyKeys.EC2_D); if (val != null) { if (val.getType() !=
+     * CBORType.ByteString) throw new CoseException("Malformed key structure"); privKey = new
+     * ECPrivateKeyParameters(new BigInteger(1, val.GetByteString()), params); }
      *
-     * val = COSEKey.this.get(KeyKeys.EC2_X);
-     * if (val == null) {
-     * if (privKey == null) throw new CoseException("Malformed key structure");
-     * else needPublic = true;
-     * }
-     * else if (val.getType() != CBORType.ByteString) throw new
+     * val = COSEKey.this.get(KeyKeys.EC2_X); if (val == null) { if (privKey == null) throw new
+     * CoseException("Malformed key structure"); else needPublic = true; } else if (val.getType() !=
+     * CBORType.ByteString) throw new CoseException("Malformed key structure");
+     *
+     * val = COSEKey.this.get(KeyKeys.EC2_Y); if (val == null) { if (privKey == null) throw new
+     * CoseException("Malformed key structure"); else needPublic = true; } else if ((val.getType()
+     * != CBORType.ByteString) && (val.getType() != CBORType.Boolean)) throw new
      * CoseException("Malformed key structure");
      *
-     * val = COSEKey.this.get(KeyKeys.EC2_Y);
-     * if (val == null) {
-     * if (privKey == null) throw new CoseException("Malformed key structure");
-     * else needPublic = true;
-     * }
-     * else if ((val.getType() != CBORType.ByteString) && (val.getType() !=
-     * CBORType.Boolean)) throw new CoseException("Malformed key structure");
-     *
-     * if (privKey != null && needPublic) {
-     * // todo: calculate (and populate) public from private
-     * pubKey = new ECPublicKeyParameters(params.getG().multiply(privKey.getD()),
-     * params);
-     * byte[] rgbX = pubKey.getQ().normalize().getXCoord().getEncoded();
-     * byte[] rgbY = pubKey.getQ().normalize().getYCoord().getEncoded();
-     * add(KeyKeys.EC2_X, CBORObject.FromByteArray(rgbX));
-     * add(KeyKeys.EC2_Y, CBORObject.FromByteArray(rgbY));
-     * } else {
-     * // todo: validate public on curve
-     * }
+     * if (privKey != null && needPublic) { // todo: calculate (and populate) public from private
+     * pubKey = new ECPublicKeyParameters(params.getG().multiply(privKey.getD()), params); byte[]
+     * rgbX = pubKey.getQ().normalize().getXCoord().getEncoded(); byte[] rgbY =
+     * pubKey.getQ().normalize().getYCoord().getEncoded(); add(KeyKeys.EC2_X,
+     * CBORObject.FromByteArray(rgbX)); add(KeyKeys.EC2_Y, CBORObject.FromByteArray(rgbY)); } else {
+     * // todo: validate public on curve }
      */
   }
 
   public ECGenParameterSpec GetCurve2() throws CoseException {
-    if (get(KeyKeys.KeyType) != KeyKeys.KeyType_EC2) throw new CoseException(
-      "Not an EC2 key"
-    );
+    if (get(KeyKeys.KeyType) != KeyKeys.KeyType_EC2)
+      throw new CoseException(
+          "Not an EC2 key");
     CBORObject cnCurve = get(KeyKeys.EC2_Curve);
 
-    if (cnCurve == KeyKeys.EC2_P256) return new ECGenParameterSpec("secp256r1");
-    if (cnCurve == KeyKeys.EC2_P384) return new ECGenParameterSpec("secp384r1");
-    if (cnCurve == KeyKeys.EC2_P521) return new ECGenParameterSpec("secp521r1");
+    if (cnCurve == KeyKeys.EC2_P256)
+      return new ECGenParameterSpec("secp256r1");
+    if (cnCurve == KeyKeys.EC2_P384)
+      return new ECGenParameterSpec("secp384r1");
+    if (cnCurve == KeyKeys.EC2_P521)
+      return new ECGenParameterSpec("secp521r1");
     throw new CoseException("Unsupported curve " + cnCurve);
   }
 
   public static COSEKey generateKey(AlgorithmID algorithm)
-    throws CoseException {
+      throws CoseException {
     return generateKey(algorithm, null);
   }
 
   /**
-   * Generate a random key pair based on the given algorithm.
-   * Some algorithm can take a parameter. For example, the RSA_PSS family of
-   * algorithm
-   * can take the RSA key size as a parameter.
+   * Generate a random key pair based on the given algorithm. Some algorithm can take a parameter.
+   * For example, the RSA_PSS family of algorithm can take the RSA key size as a parameter.
    *
-   * @param algorithm  the algorithm to generate a key pair for
+   * @param algorithm the algorithm to generate a key pair for
    * @param parameters optional parameters to the key pair generator
    * @return the generated Key Pair
    * @throws CoseException
    */
   public static COSEKey generateKey(AlgorithmID algorithm, String parameters)
-    throws CoseException {
+      throws CoseException {
     return generateKey(algorithm, parameters, null);
   }
 
   /**
-   * Generate a random key pair based on the given algorithm.
-   * Some algorithm can take a parameter. For example, the RSA_PSS family of
-   * algorithm
-   * can take the RSA key size as a parameter.
+   * Generate a random key pair based on the given algorithm. Some algorithm can take a parameter.
+   * For example, the RSA_PSS family of algorithm can take the RSA key size as a parameter.
    *
-   * @param algorithm  the algorithm to generate a key pair for
+   * @param algorithm the algorithm to generate a key pair for
    * @param parameters optional parameters to the key pair generator
-   * @param provider   JCA provider to use
+   * @param provider JCA provider to use
    * @return the generated Key Pair
    * @throws CoseException
    */
   public static COSEKey generateKey(
-    AlgorithmID algorithm,
-    String parameters,
-    Provider provider
-  ) throws CoseException {
+      AlgorithmID algorithm,
+      String parameters,
+      Provider provider) throws CoseException {
     COSEKey returnThis;
     switch (algorithm) {
       case ECDSA_256:
@@ -674,7 +633,8 @@ public class COSEKey {
         if (parameters != null) {
           try {
             keySize = Integer.parseInt(parameters);
-          } catch (NumberFormatException ignored) {}
+          } catch (NumberFormatException ignored) {
+          }
         }
         returnThis = generateRSAKey(keySize, provider);
         break;
@@ -691,7 +651,7 @@ public class COSEKey {
   }
 
   public static COSEKey generateKey(CBORObject curve, Provider provider)
-    throws CoseException {
+      throws CoseException {
     String curveName;
     COSEKey returnThis;
 
@@ -726,10 +686,9 @@ public class COSEKey {
   }
 
   private static COSEKey generateECDHKey(
-    String curveName,
-    CBORObject curve,
-    Provider provider
-  ) throws CoseException {
+      String curveName,
+      CBORObject curve,
+      Provider provider) throws CoseException {
     try {
       int curveSize;
 
@@ -752,8 +711,8 @@ public class COSEKey {
 
       ECGenParameterSpec paramSpec = new ECGenParameterSpec(curveName);
       KeyPairGenerator gen = provider != null
-        ? KeyPairGenerator.getInstance("EC", provider)
-        : KeyPairGenerator.getInstance("EC");
+          ? KeyPairGenerator.getInstance("EC", provider)
+          : KeyPairGenerator.getInstance("EC");
       gen.initialize(paramSpec);
 
       KeyPair keyPair = gen.genKeyPair();
@@ -763,9 +722,8 @@ public class COSEKey {
       byte[] rgbX = ArrayFromBigNum(pubPoint.getAffineX(), curveSize);
       byte[] rgbY = ArrayFromBigNum(pubPoint.getAffineY(), curveSize);
       byte[] rgbD = ArrayFromBigNum(
-        ((ECPrivateKey) keyPair.getPrivate()).getS(),
-        curveSize
-      );
+          ((ECPrivateKey) keyPair.getPrivate()).getS(),
+          curveSize);
 
       COSEKey key = new COSEKey();
 
@@ -788,7 +746,8 @@ public class COSEKey {
   private static byte[] ArrayFromBigNum(BigInteger n, int curveSize) {
     byte[] rgb = new byte[(curveSize + 7) / 8];
     byte[] rgb2 = n.toByteArray();
-    if (rgb.length == rgb2.length) return rgb2;
+    if (rgb.length == rgb2.length)
+      return rgb2;
     if (rgb2.length > rgb.length) {
       System.arraycopy(rgb2, rgb2.length - rgb.length, rgb, 0, rgb.length);
     } else {
@@ -798,10 +757,9 @@ public class COSEKey {
   }
 
   private static COSEKey generateECDSAKey(
-    String curveName,
-    CBORObject curve,
-    Provider provider
-  ) throws CoseException {
+      String curveName,
+      CBORObject curve,
+      Provider provider) throws CoseException {
     try {
       int curveSize;
 
@@ -824,8 +782,8 @@ public class COSEKey {
 
       ECGenParameterSpec paramSpec = new ECGenParameterSpec(curveName);
       KeyPairGenerator gen = provider != null
-        ? KeyPairGenerator.getInstance("EC", provider)
-        : KeyPairGenerator.getInstance("EC");
+          ? KeyPairGenerator.getInstance("EC", provider)
+          : KeyPairGenerator.getInstance("EC");
       gen.initialize(paramSpec);
 
       KeyPair keyPair = gen.genKeyPair();
@@ -835,9 +793,8 @@ public class COSEKey {
       byte[] rgbX = ArrayFromBigNum(pubPoint.getAffineX(), curveSize);
       byte[] rgbY = ArrayFromBigNum(pubPoint.getAffineY(), curveSize);
       byte[] rgbD = ArrayFromBigNum(
-        ((ECPrivateKey) keyPair.getPrivate()).getS(),
-        curveSize
-      );
+          ((ECPrivateKey) keyPair.getPrivate()).getS(),
+          curveSize);
 
       COSEKey key = new COSEKey();
 
@@ -858,9 +815,9 @@ public class COSEKey {
   }
 
   /**
-   * Create a COSEKey object with only the public fields. Filters out the
-   * private key fields but leaves all positive number labels and text labels
-   * along with negative number labels that are public fields.
+   * Create a COSEKey object with only the public fields. Filters out the private key fields but
+   * leaves all positive number labels and text labels along with negative number labels that are
+   * public fields.
    *
    * @return public version of the key
    */
@@ -943,9 +900,8 @@ public class COSEKey {
   /**
    * Return the user data field.
    *
-   * The user data object allows for an application to associate a piece of
-   * arbitrary
-   * data with a key and retrieve it later.
+   * The user data object allows for an application to associate a piece of arbitrary data with a
+   * key and retrieve it later.
    *
    * @return the user data object
    */
@@ -956,9 +912,8 @@ public class COSEKey {
   /**
    * Set the user data field.
    *
-   * The user data field allows for an application to associate a piece of
-   * arbitrary
-   * data with a key and retrieve it later.
+   * The user data field allows for an application to associate a piece of arbitrary data with a key
+   * and retrieve it later.
    *
    * @param newData Data field to be saved.
    */
@@ -992,20 +947,19 @@ public class COSEKey {
     try {
       val = this.get(KeyKeys.OKP_D);
       if (val != null) {
-        if (val.getType() != CBORType.ByteString) throw new CoseException(
-          "Malformed key structure"
-        );
+        if (val.getType() != CBORType.ByteString)
+          throw new CoseException(
+              "Malformed key structure");
         try {
           byte[] privateKeyBytes = ASN1.EncodeOctetString(val.GetByteString());
           byte[] pkcs8 = ASN1.EncodePKCS8(
-            ASN1.AlgorithmIdentifier(oid, null),
-            privateKeyBytes,
-            null
-          );
+              ASN1.AlgorithmIdentifier(oid, null),
+              privateKeyBytes,
+              null);
 
           KeyFactory fact = cryptoContext.getProvider() != null
-            ? KeyFactory.getInstance(algName, cryptoContext.getProvider())
-            : KeyFactory.getInstance(algName, "EdDSA");
+              ? KeyFactory.getInstance(algName, cryptoContext.getProvider())
+              : KeyFactory.getInstance(algName, "EdDSA");
           KeySpec keyspec = new PKCS8EncodedKeySpec(pkcs8);
 
           privateKey = fact.generatePrivate(keyspec);
@@ -1018,13 +972,14 @@ public class COSEKey {
 
       val = this.get(KeyKeys.OKP_X);
       if (val == null) {
-        if (privateKey == null) throw new CoseException(
-          "Malformed key structure"
-        );
-        else needPublic = true;
-      } else if (val.getType() != CBORType.ByteString) throw new CoseException(
-        "Malformed key structure"
-      );
+        if (privateKey == null)
+          throw new CoseException(
+              "Malformed key structure");
+        else
+          needPublic = true;
+      } else if (val.getType() != CBORType.ByteString)
+        throw new CoseException(
+            "Malformed key structure");
 
       if (privateKey != null && needPublic) {
         privateKey.getEncoded();
@@ -1037,14 +992,13 @@ public class COSEKey {
         byte[] rgbKey = this.get(KeyKeys.OKP_X).GetByteString();
 
         spki = ASN1.EncodeSubjectPublicKeyInfo(
-          ASN1.AlgorithmIdentifier(oid, null),
-          rgbKey
-        );
+            ASN1.AlgorithmIdentifier(oid, null),
+            rgbKey);
       }
 
       KeyFactory fact = cryptoContext.getProvider() != null
-        ? KeyFactory.getInstance("EdDSA", cryptoContext.getProvider())
-        : KeyFactory.getInstance("EdDSA", "EdDSA");
+          ? KeyFactory.getInstance("EdDSA", cryptoContext.getProvider())
+          : KeyFactory.getInstance("EdDSA", "EdDSA");
       KeySpec keyspec = new X509EncodedKeySpec(spki);
       publicKey = fact.generatePublic(keyspec);
     } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
@@ -1055,10 +1009,9 @@ public class COSEKey {
   }
 
   private static COSEKey generateOkpKey(
-    String curveName,
-    CBORObject curve,
-    Provider provider
-  ) throws CoseException {
+      String curveName,
+      CBORObject curve,
+      Provider provider) throws CoseException {
     try {
       switch (curveName) {
         case "Ed25519":
@@ -1073,8 +1026,8 @@ public class COSEKey {
 
       EdDSAGenParameterSpec paramSpec = new EdDSAGenParameterSpec(curveName);
       KeyPairGenerator gen = provider != null
-        ? KeyPairGenerator.getInstance("EdDSA", provider)
-        : KeyPairGenerator.getInstance("EdDSA", "EdDSA");
+          ? KeyPairGenerator.getInstance("EdDSA", provider)
+          : KeyPairGenerator.getInstance("EdDSA", "EdDSA");
       gen.initialize(paramSpec);
 
       KeyPair keyPair = gen.genKeyPair();
@@ -1108,25 +1061,23 @@ public class COSEKey {
     CBORObject dP = this.get(KeyKeys.RSA_DP); // d mod (p - 1)
     CBORObject dQ = this.get(KeyKeys.RSA_DQ); // d mod (q - 1)
     CBORObject qInv = this.get(KeyKeys.RSA_QI); // CRT coefficient
-    CBORObject other = this.get(KeyKeys.RSA_OTHER); // other prime info, contains map of (ri, di, ti)
+    CBORObject other = this.get(KeyKeys.RSA_OTHER); // other prime info, contains map of (ri, di,
+                                                    // ti)
 
     // Public key
     if (n != null && e != null) {
-      if (
-        n.getType() != CBORType.ByteString || e.getType() != CBORType.ByteString
-      ) {
+      if (n.getType() != CBORType.ByteString || e.getType() != CBORType.ByteString) {
         throw new CoseException("Malformed key structure");
       }
 
       RSAPublicKeySpec spec = new RSAPublicKeySpec(
-        new BigInteger(1, n.GetByteString()),
-        new BigInteger(1, e.GetByteString())
-      );
+          new BigInteger(1, n.GetByteString()),
+          new BigInteger(1, e.GetByteString()));
 
       try {
         KeyFactory factory = cryptoContext.getProvider() != null
-          ? KeyFactory.getInstance("RSA", cryptoContext.getProvider())
-          : KeyFactory.getInstance("RSA");
+            ? KeyFactory.getInstance("RSA", cryptoContext.getProvider())
+            : KeyFactory.getInstance("RSA");
         publicKey = factory.generatePublic(spec);
       } catch (NoSuchAlgorithmException ex) {
         throw new CoseException("No provider for algorithm", ex);
@@ -1136,26 +1087,22 @@ public class COSEKey {
     }
 
     // Private key
-    if (
-      n != null &&
-      e != null &&
-      d != null &&
-      p != null &&
-      q != null &&
-      dP != null &&
-      dQ != null &&
-      qInv != null
-    ) {
-      if (
-        n.getType() != CBORType.ByteString ||
-        e.getType() != CBORType.ByteString ||
-        d.getType() != CBORType.ByteString ||
-        p.getType() != CBORType.ByteString ||
-        q.getType() != CBORType.ByteString ||
-        dP.getType() != CBORType.ByteString ||
-        dQ.getType() != CBORType.ByteString ||
-        qInv.getType() != CBORType.ByteString
-      ) {
+    if (n != null &&
+        e != null &&
+        d != null &&
+        p != null &&
+        q != null &&
+        dP != null &&
+        dQ != null &&
+        qInv != null) {
+      if (n.getType() != CBORType.ByteString ||
+          e.getType() != CBORType.ByteString ||
+          d.getType() != CBORType.ByteString ||
+          p.getType() != CBORType.ByteString ||
+          q.getType() != CBORType.ByteString ||
+          dP.getType() != CBORType.ByteString ||
+          dQ.getType() != CBORType.ByteString ||
+          qInv.getType() != CBORType.ByteString) {
         throw new CoseException("Malformed key structure");
       }
 
@@ -1163,15 +1110,14 @@ public class COSEKey {
       if (other == null) {
         // Single prime private key
         privateKeySpec = new RSAPrivateCrtKeySpec(
-          new BigInteger(1, n.GetByteString()),
-          new BigInteger(1, e.GetByteString()),
-          new BigInteger(1, d.GetByteString()),
-          new BigInteger(1, p.GetByteString()),
-          new BigInteger(1, q.GetByteString()),
-          new BigInteger(1, dP.GetByteString()),
-          new BigInteger(1, dQ.GetByteString()),
-          new BigInteger(1, qInv.GetByteString())
-        );
+            new BigInteger(1, n.GetByteString()),
+            new BigInteger(1, e.GetByteString()),
+            new BigInteger(1, d.GetByteString()),
+            new BigInteger(1, p.GetByteString()),
+            new BigInteger(1, q.GetByteString()),
+            new BigInteger(1, dP.GetByteString()),
+            new BigInteger(1, dQ.GetByteString()),
+            new BigInteger(1, qInv.GetByteString()));
       } else {
         // Multi prime private key
         if (other.getType() != CBORType.Array) {
@@ -1195,38 +1141,34 @@ public class COSEKey {
             throw new CoseException("Malformed key structure");
           }
 
-          if (
-            ri.getType() != CBORType.ByteString ||
-            di.getType() != CBORType.ByteString ||
-            ti.getType() != CBORType.ByteString
-          ) {
+          if (ri.getType() != CBORType.ByteString ||
+              di.getType() != CBORType.ByteString ||
+              ti.getType() != CBORType.ByteString) {
             throw new CoseException("Malformed key structure");
           }
 
           others[i] = new RSAOtherPrimeInfo(
-            new BigInteger(1, ri.GetByteString()),
-            new BigInteger(1, di.GetByteString()),
-            new BigInteger(1, ti.GetByteString())
-          );
+              new BigInteger(1, ri.GetByteString()),
+              new BigInteger(1, di.GetByteString()),
+              new BigInteger(1, ti.GetByteString()));
         }
 
         privateKeySpec = new RSAMultiPrimePrivateCrtKeySpec(
-          new BigInteger(1, n.GetByteString()),
-          new BigInteger(1, e.GetByteString()),
-          new BigInteger(1, d.GetByteString()),
-          new BigInteger(1, p.GetByteString()),
-          new BigInteger(1, q.GetByteString()),
-          new BigInteger(1, dP.GetByteString()),
-          new BigInteger(1, dQ.GetByteString()),
-          new BigInteger(1, qInv.GetByteString()),
-          others
-        );
+            new BigInteger(1, n.GetByteString()),
+            new BigInteger(1, e.GetByteString()),
+            new BigInteger(1, d.GetByteString()),
+            new BigInteger(1, p.GetByteString()),
+            new BigInteger(1, q.GetByteString()),
+            new BigInteger(1, dP.GetByteString()),
+            new BigInteger(1, dQ.GetByteString()),
+            new BigInteger(1, qInv.GetByteString()),
+            others);
       }
 
       try {
         KeyFactory factory = cryptoContext.getProvider() != null
-          ? KeyFactory.getInstance("RSA", cryptoContext.getProvider())
-          : KeyFactory.getInstance("RSA");
+            ? KeyFactory.getInstance("RSA", cryptoContext.getProvider())
+            : KeyFactory.getInstance("RSA");
         privateKey = factory.generatePrivate(privateKeySpec);
       } catch (NoSuchAlgorithmException ex) {
         throw new CoseException("No provider for algorithm", ex);
@@ -1237,11 +1179,11 @@ public class COSEKey {
   }
 
   private static COSEKey generateRSAKey(int keySize, Provider provider)
-    throws CoseException {
+      throws CoseException {
     try {
       KeyPairGenerator gen = provider != null
-        ? KeyPairGenerator.getInstance("RSA", provider)
-        : KeyPairGenerator.getInstance("RSA");
+          ? KeyPairGenerator.getInstance("RSA", provider)
+          : KeyPairGenerator.getInstance("RSA");
       gen.initialize(keySize);
 
       KeyPair keyPair = gen.genKeyPair();
@@ -1252,37 +1194,29 @@ public class COSEKey {
 
       key.add(KeyKeys.KeyType, KeyKeys.KeyType_RSA);
       key.add(
-        KeyKeys.RSA_N,
-        CBORObject.FromByteArray(priv.getModulus().toByteArray())
-      );
+          KeyKeys.RSA_N,
+          CBORObject.FromByteArray(priv.getModulus().toByteArray()));
       key.add(
-        KeyKeys.RSA_E,
-        CBORObject.FromByteArray(priv.getPublicExponent().toByteArray())
-      );
+          KeyKeys.RSA_E,
+          CBORObject.FromByteArray(priv.getPublicExponent().toByteArray()));
       key.add(
-        KeyKeys.RSA_D,
-        CBORObject.FromByteArray(priv.getPrivateExponent().toByteArray())
-      );
+          KeyKeys.RSA_D,
+          CBORObject.FromByteArray(priv.getPrivateExponent().toByteArray()));
       key.add(
-        KeyKeys.RSA_P,
-        CBORObject.FromByteArray(priv.getPrimeP().toByteArray())
-      );
+          KeyKeys.RSA_P,
+          CBORObject.FromByteArray(priv.getPrimeP().toByteArray()));
       key.add(
-        KeyKeys.RSA_Q,
-        CBORObject.FromByteArray(priv.getPrimeQ().toByteArray())
-      );
+          KeyKeys.RSA_Q,
+          CBORObject.FromByteArray(priv.getPrimeQ().toByteArray()));
       key.add(
-        KeyKeys.RSA_DP,
-        CBORObject.FromByteArray(priv.getPrimeExponentP().toByteArray())
-      );
+          KeyKeys.RSA_DP,
+          CBORObject.FromByteArray(priv.getPrimeExponentP().toByteArray()));
       key.add(
-        KeyKeys.RSA_DQ,
-        CBORObject.FromByteArray(priv.getPrimeExponentQ().toByteArray())
-      );
+          KeyKeys.RSA_DQ,
+          CBORObject.FromByteArray(priv.getPrimeExponentQ().toByteArray()));
       key.add(
-        KeyKeys.RSA_QI,
-        CBORObject.FromByteArray(priv.getCrtCoefficient().toByteArray())
-      );
+          KeyKeys.RSA_QI,
+          CBORObject.FromByteArray(priv.getCrtCoefficient().toByteArray()));
 
       key.publicKey = keyPair.getPublic();
       key.privateKey = keyPair.getPrivate();

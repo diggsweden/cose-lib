@@ -22,40 +22,50 @@ public class MAC0COSEObject extends MacCommon {
 
   @Override
   public void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 4) throw new CoseException("Invalid MAC0 structure");
+    if (obj.size() != 4)
+      throw new CoseException("Invalid MAC0 structure");
 
     if (obj.get(0).getType() == CBORType.ByteString) {
-      if (obj.get(0).GetByteString().length == 0) objProtected =
-        CBORObject.NewMap();
-      else objProtected = CBORObject.DecodeFromBytes(
-        obj.get(0).GetByteString()
-      );
-    } else throw new CoseException("Invalid MAC0 structure");
+      if (obj.get(0).GetByteString().length == 0)
+        objProtected =
+            CBORObject.NewMap();
+      else
+        objProtected = CBORObject.DecodeFromBytes(
+            obj.get(0).GetByteString());
+    } else
+      throw new CoseException("Invalid MAC0 structure");
 
     if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    } else throw new CoseException("Invalid MAC0 structure");
+    } else
+      throw new CoseException("Invalid MAC0 structure");
 
-    if (obj.get(2).getType() == CBORType.ByteString) rgbContent = obj
-      .get(2)
-      .GetByteString();
-    else if (!obj.get(2).isNull()) throw new CoseException(
-      "Invalid MAC0 structure"
-    );
+    if (obj.get(2).getType() == CBORType.ByteString)
+      rgbContent = obj
+          .get(2)
+          .GetByteString();
+    else if (!obj.get(2).isNull())
+      throw new CoseException(
+          "Invalid MAC0 structure");
 
-    if (obj.get(3).getType() == CBORType.ByteString) rgbTag = obj
-      .get(3)
-      .GetByteString();
-    else throw new CoseException("Invalid MAC0 structure");
+    if (obj.get(3).getType() == CBORType.ByteString)
+      rgbTag = obj
+          .get(3)
+          .GetByteString();
+    else
+      throw new CoseException("Invalid MAC0 structure");
   }
 
   @Override
   protected CBORObject EncodeCBORObject() throws CoseException {
-    if (rgbTag == null) throw new CoseException("Compute function not called");
+    if (rgbTag == null)
+      throw new CoseException("Compute function not called");
 
     CBORObject obj = CBORObject.NewArray();
-    if (objProtected.size() > 0) obj.Add(objProtected.EncodeToBytes());
-    else obj.Add(CBORObject.FromByteArray(new byte[0]));
+    if (objProtected.size() > 0)
+      obj.Add(objProtected.EncodeToBytes());
+    else
+      obj.Add(CBORObject.FromByteArray(new byte[0]));
 
     obj.Add(objUnprotected);
     obj.Add(rgbContent);

@@ -89,7 +89,7 @@ commit() {
 
 format() {
   print_header 'FORMATTING (PRETTIER)'
-  mvn prettier:write "${MAVEN_CLI_OPTS[@]}" -Dcode-quality -DskipTests -Dprettier.nodePath="$(which node)" -Dprettier.npmPath="$(which npm)"
+  mvn formatter:format "${MAVEN_CLI_OPTS[@]}" -DskipTests
   store_exit_code "$?" "Format" "${MISSING} ${RED}Format check failed, see logs (std out) and fix problems.${NC}\n" "${GREEN}${CHECKMARK}${CHECKMARK} Format check passed${NC}\n"
   printf '\n\n'
 }

@@ -24,25 +24,25 @@ import org.junit.rules.ExpectedException;
 public class COSEObjectTest extends TestBase {
 
   byte[] rgbKey128 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
   };
-  byte[] rgbContent = new byte[] { 1, 2, 3, 4, 5, 6, 7 };
-  byte[] rgbIV96 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+  byte[] rgbContent = new byte[] {1, 2, 3, 4, 5, 6, 7};
+  byte[] rgbIV96 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -68,28 +68,24 @@ public class COSEObjectTest extends TestBase {
   public void testDecodeUnknown() throws Exception {
     Encrypt0COSEObject msg = new Encrypt0COSEObject(false, true);
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.addAttribute(
-      HeaderKeys.IV,
-      CBORObject.FromByteArray(rgbIV96),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.IV,
+        CBORObject.FromByteArray(rgbIV96),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt(rgbKey128);
     byte[] rgbMsg = msg.EncodeToBytes();
 
     thrown.expect(CoseException.class);
     thrown.expectMessage(
-      "COSEObject was not tagged and no default tagging option given"
-    );
+        "COSEObject was not tagged and no default tagging option given");
 
     msg = (Encrypt0COSEObject) COSEObject.DecodeFromBytes(
-      rgbMsg,
-      COSEObjectTag.Unknown
-    );
+        rgbMsg,
+        COSEObjectTag.Unknown);
   }
 
   /**
@@ -99,15 +95,13 @@ public class COSEObjectTest extends TestBase {
   public void testDecodeFromBytes_byteArr_MessageTag() throws Exception {
     Encrypt0COSEObject msg = new Encrypt0COSEObject(true, false);
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.addAttribute(
-      HeaderKeys.IV,
-      CBORObject.FromByteArray(rgbIV96),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.IV,
+        CBORObject.FromByteArray(rgbIV96),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt(rgbKey128);
     byte[] rgbMsg = msg.EncodeToBytes();
@@ -138,7 +132,7 @@ public class COSEObjectTest extends TestBase {
   @Test
   public void testSetContent_byteArr() {
     System.out.println("SetContent");
-    byte[] rgbData = new byte[] { 1, 2, 3, 4, 5, 6, 7 };
+    byte[] rgbData = new byte[] {1, 2, 3, 4, 5, 6, 7};
     COSEObject instance = new Encrypt0COSEObject();
     instance.SetContent(rgbData);
 
@@ -153,7 +147,7 @@ public class COSEObjectTest extends TestBase {
   public void testSetContent_String() {
     System.out.println("SetContent");
     String strData = "12345678";
-    byte[] rgbData = new byte[] { 49, 50, 51, 52, 53, 54, 55, 56 };
+    byte[] rgbData = new byte[] {49, 50, 51, 52, 53, 54, 55, 56};
 
     COSEObject instance = new Encrypt0COSEObject();
     instance.SetContent(strData);

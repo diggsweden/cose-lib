@@ -34,10 +34,11 @@ public abstract class MacCommon extends COSEObject {
   }
 
   protected void CreateWithKey(byte[] rgbKey) throws CoseException {
-    CBORObject algX = findAttribute(CBORObject.FromInt32(1)); //HeaderKeys.Algorithm);
+    CBORObject algX = findAttribute(CBORObject.FromInt32(1)); // HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
-    if (rgbContent == null) throw new CoseException("No Content Specified");
+    if (rgbContent == null)
+      throw new CoseException("No Content Specified");
 
     switch (alg) {
       case HMAC_SHA_256_64:
@@ -64,7 +65,7 @@ public abstract class MacCommon extends COSEObject {
     int i;
     byte[] rgbTest;
 
-    CBORObject algX = findAttribute(CBORObject.FromInt32(1)); //HeaderKeys.Algorithm);
+    CBORObject algX = findAttribute(CBORObject.FromInt32(1)); // HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
     switch (alg) {
@@ -84,7 +85,8 @@ public abstract class MacCommon extends COSEObject {
         throw new CoseException("Unsupported MAC Algorithm");
     }
 
-    if (rgbTest.length != rgbTag.length) return false;
+    if (rgbTest.length != rgbTag.length)
+      return false;
     f = true;
     for (i = 0; i < rgbTest.length; i++) {
       f &= (rgbTest[i] == rgbTag[i]);
@@ -96,40 +98,43 @@ public abstract class MacCommon extends COSEObject {
     CBORObject obj = CBORObject.NewArray();
 
     if (rgbProtected == null) {
-      if (objProtected.size() == 0) rgbProtected = new byte[0];
-      else rgbProtected = objProtected.EncodeToBytes();
+      if (objProtected.size() == 0)
+        rgbProtected = new byte[0];
+      else
+        rgbProtected = objProtected.EncodeToBytes();
     }
 
     obj.Add(strContext);
     obj.Add(rgbProtected);
-    if (externalData != null) obj.Add(CBORObject.FromByteArray(externalData));
-    else obj.Add(CBORObject.FromByteArray(new byte[0]));
+    if (externalData != null)
+      obj.Add(CBORObject.FromByteArray(externalData));
+    else
+      obj.Add(CBORObject.FromByteArray(new byte[0]));
     obj.Add(rgbContent);
 
     return obj.EncodeToBytes();
   }
 
   protected byte[] AES_CBC_MAC(AlgorithmID alg, byte[] rgbKey)
-    throws CoseException {
-    if (rgbKey.length != alg.getKeySize() / 8) throw new CoseException(
-      "Key is incorrectly sized"
-    );
+      throws CoseException {
+    if (rgbKey.length != alg.getKeySize() / 8)
+      throw new CoseException(
+          "Key is incorrectly sized");
 
-    //  The requirements from spec
-    //  IV is 128 bits of zeros
-    //  key sizes are 128, 192 and 256 bits
-    //  Authentication tag sizes are 64 and 128 bits
+    // The requirements from spec
+    // IV is 128 bits of zeros
+    // key sizes are 128, 192 and 256 bits
+    // Authentication tag sizes are 64 and 128 bits
     byte[] IV = new byte[128 / 8];
 
     try {
       Cipher cbcmac = cryptoContext.getProvider() != null
-        ? Cipher.getInstance("AES/CBC/NoPadding", cryptoContext.getProvider())
-        : Cipher.getInstance("AES/CBC/NoPadding");
+          ? Cipher.getInstance("AES/CBC/NoPadding", cryptoContext.getProvider())
+          : Cipher.getInstance("AES/CBC/NoPadding");
       cbcmac.init(
-        Cipher.ENCRYPT_MODE,
-        new SecretKeySpec(rgbKey, "AES"),
-        new IvParameterSpec(IV)
-      );
+          Cipher.ENCRYPT_MODE,
+          new SecretKeySpec(rgbKey, "AES"),
+          new IvParameterSpec(IV));
       byte[] val = BuildContentBytes();
       int blockLen = cbcmac.getBlockSize();
 
@@ -178,14 +183,14 @@ public abstract class MacCommon extends COSEObject {
         throw new CoseException("Internal Error");
     }
 
-    if (rgbKey.length != alg.getKeySize() / 8) throw new CoseException(
-      "Key is incorrect size"
-    );
+    if (rgbKey.length != alg.getKeySize() / 8)
+      throw new CoseException(
+          "Key is incorrect size");
 
     try {
       Mac hmac = cryptoContext.getProvider() != null
-        ? Mac.getInstance(algStr, cryptoContext.getProvider())
-        : Mac.getInstance(algStr);
+          ? Mac.getInstance(algStr, cryptoContext.getProvider())
+          : Mac.getInstance(algStr);
       hmac.init(new SecretKeySpec(rgbKey, algStr));
       byte[] val = BuildContentBytes();
       val = hmac.doFinal(val);

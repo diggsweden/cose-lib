@@ -25,7 +25,8 @@ public class MACCOSEObject extends MacCommon {
   }
 
   public void addRecipient(Recipient recipient) throws CoseException {
-    if (recipient == null) throw new CoseException("Recipient is null");
+    if (recipient == null)
+      throw new CoseException("Recipient is null");
     recipientList.add(recipient);
   }
 
@@ -42,31 +43,38 @@ public class MACCOSEObject extends MacCommon {
   }
 
   public void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 5) throw new CoseException("Invalid MAC structure");
+    if (obj.size() != 5)
+      throw new CoseException("Invalid MAC structure");
 
     if (obj.get(0).getType() == CBORType.ByteString) {
-      if (obj.get(0).GetByteString().length == 0) objProtected =
-        CBORObject.NewMap();
-      else objProtected = CBORObject.DecodeFromBytes(
-        obj.get(0).GetByteString()
-      );
-    } else throw new CoseException("Invalid MAC structure");
+      if (obj.get(0).GetByteString().length == 0)
+        objProtected =
+            CBORObject.NewMap();
+      else
+        objProtected = CBORObject.DecodeFromBytes(
+            obj.get(0).GetByteString());
+    } else
+      throw new CoseException("Invalid MAC structure");
 
     if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    } else throw new CoseException("Invalid MAC structure");
+    } else
+      throw new CoseException("Invalid MAC structure");
 
-    if (obj.get(2).getType() == CBORType.ByteString) rgbContent = obj
-      .get(2)
-      .GetByteString();
-    else if (!obj.get(2).isNull()) throw new CoseException(
-      "Invalid MAC structure"
-    );
+    if (obj.get(2).getType() == CBORType.ByteString)
+      rgbContent = obj
+          .get(2)
+          .GetByteString();
+    else if (!obj.get(2).isNull())
+      throw new CoseException(
+          "Invalid MAC structure");
 
-    if (obj.get(3).getType() == CBORType.ByteString) rgbTag = obj
-      .get(3)
-      .GetByteString();
-    else throw new CoseException("Invalid MAC structure");
+    if (obj.get(3).getType() == CBORType.ByteString)
+      rgbTag = obj
+          .get(3)
+          .GetByteString();
+    else
+      throw new CoseException("Invalid MAC structure");
 
     if (obj.get(4).getType() == CBORType.Array) {
       for (int i = 0; i < obj.get(4).size(); i++) {
@@ -74,15 +82,19 @@ public class MACCOSEObject extends MacCommon {
         recipient.DecodeFromCBORObject(obj.get(4).get(i));
         recipientList.add(recipient);
       }
-    } else throw new CoseException("Invalid MAC structure");
+    } else
+      throw new CoseException("Invalid MAC structure");
   }
 
   protected CBORObject EncodeCBORObject() throws CoseException {
-    if (rgbTag == null) throw new CoseException("Compute function not called");
+    if (rgbTag == null)
+      throw new CoseException("Compute function not called");
 
     CBORObject obj = CBORObject.NewArray();
-    if (objProtected.size() > 0) obj.Add(objProtected.EncodeToBytes());
-    else obj.Add(CBORObject.FromByteArray(new byte[0]));
+    if (objProtected.size() > 0)
+      obj.Add(objProtected.EncodeToBytes());
+    else
+      obj.Add(CBORObject.FromByteArray(new byte[0]));
 
     obj.Add(objUnprotected);
     obj.Add(rgbContent);
@@ -98,7 +110,7 @@ public class MACCOSEObject extends MacCommon {
   }
 
   public boolean Validate(Recipient recipientToUse)
-    throws CoseException, Exception {
+      throws CoseException, Exception {
     byte[] rgbKey = null;
     AlgorithmID alg = AlgorithmID.FromCBOR(findAttribute(HeaderKeys.Algorithm));
 
@@ -108,18 +120,17 @@ public class MACCOSEObject extends MacCommon {
           rgbKey = recipient.decrypt(alg, recipientToUse);
         } catch (CoseException e) {
           System.out.println(
-            "This exception should likely be logged or handled "
-          );
+              "This exception should likely be logged or handled ");
         }
       } else if (recipientToUse == recipient) {
         try {
           rgbKey = recipient.decrypt(alg, recipientToUse);
         } catch (CoseException e) {
           System.out.println(
-            "This exception should likely be logged or handled "
-          );
+              "This exception should likely be logged or handled ");
         }
-        if (rgbKey == null) break;
+        if (rgbKey == null)
+          break;
       }
 
       if (rgbKey != null) {
@@ -135,15 +146,15 @@ public class MACCOSEObject extends MacCommon {
 
     int recipientTypes = 0;
 
-    if (recipientList.isEmpty()) throw new CoseException(
-      "No recipients supplied"
-    );
+    if (recipientList.isEmpty())
+      throw new CoseException(
+          "No recipients supplied");
     for (Recipient r : recipientList) {
       switch (r.getRecipientType()) {
         case 1:
-          if ((recipientTypes & 1) != 0) throw new CoseException(
-            "Cannot have two direct recipients"
-          );
+          if ((recipientTypes & 1) != 0)
+            throw new CoseException(
+                "Cannot have two direct recipients");
           recipientTypes |= 1;
           rgbKey = r.getKey(alg);
           break;
@@ -152,9 +163,9 @@ public class MACCOSEObject extends MacCommon {
       }
     }
 
-    if (recipientTypes == 3) throw new CoseException(
-      "Do not mix direct and indirect recipients"
-    );
+    if (recipientTypes == 3)
+      throw new CoseException(
+          "Do not mix direct and indirect recipients");
 
     if (recipientTypes == 2) {
       rgbKey = new byte[alg.getKeySize() / 8];

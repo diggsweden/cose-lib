@@ -23,98 +23,98 @@ import org.junit.rules.ExpectedException;
 public class EncryptCOSEObjectTest extends TestBase {
 
   static byte[] rgbKey128 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
   };
   static byte[] rgbKey256 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
   };
   static byte[] rgbContent = {
-    'T',
-    'h',
-    'i',
-    's',
-    ' ',
-    'i',
-    's',
-    ' ',
-    's',
-    'o',
-    'm',
-    'e',
-    ' ',
-    'c',
-    'o',
-    'n',
-    't',
-    'e',
-    'n',
-    't',
+      'T',
+      'h',
+      'i',
+      's',
+      ' ',
+      'i',
+      's',
+      ' ',
+      's',
+      'o',
+      'm',
+      'e',
+      ' ',
+      'c',
+      'o',
+      'n',
+      't',
+      'e',
+      'n',
+      't',
   };
   static byte[] rgbIV128 = {
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
   };
-  static byte[] rgbIV96 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+  static byte[] rgbIV96 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
   Recipient recipient128;
   COSEKey cnKey128;
@@ -126,10 +126,9 @@ public class EncryptCOSEObjectTest extends TestBase {
   public void setUp() throws CoseException {
     recipient128 = new Recipient();
     recipient128.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.Direct.AsCBOR(),
-      Attribute.UNPROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.Direct.AsCBOR(),
+        Attribute.UNPROTECTED);
     CBORObject key128 = CBORObject.NewMap();
     key128.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_Octet);
     key128.Add(KeyKeys.Octet_K.AsCBOR(), CBORObject.FromByteArray(rgbKey128));
@@ -145,15 +144,13 @@ public class EncryptCOSEObjectTest extends TestBase {
     System.out.println("Round Trip");
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.addAttribute(
-      HeaderKeys.IV,
-      CBORObject.FromByteArray(rgbIV96),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.IV,
+        CBORObject.FromByteArray(rgbIV96),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.addRecipient(recipient128);
     msg.encrypt();
@@ -164,9 +161,8 @@ public class EncryptCOSEObjectTest extends TestBase {
     byte[] rgbMsg = msg.EncodeToBytes();
 
     msg = (EncryptCOSEObject) COSEObject.DecodeFromBytes(
-      rgbMsg,
-      COSEObjectTag.Encrypt
-    );
+        rgbMsg,
+        COSEObjectTag.Encrypt);
     Recipient r = msg.getRecipient(0);
     r.SetKey(cnKey128);
     byte[] contentNew = msg.decrypt(r);
@@ -187,23 +183,22 @@ public class EncryptCOSEObjectTest extends TestBase {
 
   @Test
   public void encryptNoRecipients()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
 
     thrown.expect(CoseException.class);
     thrown.expectMessage("No recipients supplied");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt();
   }
 
   @Test
   public void encryptNoAlgorithm()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addRecipient(recipient128);
 
@@ -215,89 +210,83 @@ public class EncryptCOSEObjectTest extends TestBase {
 
   @Test
   public void encryptUnknownAlgorithm()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addRecipient(recipient128);
 
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      CBORObject.FromString("Unknown"),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        CBORObject.FromString("Unknown"),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt();
   }
 
   @Test
   public void encryptUnsupportedAlgorithm()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addRecipient(recipient128);
 
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unsupported Algorithm Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt();
   }
 
   @Test
   public void encryptNoContent()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addRecipient(recipient128);
 
     thrown.expect(CoseException.class);
     thrown.expectMessage("No Content Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.encrypt();
   }
 
   @Test
   public void encryptBadIV()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addRecipient(recipient128);
 
     thrown.expect(CoseException.class);
     thrown.expectMessage("IV is incorrectly formed");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.addAttribute(
-      HeaderKeys.IV,
-      CBORObject.FromString("IV"),
-      Attribute.UNPROTECTED
-    );
+        HeaderKeys.IV,
+        CBORObject.FromString("IV"),
+        Attribute.UNPROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt();
   }
 
   @Test
   public void encryptIncorrectIV()
-    throws CoseException, InvalidCipherTextException, Exception {
+      throws CoseException, InvalidCipherTextException, Exception {
     EncryptCOSEObject msg = new EncryptCOSEObject();
     msg.addRecipient(recipient128);
 
     thrown.expect(CoseException.class);
     thrown.expectMessage("IV size is incorrect");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_GCM_128.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_GCM_128.AsCBOR(),
+        Attribute.PROTECTED);
     msg.addAttribute(HeaderKeys.IV, rgbIV128, Attribute.UNPROTECTED);
     msg.SetContent(rgbContent);
     msg.encrypt();

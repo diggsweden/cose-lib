@@ -94,27 +94,55 @@
 
   <build>
     <plugins>
+      <!-- Formatter plugin -->
       <plugin>
-        <groupId>com.hubspot.maven.plugins</groupId>
-        <artifactId>prettier-maven-plugin</artifactId>
-        <version>0.22</version>
+        <groupId>net.revelc.code.formatter</groupId>
+        <artifactId>formatter-maven-plugin</artifactId>
+        <version>2.25.0</version>
         <configuration>
-          <prettierJavaVersion>2.6.0</prettierJavaVersion>
-          <ignoreConfigFile>false</ignoreConfigFile>
-          <ignoreEditorConfig>true</ignoreEditorConfig>
-          <!-- Use <inputGlobs> to override the default input patterns -->
-          <inputGlobs>
-            <!-- These are the default patterns, you can omit <inputGlobs> entirely unless you
-                want
-            to override them -->
-            <inputGlob>src/main/java/**/*.java</inputGlob>
-            <inputGlob>src/test/java/**/*.java</inputGlob>
-          </inputGlobs>
+          <configFile>${project.basedir}/development/formatting/eclipse-java-google-style.xml</configFile>
+          <lineEnding>LF</lineEnding>
+          <verbose>true</verbose>          <!-- Add this for more logging -->
+          <compilerSource>21</compilerSource>
+          <compilerCompliance>21</compilerCompliance>
+          <compilerTargetPlatform>21</compilerTargetPlatform>
+
         </configuration>
         <executions>
           <execution>
-            <id>validator</id>
+            <goals>
+              <goal>format</goal>
+            </goals>
             <phase>verify</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Checkstyle plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>10.21.2</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>${project.basedir}/development/checkstyle/google_checks.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
+          <linkXRef>false</linkXRef>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -200,7 +228,7 @@
           </execution>
         </executions>
       </plugin>
-          <!-- Deployment -->
+      <!-- Deployment -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>

@@ -21,78 +21,78 @@ import org.junit.rules.ExpectedException;
 public class MAC0COSEObjectTest extends TestBase {
 
   static byte[] rgbKey128 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
   };
   static byte[] rgbKey256 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
   };
   static byte[] rgbContent = {
-    'T',
-    'h',
-    'i',
-    's',
-    ' ',
-    'i',
-    's',
-    ' ',
-    's',
-    'o',
-    'm',
-    'e',
-    ' ',
-    'c',
-    'o',
-    'n',
-    't',
-    'e',
-    'n',
-    't',
+      'T',
+      'h',
+      'i',
+      's',
+      ' ',
+      'i',
+      's',
+      ' ',
+      's',
+      'o',
+      'm',
+      'e',
+      ' ',
+      'c',
+      'o',
+      'n',
+      't',
+      'e',
+      'n',
+      't',
   };
 
   CBORObject cnKey256;
@@ -121,19 +121,17 @@ public class MAC0COSEObjectTest extends TestBase {
     System.out.println("Round Trip");
     MAC0COSEObject msg = new MAC0COSEObject();
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.Create(rgbKey256);
 
     byte[] rgbMsg = msg.EncodeToBytes();
 
     msg = (MAC0COSEObject) COSEObject.DecodeFromBytes(
-      rgbMsg,
-      COSEObjectTag.MAC0
-    );
+        rgbMsg,
+        COSEObjectTag.MAC0);
     boolean contentNew = msg.Validate(rgbKey256);
     assertTrue(contentNew);
   }
@@ -155,10 +153,9 @@ public class MAC0COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      CBORObject.FromString("Unknown"),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        CBORObject.FromString("Unknown"),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.Create(rgbKey256);
   }
@@ -170,10 +167,9 @@ public class MAC0COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unsupported MAC Algorithm");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_CCM_16_64_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_CCM_16_64_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.Create(rgbKey256);
   }
@@ -185,10 +181,9 @@ public class MAC0COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("No Content Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.Create(rgbKey256);
   }
 

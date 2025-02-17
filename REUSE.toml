@@ -17,6 +17,8 @@ path = [
     "renovate.json",
     "jreleaser.yml",
     "**/*/resources/**/*.json",
+    "**/*/google_checks.xml",
+    "**/*/eclipse-java-google-style.xml",
     "docs/**/*.html",
 ]
 precedence = "aggregate"

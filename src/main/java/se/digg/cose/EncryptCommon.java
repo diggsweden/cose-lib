@@ -40,9 +40,9 @@ public abstract class EncryptCommon extends COSEObject {
     CBORObject algX = findAttribute(HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
-    if (rgbEncrypt == null) throw new CoseException(
-      "No Encrypted Content Specified"
-    );
+    if (rgbEncrypt == null)
+      throw new CoseException(
+          "No Encrypted Content Specified");
 
     switch (alg) {
       case AES_GCM_128:
@@ -68,11 +68,12 @@ public abstract class EncryptCommon extends COSEObject {
   }
 
   void encryptWithKey(byte[] rgbKey)
-    throws CoseException, IllegalStateException {
+      throws CoseException, IllegalStateException {
     CBORObject algX = findAttribute(HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
-    if (rgbContent == null) throw new CoseException("No Content Specified");
+    if (rgbContent == null)
+      throw new CoseException("No Content Specified");
 
     switch (alg) {
       case AES_GCM_128:
@@ -114,7 +115,7 @@ public abstract class EncryptCommon extends COSEObject {
   }
 
   private void AES_CCM_Decrypt(AlgorithmID alg, byte[] rgbKey)
-    throws CoseException, IllegalStateException {
+      throws CoseException, IllegalStateException {
     // validate key
     if (rgbKey.length != alg.getKeySize() / 8) {
       throw new CoseException("Key Size is incorrect");
@@ -135,13 +136,12 @@ public abstract class EncryptCommon extends COSEObject {
 
     try {
       Cipher cipher = cryptoContext.getProvider() != null
-        ? Cipher.getInstance(AES_CCM_SPEC, cryptoContext.getProvider())
-        : Cipher.getInstance(AES_CCM_SPEC);
+          ? Cipher.getInstance(AES_CCM_SPEC, cryptoContext.getProvider())
+          : Cipher.getInstance(AES_CCM_SPEC);
       cipher.init(
-        Cipher.DECRYPT_MODE,
-        new SecretKeySpec(rgbKey, AES_SPEC),
-        new GCMParameterSpec(alg.getTagSize(), iv.GetByteString())
-      );
+          Cipher.DECRYPT_MODE,
+          new SecretKeySpec(rgbKey, AES_SPEC),
+          new GCMParameterSpec(alg.getTagSize(), iv.GetByteString()));
       cipher.updateAAD(getAADBytes());
 
       rgbContent = new byte[cipher.getOutputSize(rgbEncrypt.length)];
@@ -161,7 +161,7 @@ public abstract class EncryptCommon extends COSEObject {
   }
 
   private void AES_CCM_Encrypt(AlgorithmID alg, byte[] rgbKey)
-    throws CoseException, IllegalStateException {
+      throws CoseException, IllegalStateException {
     // validate key
     if (rgbKey.length != alg.getKeySize() / 8) {
       throw new CoseException("Key Size is incorrect");
@@ -186,13 +186,12 @@ public abstract class EncryptCommon extends COSEObject {
 
     try {
       Cipher cipher = cryptoContext.getProvider() != null
-        ? Cipher.getInstance(AES_CCM_SPEC, cryptoContext.getProvider())
-        : Cipher.getInstance(AES_CCM_SPEC);
+          ? Cipher.getInstance(AES_CCM_SPEC, cryptoContext.getProvider())
+          : Cipher.getInstance(AES_CCM_SPEC);
       cipher.init(
-        Cipher.ENCRYPT_MODE,
-        new SecretKeySpec(rgbKey, AES_SPEC),
-        new GCMParameterSpec(alg.getTagSize(), iv.GetByteString())
-      );
+          Cipher.ENCRYPT_MODE,
+          new SecretKeySpec(rgbKey, AES_SPEC),
+          new GCMParameterSpec(alg.getTagSize(), iv.GetByteString()));
       cipher.updateAAD(getAADBytes());
 
       rgbEncrypt = new byte[cipher.getOutputSize(rgbContent.length)];
@@ -207,7 +206,7 @@ public abstract class EncryptCommon extends COSEObject {
   }
 
   private void AES_GCM_Decrypt(AlgorithmID alg, byte[] rgbKey)
-    throws CoseException {
+      throws CoseException {
     CBORObject iv = findAttribute(HeaderKeys.IV);
 
     // validate key
@@ -229,13 +228,12 @@ public abstract class EncryptCommon extends COSEObject {
     try {
       // create and prepare cipher
       Cipher cipher = cryptoContext.getProvider() != null
-        ? Cipher.getInstance(AES_GCM_SPEC, cryptoContext.getProvider())
-        : Cipher.getInstance(AES_GCM_SPEC);
+          ? Cipher.getInstance(AES_GCM_SPEC, cryptoContext.getProvider())
+          : Cipher.getInstance(AES_GCM_SPEC);
       cipher.init(
-        Cipher.DECRYPT_MODE,
-        new SecretKeySpec(rgbKey, "AES"),
-        new GCMParameterSpec(alg.getTagSize(), iv.GetByteString())
-      );
+          Cipher.DECRYPT_MODE,
+          new SecretKeySpec(rgbKey, "AES"),
+          new GCMParameterSpec(alg.getTagSize(), iv.GetByteString()));
       cipher.updateAAD(getAADBytes());
 
       // setup plaintext output
@@ -258,7 +256,7 @@ public abstract class EncryptCommon extends COSEObject {
   }
 
   private void AES_GCM_Encrypt(AlgorithmID alg, byte[] rgbKey)
-    throws CoseException, IllegalStateException {
+      throws CoseException, IllegalStateException {
     // validate key
     if (rgbKey.length != alg.getKeySize() / 8) {
       throw new CoseException("Key Size is incorrect");
@@ -283,13 +281,12 @@ public abstract class EncryptCommon extends COSEObject {
 
     try {
       Cipher cipher = cryptoContext.getProvider() != null
-        ? Cipher.getInstance(AES_GCM_SPEC, cryptoContext.getProvider())
-        : Cipher.getInstance(AES_GCM_SPEC);
+          ? Cipher.getInstance(AES_GCM_SPEC, cryptoContext.getProvider())
+          : Cipher.getInstance(AES_GCM_SPEC);
       cipher.init(
-        Cipher.ENCRYPT_MODE,
-        new SecretKeySpec(rgbKey, AES_SPEC),
-        new GCMParameterSpec(alg.getTagSize(), iv.GetByteString())
-      );
+          Cipher.ENCRYPT_MODE,
+          new SecretKeySpec(rgbKey, AES_SPEC),
+          new GCMParameterSpec(alg.getTagSize(), iv.GetByteString()));
       cipher.updateAAD(getAADBytes());
 
       rgbEncrypt = new byte[cipher.getOutputSize(rgbContent.length)];
@@ -307,24 +304,25 @@ public abstract class EncryptCommon extends COSEObject {
     CBORObject obj = CBORObject.NewArray();
 
     obj.Add(context);
-    if (objProtected.size() == 0) rgbProtected = new byte[0];
-    else rgbProtected = objProtected.EncodeToBytes();
+    if (objProtected.size() == 0)
+      rgbProtected = new byte[0];
+    else
+      rgbProtected = objProtected.EncodeToBytes();
     obj.Add(rgbProtected);
     obj.Add(CBORObject.FromByteArray(externalData));
     return obj.EncodeToBytes();
   }
 
   /**
-   * Used to obtain the encrypted content for the cases where detached content
-   * is requested.
+   * Used to obtain the encrypted content for the cases where detached content is requested.
    *
    * @return bytes of the encrypted content
    * @throws CoseException if content has not been encrypted
    */
   public byte[] getEncryptedContent() throws CoseException {
-    if (rgbEncrypt == null) throw new CoseException(
-      "No Encrypted Content Specified"
-    );
+    if (rgbEncrypt == null)
+      throw new CoseException(
+          "No Encrypted Content Specified");
 
     return rgbEncrypt;
   }
@@ -343,10 +341,9 @@ public abstract class EncryptCommon extends COSEObject {
       if (counterSignList.size() == 1) {
         counterSignList.get(0).sign(rgbProtected, rgbEncrypt);
         addAttribute(
-          HeaderKeys.CounterSignature,
-          counterSignList.get(0).EncodeToCBORObject(),
-          UNPROTECTED
-        );
+            HeaderKeys.CounterSignature,
+            counterSignList.get(0).EncodeToCBORObject(),
+            UNPROTECTED);
       } else {
         CBORObject list = CBORObject.NewArray();
         for (CounterSign sig : counterSignList) {
@@ -360,10 +357,9 @@ public abstract class EncryptCommon extends COSEObject {
     if (counterSign1 != null) {
       counterSign1.sign(rgbProtected, rgbEncrypt);
       addAttribute(
-        HeaderKeys.CounterSignature0,
-        counterSign1.EncodeToCBORObject(),
-        UNPROTECTED
-      );
+          HeaderKeys.CounterSignature0,
+          counterSign1.EncodeToCBORObject(),
+          UNPROTECTED);
     }
   }
 

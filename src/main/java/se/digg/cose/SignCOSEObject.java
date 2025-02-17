@@ -11,17 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The SignCOSEObject class is used to implement the COSE_Sign object.
- * This provides for a signed object with content and one or more signatures attached.
- * The signatures can be either from a single signer or from multiple different signers.
- * In the case where only one signature is required and the signer can be implicitly known, {@link Sign1COSEObject} can be used instead.
+ * The SignCOSEObject class is used to implement the COSE_Sign object. This provides for a signed
+ * object with content and one or more signatures attached. The signatures can be either from a
+ * single signer or from multiple different signers. In the case where only one signature is
+ * required and the signer can be implicitly known, {@link Sign1COSEObject} can be used instead.
  * There is no way to convert a signed message between the two formats.
  * <p>
- * Create a SignCOSEObject object for a new message, when processing an existing message use COSEObject.DecodeFromBytes to create a SignCOSEObject object.
+ * Create a SignCOSEObject object for a new message, when processing an existing message use
+ * COSEObject.DecodeFromBytes to create a SignCOSEObject object.
  * <p>
  * Examples can be found at<br>
- * <a href="https://github.com/cose-wg/COSE-JAVA/wiki/Sign-Message-Example">Single Signer Example</a> an example of signing and verify a message with a single signature.
- * <br><a href="https://github.com/cose-wg/COSE-JAVA/wiki/Multi-Sign-Example">Multiple Signer Example</a> an example of signing and verifying a message which has multiple signatures.
+ * <a href="https://github.com/cose-wg/COSE-JAVA/wiki/Sign-Message-Example">Single Signer
+ * Example</a> an example of signing and verify a message with a single signature. <br>
+ * <a href="https://github.com/cose-wg/COSE-JAVA/wiki/Multi-Sign-Example">Multiple Signer
+ * Example</a> an example of signing and verifying a message which has multiple signatures.
  *
  * @author jimsch
  */
@@ -38,7 +41,8 @@ public class SignCOSEObject extends COSEObject {
   }
 
   /**
-   * Create a signed message object for which the emission of the leading tag and content is controlled by the parameters.
+   * Create a signed message object for which the emission of the leading tag and content is
+   * controlled by the parameters.
    *
    * @param emitTagIn emit leading tag when message is serialized
    * @param emitContentIn emit the content as part of the message
@@ -58,9 +62,9 @@ public class SignCOSEObject extends COSEObject {
    */
   @Override
   protected void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 4) throw new CoseException(
-      "Invalid SignCOSEObject structure"
-    );
+    if (obj.size() != 4)
+      throw new CoseException(
+          "Invalid SignCOSEObject structure");
 
     if (obj.get(0).getType() == CBORType.ByteString) {
       rgbProtected = obj.get(0).GetByteString();
@@ -68,20 +72,24 @@ public class SignCOSEObject extends COSEObject {
         objProtected = CBORObject.NewMap();
       } else {
         objProtected = CBORObject.DecodeFromBytes(rgbProtected);
-        if (objProtected.size() == 0) rgbProtected = new byte[0];
+        if (objProtected.size() == 0)
+          rgbProtected = new byte[0];
       }
-    } else throw new CoseException("Invalid SignCOSEObject structure");
+    } else
+      throw new CoseException("Invalid SignCOSEObject structure");
 
     if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    } else throw new CoseException("Invalid SignCOSEObject structure");
+    } else
+      throw new CoseException("Invalid SignCOSEObject structure");
 
-    if (obj.get(2).getType() == CBORType.ByteString) rgbContent = obj
-      .get(2)
-      .GetByteString();
-    else if (!obj.get(2).isNull()) throw new CoseException(
-      "Invalid SignCOSEObject structure"
-    );
+    if (obj.get(2).getType() == CBORType.ByteString)
+      rgbContent = obj
+          .get(2)
+          .GetByteString();
+    else if (!obj.get(2).isNull())
+      throw new CoseException(
+          "Invalid SignCOSEObject structure");
 
     if (obj.get(3).getType() == CBORType.Array) {
       for (int i = 0; i < obj.get(3).size(); i++) {
@@ -89,7 +97,8 @@ public class SignCOSEObject extends COSEObject {
         signer.DecodeFromCBORObject(obj.get(3).get(i));
         signerList.add(signer);
       }
-    } else throw new CoseException("Invalid SignCOSEObject structure");
+    } else
+      throw new CoseException("Invalid SignCOSEObject structure");
   }
 
   /**
@@ -106,8 +115,10 @@ public class SignCOSEObject extends COSEObject {
 
     obj.Add(rgbProtected);
     obj.Add(objUnprotected);
-    if (emitContent) obj.Add(rgbContent);
-    else obj.Add(null);
+    if (emitContent)
+      obj.Add(rgbContent);
+    else
+      obj.Add(null);
     CBORObject signers = CBORObject.NewArray();
     obj.Add(signers);
 
@@ -119,8 +130,8 @@ public class SignCOSEObject extends COSEObject {
   }
 
   /**
-   * Add a new signer to the message.  The details of the signer are provided
-   * by the Signer object being added.
+   * Add a new signer to the message. The details of the signer are provided by the Signer object
+   * being added.
    *
    * @param signedBy provides a Signer object containing details for the signer
    */
@@ -164,8 +175,10 @@ public class SignCOSEObject extends COSEObject {
    */
   public void sign() throws CoseException {
     if (rgbProtected == null) {
-      if (objProtected.size() == 0) rgbProtected = new byte[0];
-      else rgbProtected = objProtected.EncodeToBytes();
+      if (objProtected.size() == 0)
+        rgbProtected = new byte[0];
+      else
+        rgbProtected = objProtected.EncodeToBytes();
     }
 
     for (Signer r : signerList) {
@@ -176,9 +189,9 @@ public class SignCOSEObject extends COSEObject {
   }
 
   /**
-   * Validate the signature on a message for a specific signer.
-   * The signer is required to be one of the Signer objects attached to the message.
-   * The key must be attached to the signer before making this call.
+   * Validate the signature on a message for a specific signer. The signer is required to be one of
+   * the Signer objects attached to the message. The key must be attached to the signer before
+   * making this call.
    *
    * @param signerToUse which signer to validate with
    * @return true if the message validates with the signer

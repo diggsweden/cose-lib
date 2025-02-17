@@ -29,26 +29,26 @@ import org.junit.rules.ExpectedException;
 public class Sign1COSEObjectTest extends TestBase {
 
   static byte[] rgbContent = {
-    'T',
-    'h',
-    'i',
-    's',
-    ' ',
-    'i',
-    's',
-    ' ',
-    's',
-    'o',
-    'm',
-    'e',
-    ' ',
-    'c',
-    'o',
-    'n',
-    't',
-    'e',
-    'n',
-    't',
+      'T',
+      'h',
+      'i',
+      's',
+      ' ',
+      'i',
+      's',
+      ' ',
+      's',
+      'o',
+      'm',
+      'e',
+      ' ',
+      'c',
+      'o',
+      'n',
+      't',
+      'e',
+      'n',
+      't',
   };
 
   static COSEKey cnKeyPublic;
@@ -64,16 +64,14 @@ public class Sign1COSEObjectTest extends TestBase {
     X9ECParameters p = NISTNamedCurves.getByName("P-256");
 
     ECDomainParameters parameters = new ECDomainParameters(
-      p.getCurve(),
-      p.getG(),
-      p.getN(),
-      p.getH()
-    );
+        p.getCurve(),
+        p.getG(),
+        p.getN(),
+        p.getH());
     ECKeyPairGenerator pGen = new ECKeyPairGenerator();
     ECKeyGenerationParameters genParam = new ECKeyGenerationParameters(
-      parameters,
-      null
-    );
+        parameters,
+        null);
     pGen.init(genParam);
 
     AsymmetricCipherKeyPair p1 = pGen.generateKeyPair();
@@ -126,18 +124,16 @@ public class Sign1COSEObjectTest extends TestBase {
     System.out.println("Round Trip");
     Sign1COSEObject msg = new Sign1COSEObject();
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.ECDSA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.ECDSA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.sign(cnKeyPrivate);
     byte[] rgbMsg = msg.EncodeToBytes();
 
     msg = (Sign1COSEObject) COSEObject.DecodeFromBytes(
-      rgbMsg,
-      COSEObjectTag.Sign1
-    );
+        rgbMsg,
+        COSEObjectTag.Sign1);
     boolean f = msg.validate(cnKeyPublic);
 
     assert f;
@@ -151,18 +147,16 @@ public class Sign1COSEObjectTest extends TestBase {
     System.out.println("Round Trip");
     Sign1COSEObject msg = new Sign1COSEObject();
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.ECDSA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.ECDSA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.sign(cnKeyPrivate);
     byte[] rgbMsg = msg.EncodeToBytes();
 
     msg = (Sign1COSEObject) COSEObject.DecodeFromBytes(
-      rgbMsg,
-      COSEObjectTag.Sign1
-    );
+        rgbMsg,
+        COSEObjectTag.Sign1);
     boolean f = msg.validate(cnKeyPublic);
 
     assert f;
@@ -185,10 +179,9 @@ public class Sign1COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      CBORObject.FromString("Unknown"),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        CBORObject.FromString("Unknown"),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.sign(cnKeyPrivate);
   }
@@ -200,10 +193,9 @@ public class Sign1COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unsupported Algorithm Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.sign(cnKeyPrivate);
   }
@@ -215,10 +207,9 @@ public class Sign1COSEObjectTest extends TestBase {
 
     thrown.expect(NullPointerException.class);
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.ECDSA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.ECDSA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.sign(key);
   }
@@ -230,10 +221,9 @@ public class Sign1COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("No Content Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.ECDSA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.ECDSA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.sign(cnKeyPrivate);
   }
 
@@ -244,10 +234,9 @@ public class Sign1COSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Private key required to sign");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.ECDSA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.ECDSA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.sign(cnKeyPublic);
   }

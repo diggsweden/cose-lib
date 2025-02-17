@@ -30,8 +30,7 @@ public class KeySetCollector implements Collector<COSEKey, KeySet, KeySet> {
     // parallel streams are not supported
     return (acc1, acc2) -> {
       throw new UnsupportedOperationException(
-        "parallel streams are not supported"
-      );
+          "parallel streams are not supported");
     };
   }
 

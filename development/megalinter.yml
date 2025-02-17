@@ -44,7 +44,7 @@
     BASH_SHFMT_FILE_EXTENSIONS: [.sh]
     BASH_SHELLCHECK_FILE_EXTENSIONS: [.sh]
     JAVA_CHECKSTYLE_FILTER_REGEX_INCLUDE: src/main
-    JAVA_CHECKSTYLE_CONFIG_FILE: development/checkstyle_prettier.xml
+    JAVA_CHECKSTYLE_CONFIG_FILE: development/checkstyle/google_checks.xml
     JAVA_PMD_CONFIG_FILE: development/pmd_default_java_mod.xml
     REPOSITORY_GITLEAKS_ARGUMENTS: --log-opts="main..HEAD"
     # LOG_LEVEL: DEBUG # will show you the exact command run

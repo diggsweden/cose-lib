@@ -24,78 +24,78 @@ import org.junit.rules.ExpectedException;
 public class MACCOSEObjectTest extends TestBase {
 
   static byte[] rgbKey128 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
   };
   static byte[] rgbKey256 = {
-    'a',
-    'b',
-    'c',
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
+      'a',
+      'b',
+      'c',
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
   };
   static byte[] rgbContent = {
-    'T',
-    'h',
-    'i',
-    's',
-    ' ',
-    'i',
-    's',
-    ' ',
-    's',
-    'o',
-    'm',
-    'e',
-    ' ',
-    'c',
-    'o',
-    'n',
-    't',
-    'e',
-    'n',
-    't',
+      'T',
+      'h',
+      'i',
+      's',
+      ' ',
+      'i',
+      's',
+      ' ',
+      's',
+      'o',
+      'm',
+      'e',
+      ' ',
+      'c',
+      'o',
+      'n',
+      't',
+      'e',
+      'n',
+      't',
   };
 
   Recipient recipient256;
@@ -116,10 +116,9 @@ public class MACCOSEObjectTest extends TestBase {
   public void setUp() throws CoseException {
     recipient256 = new Recipient();
     recipient256.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.Direct.AsCBOR(),
-      Attribute.UNPROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.Direct.AsCBOR(),
+        Attribute.UNPROTECTED);
     CBORObject key256 = CBORObject.NewMap();
     key256.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_Octet);
     key256.Add(KeyKeys.Octet_K.AsCBOR(), CBORObject.FromByteArray(rgbKey256));
@@ -178,10 +177,9 @@ public class MACCOSEObjectTest extends TestBase {
     System.out.println("Round Trip");
     MACCOSEObject msg = new MACCOSEObject();
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.addRecipient(recipient256);
     msg.Create();
@@ -202,10 +200,9 @@ public class MACCOSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("No recipients supplied");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.Create();
   }
@@ -229,10 +226,9 @@ public class MACCOSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unknown Algorithm Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      CBORObject.FromString("Unknown"),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        CBORObject.FromString("Unknown"),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.Create();
   }
@@ -245,10 +241,9 @@ public class MACCOSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("Unsupported MAC Algorithm");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.AES_CCM_16_64_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.AES_CCM_16_64_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.SetContent(rgbContent);
     msg.Create();
   }
@@ -261,10 +256,9 @@ public class MACCOSEObjectTest extends TestBase {
     thrown.expect(CoseException.class);
     thrown.expectMessage("No Content Specified");
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      AlgorithmID.HMAC_SHA_256.AsCBOR(),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        AlgorithmID.HMAC_SHA_256.AsCBOR(),
+        Attribute.PROTECTED);
     msg.Create();
   }
 

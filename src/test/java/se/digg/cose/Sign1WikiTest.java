@@ -44,10 +44,9 @@ public class Sign1WikiTest extends TestBase {
     // Add the content to the message
     msg.SetContent(ContentToSign);
     msg.addAttribute(
-      HeaderKeys.Algorithm,
-      signingKey.get(KeyKeys.Algorithm),
-      Attribute.PROTECTED
-    );
+        HeaderKeys.Algorithm,
+        signingKey.get(KeyKeys.Algorithm),
+        Attribute.PROTECTED);
 
     // Force the message to be signed
     msg.sign(signingKey);
@@ -61,8 +60,7 @@ public class Sign1WikiTest extends TestBase {
 
     try {
       Sign1COSEObject msg = (Sign1COSEObject) COSEObject.DecodeFromBytes(
-        message
-      );
+          message);
 
       result = msg.validate(key);
     } catch (CoseException e) {

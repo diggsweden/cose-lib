@@ -25,7 +25,7 @@ public class KeySet {
   public KeySet(CBORObject keysIn) {
     keys = new ArrayList<COSEKey>();
 
-    //  Ignore keys which we cannot deal with or are malformed.
+    // Ignore keys which we cannot deal with or are malformed.
 
     for (int i = 0; i < keysIn.size(); i++) {
       try {
