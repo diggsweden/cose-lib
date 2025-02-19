@@ -37,8 +37,9 @@ public abstract class MacCommon extends COSEObject {
     CBORObject algX = findAttribute(CBORObject.FromInt32(1)); // HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
-    if (rgbContent == null)
+    if (rgbContent == null) {
       throw new CoseException("No Content Specified");
+    }
 
     switch (alg) {
       case HMAC_SHA_256_64:
@@ -85,8 +86,9 @@ public abstract class MacCommon extends COSEObject {
         throw new CoseException("Unsupported MAC Algorithm");
     }
 
-    if (rgbTest.length != rgbTag.length)
+    if (rgbTest.length != rgbTag.length) {
       return false;
+    }
     f = true;
     for (i = 0; i < rgbTest.length; i++) {
       f &= (rgbTest[i] == rgbTag[i]);
@@ -98,18 +100,20 @@ public abstract class MacCommon extends COSEObject {
     CBORObject obj = CBORObject.NewArray();
 
     if (rgbProtected == null) {
-      if (objProtected.size() == 0)
+      if (objProtected.size() == 0) {
         rgbProtected = new byte[0];
-      else
+      } else {
         rgbProtected = objProtected.EncodeToBytes();
+      }
     }
 
     obj.Add(strContext);
     obj.Add(rgbProtected);
-    if (externalData != null)
+    if (externalData != null) {
       obj.Add(CBORObject.FromByteArray(externalData));
-    else
+    } else {
       obj.Add(CBORObject.FromByteArray(new byte[0]));
+    }
     obj.Add(rgbContent);
 
     return obj.EncodeToBytes();
@@ -117,9 +121,10 @@ public abstract class MacCommon extends COSEObject {
 
   protected byte[] AES_CBC_MAC(AlgorithmID alg, byte[] rgbKey)
       throws CoseException {
-    if (rgbKey.length != alg.getKeySize() / 8)
+    if (rgbKey.length != alg.getKeySize() / 8) {
       throw new CoseException(
           "Key is incorrectly sized");
+    }
 
     // The requirements from spec
     // IV is 128 bits of zeros
@@ -183,9 +188,10 @@ public abstract class MacCommon extends COSEObject {
         throw new CoseException("Internal Error");
     }
 
-    if (rgbKey.length != alg.getKeySize() / 8)
+    if (rgbKey.length != alg.getKeySize() / 8) {
       throw new CoseException(
           "Key is incorrect size");
+    }
 
     try {
       Mac hmac = cryptoContext.getProvider() != null

@@ -69,14 +69,16 @@ public abstract class COSEObject extends Attribute {
       COSEObjectTag defaultTag) throws CoseException {
     CBORObject messageObject = CBORObject.DecodeFromBytes(rgbData);
 
-    if (messageObject.getType() != CBORType.Array)
+    if (messageObject.getType() != CBORType.Array) {
       throw new CoseException(
           "COSEObject is not a COSE security COSEObject");
+    }
 
     if (messageObject.isTagged()) {
-      if (messageObject.GetAllTags().length != 1)
+      if (messageObject.GetAllTags().length != 1) {
         throw new CoseException(
             "Malformed message - too many tags");
+      }
 
       if (defaultTag == COSEObjectTag.Unknown) {
         defaultTag = COSEObjectTag.FromInt(
@@ -122,8 +124,8 @@ public abstract class COSEObject extends Attribute {
         HeaderKeys.CounterSignature,
         UNPROTECTED);
     if (countersignature != null) {
-      if ((countersignature.getType() != CBORType.Array) ||
-          countersignature.getValues().isEmpty()) {
+      if ((countersignature.getType() != CBORType.Array)
+          || countersignature.getValues().isEmpty()) {
         throw new CoseException("Invalid countersignature attribute");
       }
 

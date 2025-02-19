@@ -25,8 +25,9 @@ public class MACCOSEObject extends MacCommon {
   }
 
   public void addRecipient(Recipient recipient) throws CoseException {
-    if (recipient == null)
+    if (recipient == null) {
       throw new CoseException("Recipient is null");
+    }
     recipientList.add(recipient);
   }
 
@@ -43,23 +44,27 @@ public class MACCOSEObject extends MacCommon {
   }
 
   public void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 5)
+    if (obj.size() != 5) {
       throw new CoseException("Invalid MAC structure");
+    }
 
     if (obj.get(0).getType() == CBORType.ByteString) {
-      if (obj.get(0).GetByteString().length == 0)
+      if (obj.get(0).GetByteString().length == 0) {
         objProtected =
             CBORObject.NewMap();
-      else
+      } else {
         objProtected = CBORObject.DecodeFromBytes(
             obj.get(0).GetByteString());
-    } else
+      }
+    } else {
       throw new CoseException("Invalid MAC structure");
+    }
 
     if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    } else
+    } else {
       throw new CoseException("Invalid MAC structure");
+    }
 
     if (obj.get(2).getType() == CBORType.ByteString)
       rgbContent = obj

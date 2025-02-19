@@ -27,7 +27,7 @@ mvn clean verify
 
 1. Install a Checkstyle plugin - [Checkstyle For Java](https://marketplace.visualstudio.com/items?itemName=shengchen.vscode-checkstyle)
 
-2. Open user settings - settings.json (for example with Ctrl+Shift+P -> Preferences: User Settings (JSON)) and make sure you have the following settings:
+2. Open workspace settings - settings.json (for example with Ctrl+Shift+P -> Preferences: Workspace Settings (JSON)) and make sure you have the following settings:
 ```json
     "[java]": {
         "editor.defaultFormatter": "redhat.java",

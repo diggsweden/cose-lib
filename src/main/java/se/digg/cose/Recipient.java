@@ -41,30 +41,35 @@ public class Recipient extends COSEObject {
   @Override
   public void DecodeFromCBORObject(CBORObject objRecipient)
       throws CoseException {
-    if ((objRecipient.size() != 3) && (objRecipient.size() != 4))
+    if ((objRecipient.size() != 3) && (objRecipient.size() != 4)) {
       throw new CoseException("Invalid Recipient structure");
+    }
 
     if (objRecipient.get(0).getType() == CBORType.ByteString) {
-      if (objRecipient.get(0).GetByteString().length == 0)
+      if (objRecipient.get(0).GetByteString().length == 0) {
         objProtected =
             CBORObject.NewMap();
-      else
+      } else {
         objProtected = CBORObject.DecodeFromBytes(
             objRecipient.get(0).GetByteString());
-    } else
+      }
+    } else {
       throw new CoseException("Invalid Recipient structure");
+    }
 
-    if (objRecipient.get(1).getType() == CBORType.Map)
+    if (objRecipient.get(1).getType() == CBORType.Map) {
       objUnprotected =
           objRecipient.get(1);
-    else
+    } else {
       throw new CoseException("Invalid Recipient structure");
+    }
 
-    if (objRecipient.get(2).getType() == CBORType.ByteString)
+    if (objRecipient.get(2).getType() == CBORType.ByteString) {
       rgbEncrypted =
           objRecipient.get(2).GetByteString();
-    else
+    } else {
       throw new CoseException("Invalid Recipient structure");
+    }
 
     if (objRecipient.size() == 4) {
       if (objRecipient.get(3).getType() == CBORType.Array) {

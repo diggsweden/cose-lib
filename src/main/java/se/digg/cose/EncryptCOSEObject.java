@@ -54,13 +54,15 @@ public class EncryptCOSEObject extends EncryptCommon {
         break;
       } else if (r.recipientList.size() > 0) {
         rgbKey = r.decrypt(alg, whom);
-        if (rgbKey != null)
+        if (rgbKey != null) {
           break;
+        }
       }
     }
 
-    if (rgbKey == null)
+    if (rgbKey == null) {
       throw new CoseException("Recipient key not found");
+    }
     return super.decryptWithKey(rgbKey);
   }
 
@@ -110,12 +112,13 @@ public class EncryptCOSEObject extends EncryptCommon {
       throw new CoseException("Invalid Encrypt structure");
 
     if (obj.get(0).getType() == CBORType.ByteString) {
-      if (obj.get(0).GetByteString().length == 0)
+      if (obj.get(0).GetByteString().length == 0) {
         objProtected =
             CBORObject.NewMap();
-      else
+      } else {
         objProtected = CBORObject.DecodeFromBytes(
             obj.get(0).GetByteString());
+      }
     } else
       throw new CoseException("Invalid Encrypt structure");
 
@@ -149,10 +152,11 @@ public class EncryptCOSEObject extends EncryptCommon {
           "Compute function not called");
 
     CBORObject obj = CBORObject.NewArray();
-    if (objProtected.size() > 0)
+    if (objProtected.size() > 0) {
       obj.Add(objProtected.EncodeToBytes());
-    else
+    } else {
       obj.Add(CBORObject.FromByteArray(new byte[0]));
+    }
 
     obj.Add(objUnprotected);
     obj.Add(rgbEncrypt);

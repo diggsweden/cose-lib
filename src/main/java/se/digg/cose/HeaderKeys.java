@@ -23,12 +23,12 @@ public enum HeaderKeys {
 
   /**
    * An unordered bag of X.509 certificates. Encoded as bstring or an array when more than one
-   * certificate is conveyed
+   * certificate is conveyed.
    */
   x5bag(32),
   /**
    * An ordered chain of X.509 certificates. Encoded as bstring or an array when more than one
-   * certificate is conveyed
+   * certificate is conveyed.
    */
   x5chain(33),
   /** Hash of an X.509 certificate */

@@ -8,7 +8,7 @@ package se.digg.cose;
 import java.security.Provider;
 
 /**
- * Specify which JCA Provider to use for signing and verifying messages
+ * Specify which JCA Provider to use for signing and verifying messages.
  */
 public class CryptoContext {
 

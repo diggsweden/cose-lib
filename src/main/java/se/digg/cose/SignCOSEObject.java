@@ -62,34 +62,38 @@ public class SignCOSEObject extends COSEObject {
    */
   @Override
   protected void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 4)
+    if (obj.size() != 4) {
       throw new CoseException(
           "Invalid SignCOSEObject structure");
-
+    }
     if (obj.get(0).getType() == CBORType.ByteString) {
       rgbProtected = obj.get(0).GetByteString();
       if (obj.get(0).GetByteString().length == 0) {
         objProtected = CBORObject.NewMap();
       } else {
         objProtected = CBORObject.DecodeFromBytes(rgbProtected);
-        if (objProtected.size() == 0)
+        if (objProtected.size() == 0) {
           rgbProtected = new byte[0];
+        }
       }
-    } else
+    } else {
       throw new CoseException("Invalid SignCOSEObject structure");
+    }
 
     if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    } else
+    } else {
       throw new CoseException("Invalid SignCOSEObject structure");
+    }
 
-    if (obj.get(2).getType() == CBORType.ByteString)
+    if (obj.get(2).getType() == CBORType.ByteString) {
       rgbContent = obj
           .get(2)
           .GetByteString();
-    else if (!obj.get(2).isNull())
+    } else if (!obj.get(2).isNull()) {
       throw new CoseException(
           "Invalid SignCOSEObject structure");
+    }
 
     if (obj.get(3).getType() == CBORType.Array) {
       for (int i = 0; i < obj.get(3).size(); i++) {
@@ -97,8 +101,9 @@ public class SignCOSEObject extends COSEObject {
         signer.DecodeFromCBORObject(obj.get(3).get(i));
         signerList.add(signer);
       }
-    } else
+    } else {
       throw new CoseException("Invalid SignCOSEObject structure");
+    }
   }
 
   /**
@@ -115,10 +120,12 @@ public class SignCOSEObject extends COSEObject {
 
     obj.Add(rgbProtected);
     obj.Add(objUnprotected);
-    if (emitContent)
+    if (emitContent) {
       obj.Add(rgbContent);
-    else
+    } else {
       obj.Add(null);
+    }
+
     CBORObject signers = CBORObject.NewArray();
     obj.Add(signers);
 
@@ -175,10 +182,11 @@ public class SignCOSEObject extends COSEObject {
    */
   public void sign() throws CoseException {
     if (rgbProtected == null) {
-      if (objProtected.size() == 0)
+      if (objProtected.size() == 0) {
         rgbProtected = new byte[0];
-      else
+      } else {
         rgbProtected = objProtected.EncodeToBytes();
+      }
     }
 
     for (Signer r : signerList) {

@@ -40,9 +40,10 @@ public abstract class EncryptCommon extends COSEObject {
     CBORObject algX = findAttribute(HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
-    if (rgbEncrypt == null)
+    if (rgbEncrypt == null) {
       throw new CoseException(
           "No Encrypted Content Specified");
+    }
 
     switch (alg) {
       case AES_GCM_128:
@@ -72,8 +73,9 @@ public abstract class EncryptCommon extends COSEObject {
     CBORObject algX = findAttribute(HeaderKeys.Algorithm);
     AlgorithmID alg = AlgorithmID.FromCBOR(algX);
 
-    if (rgbContent == null)
+    if (rgbContent == null) {
       throw new CoseException("No Content Specified");
+    }
 
     switch (alg) {
       case AES_GCM_128:
@@ -304,10 +306,11 @@ public abstract class EncryptCommon extends COSEObject {
     CBORObject obj = CBORObject.NewArray();
 
     obj.Add(context);
-    if (objProtected.size() == 0)
+    if (objProtected.size() == 0) {
       rgbProtected = new byte[0];
-    else
+    } else {
       rgbProtected = objProtected.EncodeToBytes();
+    }
     obj.Add(rgbProtected);
     obj.Add(CBORObject.FromByteArray(externalData));
     return obj.EncodeToBytes();
@@ -320,9 +323,10 @@ public abstract class EncryptCommon extends COSEObject {
    * @throws CoseException if content has not been encrypted
    */
   public byte[] getEncryptedContent() throws CoseException {
-    if (rgbEncrypt == null)
+    if (rgbEncrypt == null) {
       throw new CoseException(
           "No Encrypted Content Specified");
+    }
 
     return rgbEncrypt;
   }

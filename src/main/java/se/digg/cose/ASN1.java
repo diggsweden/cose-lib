@@ -46,8 +46,9 @@ public class ASN1 {
 
     private static String bytesToHex(byte[] bytes) {
       StringBuilder sb = new StringBuilder(bytes.length * 2);
-      for (byte b : bytes)
+      for (byte b : bytes) {
         sb.append(String.format("%02x", b & 0xff));
+      }
       return sb.toString();
     }
 
@@ -165,10 +166,10 @@ public class ASN1 {
    */
   @SuppressWarnings("PMD")
   public static boolean isEdXOid(byte[] oid) {
-    return (Arrays.equals(oid, Oid_Ed25519) ||
-        Arrays.equals(oid, Oid_Ed448) ||
-        Arrays.equals(oid, Oid_X25519) ||
-        Arrays.equals(oid, Oid_X448));
+    return (Arrays.equals(oid, Oid_Ed25519)
+        || Arrays.equals(oid, Oid_Ed448)
+        || Arrays.equals(oid, Oid_X25519)
+        || Arrays.equals(oid, Oid_X448));
   }
 
   /**
@@ -259,23 +260,28 @@ public class ASN1 {
   public static ArrayList<TagValue> DecodeSubjectPublicKeyInfo(byte[] encoding)
       throws CoseException {
     TagValue spki = DecodeCompound(0, encoding);
-    if (spki.tag != 0x30)
+    if (spki.tag != 0x30) {
       throw new CoseException("Invalid SPKI");
+    }
     ArrayList<TagValue> tvl = spki.list;
-    if (tvl.size() != 2)
+    if (tvl.size() != 2) {
       throw new CoseException("Invalid SPKI");
+    }
 
-    if (tvl.get(0).tag != 0x30)
+    if (tvl.get(0).tag != 0x30) {
       throw new CoseException("Invalid SPKI");
+    }
     if (tvl.get(0).list.isEmpty() || tvl.get(0).list.size() > 2) {
       throw new CoseException("Invalid SPKI");
     }
-    if (tvl.get(0).list.get(0).tag != 6)
+    if (tvl.get(0).list.get(0).tag != 6) {
       throw new CoseException(
           "Invalid SPKI");
+    }
     // tvl.get(0).list.get(1).tag is an ANY so needs to be checked elsewhere
-    if (tvl.get(1).tag != 3)
+    if (tvl.get(1).tag != 3) {
       throw new CoseException("Invalid SPKI");
+    }
 
     return tvl;
   }
@@ -303,9 +309,10 @@ public class ASN1 {
 
     // We only decode objects which are compound objects. That means that this bit must be set
 
-    if ((encoding[offset] & 0x20) != 0x20)
+    if ((encoding[offset] & 0x20) != 0x20) {
       throw new CoseException(
           "Invalid structure");
+    }
     int[] l = DecodeLength(offset + 1, encoding);
     int sequenceLength = l[1];
     if (offset + sequenceLength > encoding.length)
@@ -360,8 +367,9 @@ public class ASN1 {
     ArrayList<TagValue> result = new ArrayList<TagValue>();
     int retTag = encoding[offset];
 
-    if (encoding[offset] != 0x04)
+    if (encoding[offset] != 0x04) {
       throw new CoseException("Invalid structure");
+    }
     int[] l = DecodeLength(offset + 1, encoding);
 
     int sequenceLength = l[1];
@@ -523,9 +531,10 @@ public class ASN1 {
     ArrayList<TagValue> pkdl = pkd.list;
     if (pkd.tag != 0x30)
       throw new CoseException("Invalid ECPrivateKey");
-    if (pkdl.size() < 2 || pkdl.size() > 4)
+    if (pkdl.size() < 2 || pkdl.size() > 4) {
       throw new CoseException(
           "Invalid ECPrivateKey");
+    }
 
     if (pkdl.get(0).tag != 2 && pkcs8.get(0).value[0] != 1) {
       throw new CoseException("Invalid ECPrivateKey");

@@ -50,7 +50,6 @@ public class Attribute {
    * Holder for the external data object that is authenticated as part of the message
    */
   protected byte[] externalData = new byte[0];
-
   /**
    * Used to place an attribute in the protected attribute map Attributes placed in this map are
    * part of the integrity check if the cryptographic algorithm supports authenticated data.
@@ -112,15 +111,16 @@ public class Attribute {
   public void addAttribute(CBORObject label, CBORObject value, int where)
       throws CoseException {
     removeAttribute(label);
-    if ((label.getType() != CBORType.Integer) &&
-        (label.getType() != CBORType.TextString)) {
+    if ((label.getType() != CBORType.Integer)
+        && (label.getType() != CBORType.TextString)) {
       throw new CoseException("Labels must be integers or strings");
     }
     switch (where) {
       case PROTECTED:
-        if (rgbProtected != null)
+        if (rgbProtected != null) {
           throw new CoseException(
               "Cannot modify protected attribute if signature has been computed");
+        }
         objProtected.Add(label, value);
         break;
       case UNPROTECTED:
@@ -278,13 +278,16 @@ public class Attribute {
    * @return - CBORObject with the value if found; otherwise null
    */
   public CBORObject findAttribute(CBORObject label, int where) {
-    if (((where & PROTECTED) == PROTECTED) && objProtected.ContainsKey(label))
+    if (((where & PROTECTED) == PROTECTED) && objProtected.ContainsKey(label)) {
       return objProtected.get(label);
+    }
     if (((where & UNPROTECTED) == UNPROTECTED) &&
-        objUnprotected.ContainsKey(label))
+        objUnprotected.ContainsKey(label)) {
       return objUnprotected.get(label);
-    if (((where & DO_NOT_SEND) == DO_NOT_SEND) && objDontSend.ContainsKey(label))
+    }
+    if (((where & DO_NOT_SEND) == DO_NOT_SEND) && objDontSend.ContainsKey(label)) {
       return objDontSend.get(label);
+    }
     return null;
   }
 
@@ -382,8 +385,9 @@ public class Attribute {
    * @param rgbData - data to be authenticated
    */
   public void setExternal(byte[] rgbData) {
-    if (rgbData == null)
+    if (rgbData == null) {
       rgbData = new byte[0];
+    }
     externalData = rgbData;
   }
 }

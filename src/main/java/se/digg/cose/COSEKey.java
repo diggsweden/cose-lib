@@ -61,10 +61,10 @@ public class COSEKey {
   }
 
   public COSEKey(CBORObject keyData) throws CoseException {
-    if (keyData.getType() != CBORType.Map)
+    if (keyData.getType() != CBORType.Map) {
       throw new CoseException(
           "Key data is malformed");
-
+    }
     keyMap = keyData;
     CheckKeyState();
   }
@@ -85,24 +85,26 @@ public class COSEKey {
       ArrayList<ASN1.TagValue> alg = spki.get(0).list;
       if (Arrays.equals(alg.get(0).value, ASN1.oid_ecPublicKey)) {
         byte[] oid = (byte[]) alg.get(1).value;
-        if (oid == null)
+        if (oid == null) {
           throw new CoseException("Invalid SPKI structure");
+        }
         // EC2 Key
         keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_EC2);
-        if (Arrays.equals(oid, ASN1.Oid_secp256r1))
+        if (Arrays.equals(oid, ASN1.Oid_secp256r1)) {
           keyMap.Add(
               KeyKeys.EC2_Curve.AsCBOR(),
               KeyKeys.EC2_P256);
-        else if (Arrays.equals(oid, ASN1.Oid_secp384r1))
+        } else if (Arrays.equals(oid, ASN1.Oid_secp384r1)) {
           keyMap.Add(
               KeyKeys.EC2_Curve.AsCBOR(),
               KeyKeys.EC2_P384);
-        else if (Arrays.equals(oid, ASN1.Oid_secp521r1))
+        } else if (Arrays.equals(oid, ASN1.Oid_secp521r1)) {
           keyMap.Add(
               KeyKeys.EC2_Curve.AsCBOR(),
               KeyKeys.EC2_P521);
-        else
+        } else {
           throw new CoseException("Unsupported curve");
+        }
 
         byte[] keyData = (byte[]) spki.get(1).value;
         if (keyData[1] == 2 || keyData[1] == 3) {
@@ -118,8 +120,9 @@ public class COSEKey {
           keyMap.Add(
               KeyKeys.EC2_Y.AsCBOR(),
               Arrays.copyOfRange(keyData, 2 + keyLength, keyData.length));
-        } else
+        } else {
           throw new CoseException("Invalid key data");
+        }
       } else if (Arrays.equals(alg.get(0).value, ASN1.Oid_rsaEncryption)) {
         ASN1.TagValue compound = ASN1.DecodeCompound(1, spki.get(1).value);
         if (compound.list == null || compound.list.size() != 2) {
@@ -138,38 +141,41 @@ public class COSEKey {
         keyMap.Add(KeyKeys.RSA_E.AsCBOR(), e.value);
       } else if (ASN1.isEdXOid(alg.get(0).value)) {
         byte[] oid = (byte[]) alg.get(0).value;
-        if (oid == null)
+        if (oid == null) {
           throw new CoseException("Invalid SPKI structure");
+        }
 
         // OKP Key
         keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_OKP);
         keyMap.Add(KeyKeys.Algorithm.AsCBOR(), AlgorithmID.EDDSA.AsCBOR());
-        if (Arrays.equals(oid, ASN1.Oid_X25519))
+        if (Arrays.equals(oid, ASN1.Oid_X25519)) {
           keyMap.Add(
               KeyKeys.OKP_Curve.AsCBOR(),
               KeyKeys.OKP_X25519);
-        else if (Arrays.equals(oid, ASN1.Oid_X448))
+        } else if (Arrays.equals(oid, ASN1.Oid_X448)) {
           keyMap.Add(
               KeyKeys.OKP_Curve.AsCBOR(),
               KeyKeys.OKP_X448);
-        else if (Arrays.equals(oid, ASN1.Oid_Ed25519))
+        } else if (Arrays.equals(oid, ASN1.Oid_Ed25519)) {
           keyMap.Add(
               KeyKeys.OKP_Curve.AsCBOR(),
               KeyKeys.OKP_Ed25519);
-        else if (Arrays.equals(oid, ASN1.Oid_Ed448))
+        } else if (Arrays.equals(oid, ASN1.Oid_Ed448)) {
           keyMap.Add(
               KeyKeys.OKP_Curve.AsCBOR(),
               KeyKeys.OKP_Ed448);
-        else
+        } else {
           throw new CoseException("Unsupported curve");
+        }
 
         byte[] keyData = (byte[]) spki.get(1).value;
         if (keyData[0] == 0) {
           keyMap.Add(
               KeyKeys.OKP_X.AsCBOR(),
               Arrays.copyOfRange(keyData, 1, keyData.length));
-        } else
+        } else {
           throw new CoseException("Invalid key data");
+        }
       } else {
         throw new CoseException("Unsupported Algorithm");
       }
@@ -180,32 +186,29 @@ public class COSEKey {
     if (privKey != null) {
       ArrayList<ASN1.TagValue> pkl = ASN1.DecodePKCS8Structure(
           privKey.getEncoded());
-      if (pkl.get(0).tag != 2)
+      if (pkl.get(0).tag != 2) {
         throw new CoseException(
             "Invalid PKCS8 structure");
+      }
       ArrayList<ASN1.TagValue> alg = pkl.get(1).list;
 
       if (Arrays.equals(alg.get(0).value, ASN1.oid_ecPublicKey)) {
         byte[] oid = (byte[]) alg.get(1).value;
-        if (oid == null)
+        if (oid == null) {
           throw new CoseException("Invalid PKCS8 structure");
+        }
         // EC2 Key
         if (!keyMap.ContainsKey(KeyKeys.KeyType.AsCBOR())) {
           keyMap.Add(KeyKeys.KeyType.AsCBOR(), KeyKeys.KeyType_EC2);
-          if (Arrays.equals(oid, ASN1.Oid_secp256r1))
-            keyMap.Add(
-                KeyKeys.EC2_Curve.AsCBOR(),
-                KeyKeys.EC2_P256);
-          else if (Arrays.equals(oid, ASN1.Oid_secp384r1))
-            keyMap.Add(
-                KeyKeys.EC2_Curve.AsCBOR(),
-                KeyKeys.EC2_P384);
-          else if (Arrays.equals(oid, ASN1.Oid_secp521r1))
-            keyMap.Add(
-                KeyKeys.EC2_Curve.AsCBOR(),
-                KeyKeys.EC2_P521);
-          else
+          if (Arrays.equals(oid, ASN1.Oid_secp256r1)) {
+            keyMap.Add(KeyKeys.EC2_Curve.AsCBOR(), KeyKeys.EC2_P256);
+          } else if (Arrays.equals(oid, ASN1.Oid_secp384r1)) {
+            keyMap.Add(KeyKeys.EC2_Curve.AsCBOR(), KeyKeys.EC2_P384);
+          } else if (Arrays.equals(oid, ASN1.Oid_secp521r1)) {
+            keyMap.Add(KeyKeys.EC2_Curve.AsCBOR(), KeyKeys.EC2_P521);
+          } else {
             throw new CoseException("Unsupported curve");
+          }
         } else {
           if (!this.get(KeyKeys.KeyType).equals(KeyKeys.KeyType_EC2)) {
             throw new CoseException("Public/Private key don't match");
@@ -213,9 +216,10 @@ public class COSEKey {
         }
 
         ArrayList<ASN1.TagValue> pkdl = ASN1.DecodePKCS8EC(pkl);
-        if (pkdl.get(1).tag != 4)
+        if (pkdl.get(1).tag != 4) {
           throw new CoseException(
               "Invalid PKCS8 structure");
+        }
         byte[] keyData = pkdl.get(1).value;
         keyMap.Add(KeyKeys.EC2_D.AsCBOR(), keyData);
       } else if (Arrays.equals(alg.get(0).value, ASN1.Oid_rsaEncryption)) {
@@ -243,24 +247,17 @@ public class COSEKey {
         // OKP Key
         if (!keyMap.ContainsKey(KeyKeys.KeyType.AsCBOR())) {
           keyMap.Add(KeyKeys.Algorithm.AsCBOR(), AlgorithmID.EDDSA.AsCBOR());
-          if (Arrays.equals(oid, ASN1.Oid_X25519))
-            keyMap.Add(
-                KeyKeys.OKP_Curve.AsCBOR(),
-                KeyKeys.OKP_X25519);
-          else if (Arrays.equals(oid, ASN1.Oid_X448))
-            keyMap.Add(
-                KeyKeys.OKP_Curve.AsCBOR(),
-                KeyKeys.OKP_X448);
-          else if (Arrays.equals(oid, ASN1.Oid_Ed25519))
-            keyMap.Add(
-                KeyKeys.OKP_Curve.AsCBOR(),
-                KeyKeys.OKP_Ed25519);
-          else if (Arrays.equals(oid, ASN1.Oid_Ed448))
-            keyMap.Add(
-                KeyKeys.OKP_Curve.AsCBOR(),
-                KeyKeys.OKP_Ed448);
-          else
+          if (Arrays.equals(oid, ASN1.Oid_X25519)) {
+            keyMap.Add(KeyKeys.OKP_Curve.AsCBOR(), KeyKeys.OKP_X25519);
+          } else if (Arrays.equals(oid, ASN1.Oid_X448)) {
+            keyMap.Add(KeyKeys.OKP_Curve.AsCBOR(), KeyKeys.OKP_X448);
+          } else if (Arrays.equals(oid, ASN1.Oid_Ed25519)) {
+            keyMap.Add(KeyKeys.OKP_Curve.AsCBOR(), KeyKeys.OKP_Ed25519);
+          } else if (Arrays.equals(oid, ASN1.Oid_Ed448)) {
+            keyMap.Add(KeyKeys.OKP_Curve.AsCBOR(), KeyKeys.OKP_Ed448);
+          } else {
             throw new CoseException("Unsupported curve");
+          }
         } else {
           if (!this.get(KeyKeys.KeyType).equals(KeyKeys.KeyType_OKP)) {
             throw new CoseException("Public/Private key don't match");
@@ -294,9 +291,10 @@ public class COSEKey {
   }
 
   public CBORObject get(CBORObject keyValue) throws CoseException {
-    if ((keyValue.getType() != CBORType.Integer) &&
-        (keyValue.getType() != CBORType.TextString))
+    if ((keyValue.getType() != CBORType.Integer)
+        && (keyValue.getType() != CBORType.TextString)) {
       throw new CoseException("keyValue type is incorrect");
+    }
     return keyMap.get(keyValue);
   }
 
@@ -389,8 +387,8 @@ public class COSEKey {
         }
       } else if (thisObj.getType() == CBORType.Array) {
         for (int i = 0; i < thisObj.size(); i++) {
-          if ((thisObj.get(i).getType() == CBORType.Integer) &&
-              (thisObj.get(i).AsInt32() == that)) {
+          if ((thisObj.get(i).getType() == CBORType.Integer)
+              && (thisObj.get(i).AsInt32() == that)) {
             result = true;
             break;
           }
@@ -444,9 +442,10 @@ public class COSEKey {
     try {
       val = this.get(KeyKeys.EC2_D);
       if (val != null) {
-        if (val.getType() != CBORType.ByteString)
+        if (val.getType() != CBORType.ByteString) {
           throw new CoseException(
               "Malformed key structure");
+        }
         try {
           byte[] privateBytes = ASN1.EncodeEcPrivateKey(
               oid,
@@ -472,10 +471,10 @@ public class COSEKey {
 
       val = this.get(KeyKeys.EC2_X);
       if (val == null) {
-        if (privateKey == null)
+        if (privateKey == null) {
           throw new CoseException(
               "Malformed key structure");
-        else
+        } else
           needPublic = true;
       } else if (val.getType() != CBORType.ByteString)
         throw new CoseException(
@@ -570,12 +569,15 @@ public class COSEKey {
           "Not an EC2 key");
     CBORObject cnCurve = get(KeyKeys.EC2_Curve);
 
-    if (cnCurve == KeyKeys.EC2_P256)
+    if (cnCurve == KeyKeys.EC2_P256) {
       return new ECGenParameterSpec("secp256r1");
-    if (cnCurve == KeyKeys.EC2_P384)
+    }
+    if (cnCurve == KeyKeys.EC2_P384) {
       return new ECGenParameterSpec("secp384r1");
-    if (cnCurve == KeyKeys.EC2_P521)
+    }
+    if (cnCurve == KeyKeys.EC2_P521) {
       return new ECGenParameterSpec("secp521r1");
+    }
     throw new CoseException("Unsupported curve " + cnCurve);
   }
 
@@ -1087,14 +1089,14 @@ public class COSEKey {
     }
 
     // Private key
-    if (n != null &&
-        e != null &&
-        d != null &&
-        p != null &&
-        q != null &&
-        dP != null &&
-        dQ != null &&
-        qInv != null) {
+    if (n != null
+        && e != null
+        && d != null
+        && p != null
+        && q != null
+        && dP != null
+        && dQ != null
+        && qInv != null) {
       if (n.getType() != CBORType.ByteString ||
           e.getType() != CBORType.ByteString ||
           d.getType() != CBORType.ByteString ||

@@ -71,11 +71,13 @@ public enum AlgorithmID {
   }
 
   public static AlgorithmID FromCBOR(CBORObject obj) throws CoseException {
-    if (obj == null)
+    if (obj == null) {
       throw new CoseException("No Algorithm Specified");
+    }
     for (AlgorithmID alg : values()) {
-      if (obj.equals(alg.value))
+      if (obj.equals(alg.value)) {
         return alg;
+      }
     }
     throw new CoseException("Unknown Algorithm Specified");
   }

@@ -102,7 +102,6 @@
         <configuration>
           <configFile>${project.basedir}/development/formatting/eclipse-java-google-style.xml</configFile>
           <lineEnding>LF</lineEnding>
-          <verbose>true</verbose>          <!-- Add this for more logging -->
           <compilerSource>21</compilerSource>
           <compilerCompliance>21</compilerCompliance>
           <compilerTargetPlatform>21</compilerTargetPlatform>

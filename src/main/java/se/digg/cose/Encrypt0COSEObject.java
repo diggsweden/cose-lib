@@ -38,7 +38,7 @@ public class Encrypt0COSEObject extends EncryptCommon {
   }
 
   /**
-   * Gets the {@link CryptoContext} to set a different JCA Provider
+   * Gets the {@link CryptoContext} to set a different JCA Provider.
    */
   public CryptoContext getCryptoContext() {
     return cryptoContext;
@@ -46,8 +46,9 @@ public class Encrypt0COSEObject extends EncryptCommon {
 
   @Override
   public void DecodeFromCBORObject(CBORObject obj) throws CoseException {
-    if (obj.size() != 3)
+    if (obj.size() != 3) {
       throw new CoseException("Invalid Encrypt0 structure");
+    }
 
     if (obj.get(0).getType() == CBORType.ByteString) {
       if (obj.get(0).GetByteString().length == 0) {
@@ -56,51 +57,57 @@ public class Encrypt0COSEObject extends EncryptCommon {
       } else {
         rgbProtected = obj.get(0).GetByteString();
         objProtected = CBORObject.DecodeFromBytes(rgbProtected);
-        if (objProtected.getType() != CBORType.Map)
+        if (objProtected.getType() != CBORType.Map) {
           throw new CoseException(
               "Invalid Encrypt0 structure");
+        }
       }
-    } else
+    } else {
       throw new CoseException("Invalid Encrypt0 structure");
+    }
 
-    if (obj.get(1).getType() == CBORType.Map)
+    if (obj.get(1).getType() == CBORType.Map) {
       objUnprotected = obj.get(1);
-    else
+    } else {
       throw new CoseException("Invalid Encrypt0 structure");
+    }
 
-    if (obj.get(2).getType() == CBORType.ByteString)
+    if (obj.get(2).getType() == CBORType.ByteString) {
       rgbEncrypt = obj
           .get(2)
           .GetByteString();
-    else if (!obj.get(2).isNull())
+    } else if (!obj.get(2).isNull()) {
       throw new CoseException(
           "Invalid Encrypt0 structure");
+    }
   }
 
   /**
-   * Internal function used to construct the CBORObject
+   * Internal function used to construct the CBORObject.
    *
    * @return the constructed CBORObject
    * @throws CoseException if the content has not yet been encrypted
    */
   @Override
   protected CBORObject EncodeCBORObject() throws CoseException {
-    if (rgbEncrypt == null)
+    if (rgbEncrypt == null) {
       throw new CoseException(
           "Encrypt function not called");
-
+    }
     CBORObject obj = CBORObject.NewArray();
-    if (objProtected.size() > 0)
+    if (objProtected.size() > 0) {
       obj.Add(objProtected.EncodeToBytes());
-    else
+    } else {
       obj.Add(CBORObject.FromByteArray(new byte[0]));
+    }
 
     obj.Add(objUnprotected);
 
-    if (emitContent)
+    if (emitContent) {
       obj.Add(rgbEncrypt);
-    else
+    } else {
       obj.Add(CBORObject.Null);
+    }
 
     return obj;
   }
