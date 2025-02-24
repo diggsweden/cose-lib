@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add artifact prebuild
 - Add test of mvn central snapshot publ
 - Add test, sec scorecard,dep-check, licenselint
 
 ### Changed
 
+- V2.0.0-SNAPSHOT
 - Pin shas
 - V2.0.0-SNAPSHOT
 - Correct license et
