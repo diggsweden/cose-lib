@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2025 IDsec Solutions AB
+# SPDX-FileCopyrightText: 2025 diggsweden/cose-lib
 #
 # SPDX-License-Identifier: CC0-1.0
 
@@ -24,8 +24,4 @@ out
 /traefik/logs/
 *.log
 
-
 .env
-
-
-

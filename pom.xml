@@ -39,8 +39,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>21</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
 
     <!-- Dependency versions -->
     <junit.version>4.13.2</junit.version>
@@ -57,28 +60,33 @@
     <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
     <jacoco.plugin.version>0.8.12</jacoco.plugin.version>
     <jreleaser-maven-plugin.version>1.16.0</jreleaser-maven-plugin.version>
-
+    <formatter-maven-plugin.version>2.25.0</formatter-maven-plugin.version>
+    <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+    <checkstyle.version>10.21.2</checkstyle.version>
   </properties>
 
   <dependencies>
+    <!-- Test Dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Crypto Dependencies -->
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk18on</artifactId>
       <version>${bouncycastle.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-jdk18on</artifactId>
       <version>${bouncycastle.version}</version>
-      <scope>test</scope>
     </dependency>
+
+    <!-- Other Dependencies -->
     <dependency>
       <groupId>com.upokecenter</groupId>
       <artifactId>cbor</artifactId>
@@ -88,24 +96,22 @@
       <groupId>net.i2p.crypto</groupId>
       <artifactId>eddsa</artifactId>
       <version>${eddsa.version}</version>
-      <type>jar</type>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- Formatter plugin -->
+      <!-- Code Quality -->
       <plugin>
         <groupId>net.revelc.code.formatter</groupId>
         <artifactId>formatter-maven-plugin</artifactId>
-        <version>2.25.0</version>
+        <version>${formatter-maven-plugin.version}</version>
         <configuration>
           <configFile>${project.basedir}/development/formatting/eclipse-java-google-style.xml</configFile>
           <lineEnding>LF</lineEnding>
-          <compilerSource>21</compilerSource>
-          <compilerCompliance>21</compilerCompliance>
-          <compilerTargetPlatform>21</compilerTargetPlatform>
-
+          <compilerSource>${java.version}</compilerSource>
+          <compilerCompliance>${java.version}</compilerCompliance>
+          <compilerTargetPlatform>${java.version}</compilerTargetPlatform>
         </configuration>
         <executions>
           <execution>
@@ -117,16 +123,15 @@
         </executions>
       </plugin>
 
-      <!-- Checkstyle plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>${maven-checkstyle-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>10.21.2</version>
+            <version>${checkstyle.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -145,28 +150,35 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Enforcer -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>${maven.enforcer.plugin.version}</version>
         <executions>
           <execution>
+            <id>enforce-rules</id>
             <goals>
               <goal>enforce</goal>
             </goals>
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[3.6.0,)</version>
+                  <version>[3.8.0,)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
                   <version>[21,)</version>
                 </requireJavaVersion>
+                <dependencyConvergence/>
+                <requireUpperBoundDeps/>
               </rules>
             </configuration>
           </execution>
         </executions>
       </plugin>
+
+      <!-- Sources -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -180,15 +192,14 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.plugin.version}</version>
-        <configuration>
-          <showDeprecation>true</showDeprecation>
-          <compilerArgument>-Xlint:unchecked</compilerArgument>
-        </configuration>
       </plugin>
+
+      <!-- Coverage -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -209,13 +220,13 @@
         </executions>
       </plugin>
 
+      <!-- Documentation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven.javadoc.plugin.version}</version>
         <configuration>
-
-          <source>21</source>
+          <source>${java.version}</source>
           <bottom>COSE for Java documentation, generated in {currentYear}.</bottom>
         </configuration>
         <executions>
@@ -227,6 +238,7 @@
           </execution>
         </executions>
       </plugin>
+
       <!-- Deployment -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

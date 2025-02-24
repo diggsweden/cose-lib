@@ -1,17 +1,17 @@
-<?xml version="1.0"?>
-
-<!--
-SPDX-FileCopyrightText: 2024 Digg - Agency for Digital Government
-
-SPDX-License-Identifier: CC0-1.0
--->
-
-<ruleset name="Custom Rules" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Default Maven PMD Plugin Ruleset"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 
     <description>
-        A slightly modified default ruleset
+        The default ruleset used by the Maven PMD Plugin, when no other ruleset is specified.
+        It contains the rules of the old (pre PMD 6.0.0) rulesets java-basic, java-empty, java-imports,
+        java-unnecessary, java-unusedcode.
+
+        This ruleset might be used as a starting point for an own customized ruleset [0].
+
+        [0] https://pmd.github.io/latest/pmd_userdocs_making_rulesets.html
     </description>
-    <!-- Taken from the default ruleset https://maven.apache.org/plugins/maven-pmd-plugin/examples/usingRuleSets.html#the-default-ruleset -->
 
     <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP" />
     <rule ref="category/java/bestpractices.xml/CheckResultSet" />
@@ -24,11 +24,7 @@ SPDX-License-Identifier: CC0-1.0
     <rule ref="category/java/codestyle.xml/EmptyControlStatement" />
     <rule ref="category/java/codestyle.xml/ExtendsObject" />
     <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop" />
-    <rule ref="category/java/codestyle.xml/TooManyStaticImports">
-        <properties>
-            <property name="maximumStaticImports" value="15" />
-        </properties>
-    </rule>
+    <rule ref="category/java/codestyle.xml/TooManyStaticImports" />
     <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
     <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
     <rule ref="category/java/codestyle.xml/UnnecessaryModifier" />

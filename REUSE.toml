@@ -8,20 +8,34 @@ version = 1
 [[annotations]]
 path = [
     "CHANGELOG.md",
-    "REUSE.toml",
     "README.md",
+    "docs/DEVELOPMENT.md",
+    "REUSE.toml",
     "pom.xml",
     "**/*.cddl",
-    "docs/element-list",
-    "docs/DEVELOPMENT.md",
     "renovate.json",
     "jreleaser.yml",
+    "**/*/pmd_default_java.xml",
     "**/*/resources/**/*.json",
-    "**/*/google_checks.xml",
-    "**/*/eclipse-java-google-style.xml",
-    "docs/**/*.html",
 ]
 precedence = "aggregate"
-SPDX-FileCopyrightText = "Digg - Agency for Digital Government"
+SPDX-FileCopyrightText = "2025 diggsweden/cose-lib"
 SPDX-License-Identifier = "CC0-1.0"
 
+
+[[annotations]]
+path = [
+    "**/*/eclipse-java-google-style.xml",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "google/styleguide"
+SPDX-License-Identifier = "CC-BY-3.0"
+
+
+[[annotations]]
+path = [
+    "**/*/google_checks.xml",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "checkstyle/checkstyle"
+SPDX-License-Identifier = "CC0-1.0"

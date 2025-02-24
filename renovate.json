@@ -11,6 +11,7 @@
   "semanticCommitScope": "deps",
   "commitMessageLowerCase": "auto",
   "commitBody": "Signed-off-by: {{{gitAuthor}}}",
+  "stabilityDays": 4,
   "vulnerabilityAlerts": {
     "labels": [
       "security"
@@ -47,7 +48,18 @@
         "org.apache.maven.plugins:maven-javadoc-plugin",
         "org.apache.maven.plugins:maven-gpg-plugin",
         "org.apache.maven.plugins:maven-enforcer-plugin",
+        "org.apache.maven.plugins:maven-deploy-plugin",
+        "org.jreleaser:jreleaser-maven-plugin",
         "/^org\\.apache\\.maven\\.plugins:/"
+      ]
+    },
+    {
+      "description": "Code quality and formatting tools",
+      "groupName": "code quality",
+      "matchPackageNames": [
+        "net.revelc.code.formatter:formatter-maven-plugin",
+        "org.apache.maven.plugins:maven-checkstyle-plugin",
+        "com.puppycrawl.tools:checkstyle"
       ]
     },
     {

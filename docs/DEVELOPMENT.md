@@ -9,7 +9,7 @@ Activate the CI-workflow with a tag and push.
 Example:
 ```shell
 git tag -s v0.0.3-SNAPSHOT -m 'v0.0.3-SNAPSHOT'
-git push origin tag v0.0.3
+git push origin tag v0.0.3-SNAPSHOT
 ```
 Currently only publishing to GitHub-packages, and only SemVer with -SNAPSHOT-prefix.
 
