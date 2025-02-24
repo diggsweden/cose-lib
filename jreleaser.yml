@@ -7,7 +7,6 @@ project:
   inceptionYear: 2025
   snapshot:
     pattern: .*-SNAPSHOT
-    label: early-access
     fullChangelog: true
 
 # GitHub release configuration
