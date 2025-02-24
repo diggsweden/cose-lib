@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Change to deploy phase
+- V2.0.0-SNAPSHOT
 - V2.0.0-SNAPSHOT
 - Pin shas
 - V2.0.0-SNAPSHOT
