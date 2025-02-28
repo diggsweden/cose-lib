@@ -3,7 +3,7 @@ project:
   name: cose-lib
   description: A Java implementation that supports the COSE secure message specification.</description>
   license: BSD-3-Clause 
-  copyright: 2025 Digg - Agency for Digital Government
+  copyright: 2025 diggsweden/cose-lib
   inceptionYear: 2025
   snapshot:
     pattern: .*-SNAPSHOT
@@ -31,24 +31,30 @@ signing:
   active: ALWAYS
   armored: true
 
-# Maven deployment to GitHub packages
+# Maven deployment
 deploy:
+  enabled: true
   maven:
-    github:
-      app:
-        active: ALWAYS
-        url: https://maven.pkg.github.com/diggsweden/cose-lib
-        applyMavenCentralRules: true
-        snapshotSupported: true
-        stagingRepositories:           
-          - target/staging-deploy
+    # github:
+    #   app:
+    #     active: ALWAYS
+    #     url: https://maven.pkg.github.com/diggsweden/cose-lib
+    #     applyMavenCentralRules: true
+    #     snapshotSupported: true
+    #     stagingRepositories:           
+    #       - target/staging-deploy
     mavenCentral:
-      app:
-        active: ALWAYS
-        url: https://central.sonatype.com/repository/maven-snapshots/
+      snapshot:
+        url: https://central.sonatype.com
+        verifyUrl: https://central.sonatype.com/repository/maven-snapshots/
         applyMavenCentralRules: true
         stagingRepositories:
-          - target/staging-deploy
+          - target/central-deferred
+      release:
+        url: https://central.sonatype.com
+        applyMavenCentralRules: true
+        stagingRepositories:
+          - target/central-staging
 
 # SBOM generation
 catalog:
