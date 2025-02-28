@@ -34,21 +34,22 @@ signing:
 # Maven deployment to GitHub packages
 deploy:
   maven:
-    github:
-      app:
-        active: ALWAYS
-        url: https://maven.pkg.github.com/diggsweden/cose-lib
-        applyMavenCentralRules: true
-        snapshotSupported: true
-        stagingRepositories:           
-          - target/staging-deploy
+    # github:
+    #   app:
+    #     active: ALWAYS
+    #     url: https://maven.pkg.github.com/diggsweden/cose-lib
+    #     applyMavenCentralRules: true
+    #     snapshotSupported: true
+    #     stagingRepositories:           
+    #       - target/staging-deploy
     mavenCentral:
-      app:
+      coselib:
         active: ALWAYS
-        url: https://central.sonatype.com/repository/maven-snapshots/
+        url: https://central.sonatype.com
+        verifyUrl: https://central.sonatype.com/repository/maven-snapshots/
         applyMavenCentralRules: true
         stagingRepositories:
-          - target/staging-deploy
+          - target/central-staging
 
 # SBOM generation
 catalog:
