@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - V2.0.0-SNAPSHOT
+- V2.0.0-SNAPSHOT
 - Change to deploy phase
 - V2.0.0-SNAPSHOT
 - V2.0.0-SNAPSHOT
@@ -45,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fix git-cliff conf
 - Fix checkstyle warnings
 - Fix RSA key tagging
 
