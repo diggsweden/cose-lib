@@ -1,25 +1,42 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "osvVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
   "extends": [
     "config:best-practices",
+    "workarounds:all",
+    "security:openssf-scorecard",
+    ":configMigration",
+    ":dependencyDashboard",
     ":gitSignOff",
     ":maintainLockFilesWeekly",
     ":automergeMinor",
-    ":semanticCommits"
+    ":semanticCommits",
+    "npm:unpublishSafe",
+    ":rebaseStalePrs",
+    ":semanticCommitTypeAll(chore)",
+    "mergeConfidence:all-badges"
   ],
-  "semanticCommitType": "build",
-  "semanticCommitScope": "deps",
   "commitMessageLowerCase": "auto",
-  "commitBody": "Signed-off-by: {{{gitAuthor}}}",
   "minimumReleaseAge": "4 days",
+  "labels": [
+    "dependencies"
+  ],
   "vulnerabilityAlerts": {
     "labels": [
-      "security"
-    ],
-    "enabled": true,
-    "automerge": true
+      "security",
+      "dependencies"
+    ]
   },
   "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "minimumReleaseAge": "5 days",
+      "automerge": true
+    },
     {
       "matchManagers": [
         "github-actions"
@@ -49,8 +66,10 @@
         "org.apache.maven.plugins:maven-gpg-plugin",
         "org.apache.maven.plugins:maven-enforcer-plugin",
         "org.apache.maven.plugins:maven-deploy-plugin",
-        "org.jreleaser:jreleaser-maven-plugin",
-        "/^org\\.apache\\.maven\\.plugins:/"
+        "org.jreleaser:jreleaser-maven-plugin"
+      ],
+      "matchPackagePatterns": [
+        "^org\\.apache\\.maven\\.plugins:"
       ]
     },
     {
