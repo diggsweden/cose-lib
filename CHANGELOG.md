@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add settings to release-lib
 - Add empty commit for rel tag test
 
 ### Changed
 
+- V2.0.0-SNAPSHOT
 - V2.0.0-SNAPSHOT
 - V2.0.0-SNAPSHOT
 
