@@ -15,6 +15,7 @@ path = [
     "**/*.cddl",
     "renovate.json",
     "jreleaser.yml",
+    ".mvn/settings.xml",
     "**/*/pmd_default_java.xml",
     "**/*/resources/**/*.json",
 ]

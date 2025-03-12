@@ -2,28 +2,36 @@
 
 This guide outlines core essentials you need to know for developing in this project.
 
-## The Release Workflow
+## Consuming SNAPSHOTS from Maven Central
 
-Activate the CI-workflow with a tag and push.
+Configure your pom.xml file with the following <repositories> section:
 
-Example:
-```shell
-git tag -s v0.0.3-SNAPSHOT -m 'v0.0.3-SNAPSHOT'
-git push origin tag v0.0.3-SNAPSHOT
+```xml
+<repositories>
+  <repository>
+    <name>Central Portal Snapshots</name>
+    <id>central-portal-snapshots</id>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
+</repositories>
 ```
-Currently only publishing to GitHub-packages, and only SemVer with -SNAPSHOT-prefix.
 
-NOTE: The given tag will also set the POM-project version.
-
-## Formatting and Checkstyle
+## Testing, Formatting and Checkstyle
 
 ### Maven
 
 ```shell
 mvn clean verify
 ```
+## IDE
 
-### VSCode
+### Setup VSCode
 
 1. Install a Checkstyle plugin - [Checkstyle For Java](https://marketplace.visualstudio.com/items?itemName=shengchen.vscode-checkstyle)
 
@@ -32,25 +40,25 @@ mvn clean verify
     "[java]": {
         "editor.defaultFormatter": "redhat.java",
     },
-    "java.format.settings.url": "${userHome}/development/formatting/eclipse-java-google-style.xml",
+    "java.format.settings.url": "development/formatting/eclipse-java-google-style.xml",
     "java.format.settings.profile": "GoogleStyle",
     "editor.formatOnSave": true,
-    "java.checkstyle.configuration": "${userHome}/development/checkstyle/google_checks.xml",
+    "java.checkstyle.configuration": "development/checkstyle/google_checks.xml",
     "java.checkstyle.version": "10.21.2"
 ```
 
-# IntelliJ
+### Setup IntelliJ
 
-### Code Style
-1. Settings -> `Editor -> Code Style -> Java`
-2. Click gear -> `Import Scheme -> Eclipse XML Profile`
-3. Select `development/formatting/eclipse-java-google-style.xml`
+1. Code Style
+   - Settings -> `Editor -> Code Style -> Java`
+   - Click gear -> `Import Scheme -> Eclipse XML Profile`
+   - Select `development/formatting/eclipse-java-google-style.xml`
 
-### Checkstyle
+2. Checkstyle
 
-1. Install "CheckStyle-IDEA" plugin
-2. Settings -> `Tools -> Checkstyle`
-3. Click the built-in Google Style Check
+   - Install "CheckStyle-IDEA" plugin
+   - Settings -> `Tools -> Checkstyle`
+   - Click the built-in Google Style Check
 
 ## Documentation
 
@@ -59,6 +67,29 @@ Generate Javadocs using:
 ```shell
 mvn javadoc:javadoc
 <browser> target/reports/apidocs/index.html
+
+
+```
+## The Release Workflow
+
+Releases to Maven Central can be done in two ways - by CI or by local release.
+
+<TO_DO: described need vars, like gpg key, token>
+
+### Activate the CI-workflow with a tag and push.
+
+```shell
+git tag -s v0.0.3-SNAPSHOT -m 'v0.0.3-SNAPSHOT'
+git push origin tag v0.0.3-SNAPSHOT
+```
+NOTE: Always use the same tag for snapshots!! Don't incriminate when using snapshots!!
+
+NOTE: The given tag will also set the POM-project version.
+
+### Release from local 
+
+```shell
+mvn deploy --settings .mvn/settings.xml -Pcentral-release
 ```
 
 ## Pull Request Workflow
