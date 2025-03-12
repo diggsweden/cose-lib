@@ -7,25 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-SNAPSHOT] - 2025-03-12
 
-### Added
-
-- Add settings to release-lib
-- Add empty commit for rel tag test
-
 ### Changed
 
-- V2.0.0-SNAPSHOT
-- V2.0.0-SNAPSHOT
-- V2.0.0-SNAPSHOT
-
-### Removed
-
-- Remove false publishing setting
+- Update development guide
 
 ## [early-access] - 2025-03-12
 
 ### Added
 
+- Add settings to release-lib
+- Add empty commit for rel tag test
 - Add central publishing with jreleaser
 - Add artifact prebuild
 - Add test of mvn central snapshot publ
@@ -33,34 +24,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- V2.0.0-SNAPSHOT
 - Refactor broken jreleaser
-- V2.0.0-SNAPSHOT
-- V2.0.0-SNAPSHOT
-- V2.0.0-SNAPSHOT
 - Change to deploy phase
-- V2.0.0-SNAPSHOT
-- V2.0.0-SNAPSHOT
 - Pin shas
-- V2.0.0-SNAPSHOT
 - Correct license et
-- V2.0.0-SNAPSHOT
 - Reformat and adjust for google-style-java format
 - Update step-security/harden-runner action to v2.11.0 (#11)
-- V2.0.4-SNAPSHOT
-- V2.0.3-SNAPSHOT
-- V2.0.2-SNAPSHOT
 - Fetch whole history, only allow SNAPSHOT
 - Update maven build plugins (#8)
 - Update bouncy castle to v1.80 (#7)
 - Update actions/setup-java action to v4.7.0 (#4)
-- V2.0.1-SNAPSHOT
 - Replace deprecated methods
 - Cleanup linter warnings
 - Update dependency org.jacoco:jacoco-maven-plugin to v0.8.12
 - Migrate config renovate.json
 - Correct lib name
-- V2.0.0-SNAPSHOT
 - Migrate namespace etc
 - Declare reuse/spdx license
 
@@ -72,7 +50,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- Remove false publishing setting
 - Remove unneeded conf
+
 
 ## [1.2.1-release-tag] - 2025-01-18
 
