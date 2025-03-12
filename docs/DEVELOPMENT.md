@@ -11,7 +11,6 @@ Example:
 git tag -s v0.0.3-SNAPSHOT -m 'v0.0.3-SNAPSHOT'
 git push origin tag v0.0.3-SNAPSHOT
 ```
-Currently only publishing to GitHub-packages, and only SemVer with -SNAPSHOT-prefix.
 
 NOTE: The given tag will also set the POM-project version.
 
@@ -32,10 +31,10 @@ mvn clean verify
     "[java]": {
         "editor.defaultFormatter": "redhat.java",
     },
-    "java.format.settings.url": "${userHome}/development/formatting/eclipse-java-google-style.xml",
+    "java.format.settings.url": "development/formatting/eclipse-java-google-style.xml",
     "java.format.settings.profile": "GoogleStyle",
     "editor.formatOnSave": true,
-    "java.checkstyle.configuration": "${userHome}/development/checkstyle/google_checks.xml",
+    "java.checkstyle.configuration": "development/checkstyle/google_checks.xml",
     "java.checkstyle.version": "10.21.2"
 ```
 

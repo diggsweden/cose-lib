@@ -33,49 +33,6 @@ jobs:
           java-version: 21
           distribution: 'temurin'
           cache: 'maven'
-     
-      - name: Set JReleaser environment variables based on tag
-        id: set-jreleaser-env
-        run: |
-            # shellcheck disable=SC2086 
-            echo "Starting JReleaser environment configuration..."
-
-            # Default to SNAPSHOT logic for safety
-            release_active="NEVER"
-            snapshot_active="SNAPSHOT"
-            echo "Default configuration set to SNAPSHOT mode for safety"
-
-            # Create a temp directory in the workspace
-            mkdir -p .tmp
-
-            # Get the latest tag
-            git describe --tags --abbrev=0 > .tmp/latest_tag 2>/dev/null
-
-            # shellcheck disable=SC2181
-            if [ $? -eq 0 ]; then
-              LATEST_TAG=$(cat .tmp/latest_tag)
-              echo "Latest tag detected: $LATEST_TAG"
-              
-              # Check if the tag exists and does NOT have a -SNAPSHOT suffix
-              if [[ -n "$LATEST_TAG" && "$LATEST_TAG" != *"-SNAPSHOT" ]]; then
-                # Only change to release configuration if we have a confirmed non-SNAPSHOT tag
-                echo "[SUCCESS] Valid release tag detected. Setting up for RELEASE configuration."
-                release_active="ALWAYS"
-                snapshot_active="NEVER"
-              else
-                if [[ "$LATEST_TAG" == *"-SNAPSHOT" ]]; then
-                  echo "[INFO] SNAPSHOT tag detected. Using SNAPSHOT configuration."
-                else
-                  echo "[WARNING] Tag format unclear. Defaulting to SNAPSHOT configuration for safety."
-                fi
-              fi
-            else
-              echo "[WARNING] Failed to get latest tag. Defaulting to SNAPSHOT configuration for safety."
-            fi        
-
-            # Set the outputs
-            echo "release_active=${release_active}" >> "$GITHUB_OUTPUT"
-            echo "snapshot_active=${snapshot_active}" >> "$GITHUB_OUTPUT"
             
       - name: Fetch git-cliff templates
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -93,20 +50,27 @@ jobs:
           OUTPUT: ReleasenotesTmp
           GITHUB_REPO: ${{ github.repository }}
       
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5 # v6.2.0
+        with:
+          gpg_private_key: ${{ secrets.OSPO_BOT_GPG_PRIV }} 
+          passphrase: ${{ secrets.OSPO_BOT_GPG_PASS }} 
+      
       - name: Release with JReleaser
         env:
-          JRELEASER_DEPLOY_MAVEN_MAVENCENTRAL_USERNAME: ${{ secrets.MAVENCENTRAL_USERNAME }}
-          JRELEASER_DEPLOY_MAVEN_MAVENCENTRAL_PASSWORD: ${{ secrets.MAVENCENTRAL_PASSWORD }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVENCENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVENCENTRAL_PASSWORD }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.OSPO_BOT_GPG_PUB }}
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.OSPO_BOT_GPG_PRIV }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.OSPO_BOT_GPG_PASS }}
-          JRELEASER_DEPLOY_MAVEN_MAVENCENTRAL_RELEASE_ACTIVE: ${{ steps.set-jreleaser-env.outputs.release_active }}
-          JRELEASER_DEPLOY_MAVEN_MAVENCENTRAL_SNAPSHOT_ACTIVE: ${{ steps.set-jreleaser-env.outputs.snapshot_active }}
         run: |
           # shellcheck disable=SC2086 
-          mvn $MAVEN_CLI_OPTS deploy jreleaser:full-release -DskipTests
+          mvn $MAVEN_CLI_OPTS deploy -Pcentral-release
+
+          # shellcheck disable=SC2086 
+          mvn $MAVEN_CLI_OPTS jreleaser:full-release -DskipTests
       
       - name: JReleaser output
         if: always()

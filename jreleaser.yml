@@ -1,7 +1,7 @@
 # Basic project metadata
 project:
   name: cose-lib
-  description: A Java implementation that supports the COSE secure message specification.</description>
+  description: A Java implementation that supports the COSE secure message specification.
   license: BSD-3-Clause 
   copyright: 2025 diggsweden/cose-lib
   inceptionYear: 2025
@@ -31,30 +31,9 @@ signing:
   active: ALWAYS
   armored: true
 
-# Maven deployment
+# Disable Maven deployment in JReleaser
 deploy:
-  enabled: true
-  maven:
-    # github:
-    #   app:
-    #     active: ALWAYS
-    #     url: https://maven.pkg.github.com/diggsweden/cose-lib
-    #     applyMavenCentralRules: true
-    #     snapshotSupported: true
-    #     stagingRepositories:           
-    #       - target/staging-deploy
-    mavenCentral:
-      snapshot:
-        url: https://central.sonatype.com
-        verifyUrl: https://central.sonatype.com/repository/maven-snapshots/
-        applyMavenCentralRules: true
-        stagingRepositories:
-          - target/central-deferred
-      release:
-        url: https://central.sonatype.com
-        applyMavenCentralRules: true
-        stagingRepositories:
-          - target/central-staging
+  enabled: false
 
 # SBOM generation
 catalog:
@@ -66,9 +45,12 @@ catalog:
         - SPDX_JSON
       pack:
         enabled: true
-
-# Syft need to know what to sign
-distributions:
-  library:
-    artifacts:
-      - path: target/cose-lib-{{projectVersion}}.jar
+        
+# Files for checksums and GitHub release
+files:
+  artifacts:
+    - path: target/cose-lib-2.0.0-SNAPSHOT.jar
+    # - path: target/cose-lib-2.0.0-SNAPSHOT-sources.jar
+    # - path: target/cose-lib-2.0.0-SNAPSHOT-javadoc.jar
+    # - path: pom.xml
+    
