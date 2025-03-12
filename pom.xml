@@ -215,7 +215,7 @@
         <extensions>true</extensions>
         <configuration>
           <checksums>all</checksums>
-          <skipPublishing>true</skipPublishing>
+          <skipPublishing>false</skipPublishing>
           <publishingServerId>central</publishingServerId>
         </configuration>
       </plugin>
