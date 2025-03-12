@@ -54,7 +54,6 @@ To include it in a Maven project, add the following dependency to the `dependenc
     <version>...X.Y.Z...</version>
 </dependency>
 ```
-
 Note: The plan is to publish this code on maven central in the near future once we have done some final reviews,
 and checked with the IETF community that doing so would be appreciated and considered respectful to the original authors.
 
