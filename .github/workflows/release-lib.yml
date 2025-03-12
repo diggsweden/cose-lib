@@ -67,7 +67,7 @@ jobs:
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.OSPO_BOT_GPG_PASS }}
         run: |
           # shellcheck disable=SC2086 
-          mvn $MAVEN_CLI_OPTS deploy -Pcentral-release
+          mvn $MAVEN_CLI_OPTS deploy --settings .mvn/settings.xml -Pcentral-release
 
           # shellcheck disable=SC2086 
           mvn $MAVEN_CLI_OPTS jreleaser:full-release -DskipTests
