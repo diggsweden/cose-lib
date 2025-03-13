@@ -76,7 +76,7 @@ Releases to Maven Central can be done in two ways - by CI or by local release.
 
 <TO_DO: described need vars, like gpg key, token>
 
-### Activate the CI-workflow with a tag and push.
+### Activate the CI-workflow with a tag and push
 
 ```shell
 git tag -s v0.0.3-SNAPSHOT -m 'v0.0.3-SNAPSHOT'
@@ -86,7 +86,7 @@ NOTE: Always use the same tag for snapshots!! Don't incriminate when using snaps
 
 NOTE: The given tag will also set the POM-project version.
 
-### Release from local 
+### Release from local
 
 ```shell
 mvn deploy --settings .mvn/settings.xml -Pcentral-release

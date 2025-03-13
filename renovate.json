@@ -28,6 +28,14 @@
       "dependencies"
     ]
   },
+  "hostRules": [
+    {
+      "hostType": "maven",
+      "matchHost": "https://repo.maven.apache.org/maven2/",
+      "concurrentRequestLimit": 1,
+      "maxRequestsPerSecond": 2
+    }
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": [
