@@ -63,7 +63,7 @@
     <jreleaser-maven-plugin.version>1.17.0</jreleaser-maven-plugin.version>
     <formatter-maven-plugin.version>2.25.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-    <checkstyle.version>10.21.2</checkstyle.version>
+    <checkstyle.version>10.21.4</checkstyle.version>
   </properties>
 
   <dependencies>
