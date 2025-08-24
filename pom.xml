@@ -61,9 +61,9 @@
     <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
     <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
     <jreleaser-maven-plugin.version>1.17.0</jreleaser-maven-plugin.version>
-    <formatter-maven-plugin.version>2.26.0</formatter-maven-plugin.version>
+    <formatter-maven-plugin.version>2.27.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-    <checkstyle.version>10.25.0</checkstyle.version>
+    <checkstyle.version>10.26.1</checkstyle.version>
   </properties>
 
   <dependencies>
