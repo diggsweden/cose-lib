@@ -1,7 +1,7 @@
-# Basic project metadata
+ # Basic project metadata
 project:
-  name: cose-lib
   description: A Java implementation that supports the COSE secure message specification.
+  # Note: JReleaser will use artifactId from pom.xml (cose-lib)
   license: BSD-3-Clause 
   copyright: 2025 diggsweden/cose-lib
   inceptionYear: 2025
@@ -16,15 +16,13 @@ release:
     overwrite: true     # Allows updating existing releases
     draft: false        # Creates as final release, not draft
     sign: true          # Signs release assets
-    branch: main
     changelog:
-      enabled: true
       external: ReleasenotesTmp
 
 checksum:
+  name: 'checksums.sha256'
   algorithms:
     - SHA-256
-    - SHA-512
 
 # GPG signing configuration
 signing:
@@ -35,19 +33,22 @@ signing:
 deploy:
   enabled: false
 
-# SBOM generation
+# SBOM generation disabled - generated manually from pom.xml before JReleaser runs
 catalog:
   sbom:
     syft:
-      active: ALWAYS
-      formats: 
-        - CYCLONEDX_JSON  
-        - SPDX_JSON
-      pack:
-        enabled: true
-        
-# Files for checksums and GitHub release
+      active: NEVER
+
+# Distribution artifacts to include in release
+distributions:
+  library:
+    artifacts:
+      - path: target/{{projectName}}-{{projectVersion}}.jar
+
+# Additional files to upload to release (library JAR + SBOMs)
 files:
   artifacts:
-    - path: target/{{projectName}}-{{projectVersion}}.jar
-    
+    # SBOM ZIP containing all layers (consistent with GitHub CLI path)
+    - path: '{{projectName}}-{{projectVersion}}-sboms.zip'
+      extraProperties:
+        skipSigning: false   
