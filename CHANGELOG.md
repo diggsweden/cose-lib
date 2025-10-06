@@ -5,11 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1-SNAPSHOT] - 2025-10-06
+
+### Changed
+
+- Use reusable ci v1
+- Update github actions to v5
+- Bump deps
+- Update github actions
+- Update code quality
+- Adjust ci and build
+- Update code quality (#27)
+- Update dependency org.jacoco:jacoco-maven-plugin to v0.8.13 (#29)
+- Update step-security/harden-runner action to v2.12.1
+- Update github actions (#28)
+
 ## [2.0.0] - 2025-04-01
 
 ### Changed
 
 - Rewrite semver check
+
 
 ## [early-access] - 2025-04-01
 
@@ -45,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update README.md
 - Initial commit
 
+[2.0.1-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.0..v2.0.1-SNAPSHOT
 [2.0.0]: https://github.com/diggsweden/cose-lib/compare/early-access..v2.0.0
 [early-access]: https://github.com/diggsweden/cose-lib/compare/1.2.1-release-tag..early-access
 
