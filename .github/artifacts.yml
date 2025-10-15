@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2025 Digg - Agency for Digital Government
+#
+# SPDX-License-Identifier: CC0-1.0
+
+# Artifacts Configuration for cose-lib
+# Maven library published to Maven Central
+
+artifacts:
+  - name: cose-lib
+    project-type: maven
+    working-directory: .
+    build-type: library
+    publish-to:
+      - maven-central
+    config:
+      java-version: 21
+      settings-path: .mvn/settings.xml

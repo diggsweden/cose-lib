@@ -60,7 +60,6 @@
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
     <maven.enforcer.plugin.version>3.6.1</maven.enforcer.plugin.version>
     <jacoco.plugin.version>0.8.13</jacoco.plugin.version>
-    <jreleaser-maven-plugin.version>1.19.0</jreleaser-maven-plugin.version>
     <formatter-maven-plugin.version>2.27.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     <checkstyle.version>11.0.0</checkstyle.version>
@@ -227,15 +226,6 @@
         </configuration>
       </plugin>
 
-      <!-- Release -->
-      <plugin>
-        <groupId>org.jreleaser</groupId>
-        <artifactId>jreleaser-maven-plugin</artifactId>
-        <version>${jreleaser-maven-plugin.version}</version>
-        <configuration>
-          <configFile>${project.basedir}/jreleaser.yml</configFile>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 

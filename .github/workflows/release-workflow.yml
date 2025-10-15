@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   release:
-    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@v1
+    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@v2
     permissions:
       contents: write         # Create GitHub releases and tags
       packages: write         # Publish to GitHub Packages (backup)
@@ -32,12 +32,6 @@ jobs:
       security-events: write # Needed by container job (even if skipped)
     secrets: inherit  # Use org-level MAVEN_CENTRAL credentials and GPG keys
     with:
-      # Project configuration
-      projectType: maven  # Build system type (determines version file location)
-      
-      # Publishers and tools
-      artifactPublisher: maven-lib-mavencentral       # Publish library to Maven Central
-      artifact.jreleaserenabled: true                 # JReleaser plugin configured in pom.xml
-      artifact.settingspath: ".mvn/settings.xml"      # Contains Maven Central server config
-      
-      changelogCreator: git-cliff  # Generate changelog from commit messages
+      artifacts-config: .github/artifacts.yml
+      changelog-creator: git-cliff
+      release-publisher: github-cli
