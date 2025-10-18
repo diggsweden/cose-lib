@@ -1,60 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "osvVulnerabilityAlerts": true,
-  "dependencyDashboardOSVVulnerabilitySummary": "all",
   "extends": [
-    "config:best-practices",
-    "workarounds:all",
-    "security:openssf-scorecard",
-    ":configMigration",
-    ":dependencyDashboard",
-    ":gitSignOff",
-    ":maintainLockFilesWeekly",
-    ":automergeMinor",
-    ":semanticCommits",
-    "npm:unpublishSafe",
-    ":rebaseStalePrs",
-    ":semanticCommitTypeAll(chore)",
-    "mergeConfidence:all-badges"
+    "local>diggsweden/.github:renovate-base"
   ],
-  "commitMessageLowerCase": "auto",
-  "minimumReleaseAge": "4 days",
-  "labels": [
-    "dependencies"
+  "enabledManagers": [
+    "github-actions",
+    "maven"
   ],
-  "vulnerabilityAlerts": {
-    "labels": [
-      "security",
-      "dependencies"
-    ]
-  },
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "minimumReleaseAge": "5 days",
-      "automerge": true
+      "description": "Maven dependencies - Major updates",
+      "matchManagers": ["maven"],
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["java", "dependencies", "major-update"],
+      "groupName": "java major"
     },
     {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "addLabels": [
-        "actions"
-      ],
-      "pinDigests": true,
-      "groupName": "github actions"
-    },
-    {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchPackageNames": [
-        "slsa-framework/slsa-github-generator"
-      ],
-      "pinDigests": false
+      "description": "Maven dependencies - Non-major updates",
+      "matchManagers": ["maven"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "addLabels": ["java", "dependencies"],
+      "groupName": "java non-major"
     },
     {
       "description": "Maven Build Plugins",
