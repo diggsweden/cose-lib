@@ -47,7 +47,7 @@
 
     <!-- Dependency versions -->
     <junit.version>4.13.2</junit.version>
-    <bouncycastle.version>1.81</bouncycastle.version>
+    <bouncycastle.version>1.82</bouncycastle.version>
     <cbor.version>5.0.0-alpha2</cbor.version>
     <eddsa.version>0.3.0</eddsa.version>
 
@@ -217,7 +217,7 @@
       <plugin>
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>0.8.0</version>
+        <version>0.9.0</version>
         <extensions>true</extensions>
         <configuration>
           <checksums>all</checksums>
