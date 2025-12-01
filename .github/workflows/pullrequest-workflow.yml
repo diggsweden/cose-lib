@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   pr-checks:
-    uses: diggsweden/reusable-ci/.github/workflows/pullrequest-orchestrator.yml@1bf6632ce48686293b0dead5f7bd2bcb5e820172 # v2.3.1
+    uses: diggsweden/reusable-ci/.github/workflows/pullrequest-orchestrator.yml@b7d46f42641d7d0f24032c44f8a92da0a39a9a51 # v2.4.0
     secrets: inherit  # Pass org-level secrets (for private dependencies if any)
     permissions:
       contents: read         # Clone repository and read source code
