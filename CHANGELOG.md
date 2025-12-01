@@ -5,11 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3-SNAPSHOT] - 2025-12-01
+
+### Changed
+
+- Use reuseable ci 2.4.x
+- Update diggsweden/reusable-ci action to v2.3.1 (#60)
+- Update dependency org.apache.maven.plugins:maven-source-plugin to v3.4.0 (#59)
+- Update github actions (#58)
+- Update dependency com.puppycrawl.tools:checkstyle to v12.1.2 (#57)
+- Update github actions (#56)
+- Update diggsweden/reusable-ci action to v2.1.1 (#55)
+- Update dependency com.puppycrawl.tools:checkstyle to v12.1.1 (#54)
+- Update dependency com.puppycrawl.tools:checkstyle to v12.1.0 (#53)
+- Update java non-major (#52)
+- Update maven build plugins
+- Update dependency com.puppycrawl.tools:checkstyle to v12
+- Update step-security/harden-runner action to v2.13.1
+- Update code quality (#40)
+- Pin sha and version
+- Adjust settings
+- Use base renovate config
+- Update dependency org.jacoco:jacoco-maven-plugin to v0.8.14 (#51)
+
 ## [2.0.2-SNAPSHOT] - 2025-10-15
 
 ### Changed
 
 - Use reuseable-ci v2
+
 
 ## [2.0.1-SNAPSHOT] - 2025-10-06
 
@@ -62,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update README.md
 - Initial commit
 
+[2.0.3-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.2-SNAPSHOT..v2.0.3-SNAPSHOT
 [2.0.2-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.1-SNAPSHOT..v2.0.2-SNAPSHOT
 [2.0.1-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.0..v2.0.1-SNAPSHOT
 [2.0.0]: https://github.com/diggsweden/cose-lib/compare/1.2.1-release-tag..v2.0.0
