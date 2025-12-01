@@ -5,7 +5,7 @@
 
   <groupId>se.digg.cose</groupId>
   <artifactId>cose-lib</artifactId>
-  <version>2.0.3-SNAPSHOT</version>
+  <version>2.0.4-SNAPSHOT</version>
 
   <name>se.digg.cose:cose-lib</name>
   <description>A Java implementation that supports the COSE secure message specification.</description>
