@@ -4,33 +4,32 @@
 
 # Release Workflow for cose-lib
 # Uses the unified release orchestrator with Maven library publisher
----
 name: Release Workflow
 
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"              # Stable: v1.0.0
-      - "v[0-9]+.[0-9]+.[0-9]+-SNAPSHOT*"    # Snapshot: v1.0.0-SNAPSHOT
+      - "v[0-9]+.[0-9]+.[0-9]+" # Stable: v1.0.0
+      - "v[0-9]+.[0-9]+.[0-9]+-SNAPSHOT*" # Snapshot: v1.0.0-SNAPSHOT
 
 concurrency:
   group: release-${{ github.ref }}
-  cancel-in-progress: false  # Queue releases, don't cancel partial releases
+  cancel-in-progress: false # Queue releases, don't cancel partial releases
 
 permissions:
-  contents: read  # Best Security practice. Jobs only get read as base, and then permissions are added as needed
+  contents: read # Best Security practice. Jobs only get read as base, and then permissions are added as needed
 
 jobs:
   release:
-    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@8a16cb75501be27dde6b5fba6c93ae091442d476 # v2.4.1
+    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@e29145e720cef0b86ef147c72c2d001b5ac6c8b9 # v2.4.2
     permissions:
-      contents: write         # Create GitHub releases and tags
-      packages: write         # Publish to GitHub Packages (backup)
-      id-token: write        # Generate OIDC token for Maven Central
-      actions: read          # Needed by container job (even if skipped)
-      attestations: write    # Needed by container job (even if skipped)
+      contents: write # Create GitHub releases and tags
+      packages: write # Publish to GitHub Packages (backup)
+      id-token: write # Generate OIDC token for Maven Central
+      actions: read # Needed by container job (even if skipped)
+      attestations: write # Needed by container job (even if skipped)
       security-events: write # Needed by container job (even if skipped)
-    secrets: inherit  # Use org-level MAVEN_CENTRAL credentials and GPG keys
+    secrets: inherit # Use org-level MAVEN_CENTRAL credentials and GPG keys
     with:
       artifacts-config: .github/artifacts.yml
       changelog-creator: git-cliff

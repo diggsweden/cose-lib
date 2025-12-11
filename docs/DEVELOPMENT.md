@@ -3,11 +3,15 @@
 This guide outlines core essentials for developing in this project.
 
 ## Table of Contents
+
 - [Setup and Configuration](#setup-and-configuration)
+  - [Prerequisites](#prerequisites)
   - [IDE Setup](#ide-setup)
   - [Consuming SNAPSHOTS](#consuming-snapshots-from-maven-central)
 - [Development Workflow](#development-workflow)
-  - [Testing and Verification](#testing-format-and-lint)
+  - [Quick Start](#quick-start)
+  - [Available Commands](#available-commands)
+  - [Testing and Verification](#testing-formatting-and-checkstyle)
   - [Documentation](#documentation)
   - [Pull Request Process](#pull-request-workflow)
 - [Release Process](#the-release-workflow)
@@ -17,12 +21,31 @@ This guide outlines core essentials for developing in this project.
 
 ## Setup and Configuration
 
+### Prerequisites
+
+- [mise](https://mise.jdx.dev/) - Tool version manager
+- [just](https://github.com/casey/just) - Command runner (installed via mise)
+
+### Quick Start
+
+```shell
+# Install all development tools
+mise install
+
+# Setup shared linting tools
+just setup-devtools
+
+# Run all quality checks
+just verify
+```
+
 ### IDE Setup
 
 #### VSCode
 
 1. Install [Checkstyle For Java](https://marketplace.visualstudio.com/items?itemName=shengchen.vscode-checkstyle)
 2. Open workspace settings - settings.json (for example with Ctrl+Shift+P → Preferences: Workspace Settings (JSON)) and add:
+
    ```json
    "[java]": {
        "editor.defaultFormatter": "redhat.java",
@@ -68,9 +91,57 @@ Configure your pom.xml with:
 
 ## Development Workflow
 
+### Available Commands
+
+Run `just` to see all available commands. Key commands:
+
+| Command | Description |
+|---------|-------------|
+| `just verify` | Run all checks (lint + test) |
+| `just lint-all` | Run all linters |
+| `just lint-fix` | Auto-fix linting issues |
+| `just test` | Run tests (mvn verify) |
+| `just build` | Build project |
+| `just clean` | Clean build artifacts |
+
+#### Linting Commands
+
+| Command | Tool | Description |
+|---------|------|-------------|
+| `just lint-commits` | conform | Validate commit messages |
+| `just lint-secrets` | gitleaks | Scan for secrets |
+| `just lint-yaml` | yamlfmt | Lint YAML files |
+| `just lint-markdown` | rumdl | Lint markdown files |
+| `just lint-shell` | shellcheck | Lint shell scripts |
+| `just lint-shell-fmt` | shfmt | Check shell formatting |
+| `just lint-actions` | actionlint | Lint GitHub Actions |
+| `just lint-license` | reuse | Check license compliance |
+| `just lint-xml` | xmllint | Validate XML files |
+| `just lint-java` | Maven | Run all Java linters |
+| `just lint-java-checkstyle` | checkstyle | Java style checks |
+| `just lint-java-pmd` | pmd | Java static analysis |
+| `just lint-java-spotbugs` | spotbugs | Java bug detection |
+| `just lint-java-fmt` | formatter | Check Java formatting |
+
+#### Fix Commands
+
+| Command | Description |
+|---------|-------------|
+| `just lint-yaml-fix` | Fix YAML formatting |
+| `just lint-markdown-fix` | Fix markdown formatting |
+| `just lint-shell-fmt-fix` | Fix shell formatting |
+| `just lint-java-fmt-fix` | Fix Java formatting |
+
 ### Testing, Formatting and Checkstyle
 
-Run Maven verification:
+Run all verification:
+
+```shell
+just verify
+```
+
+Or run Maven directly:
+
 ```shell
 mvn clean verify
 ```
@@ -78,11 +149,13 @@ mvn clean verify
 ### Documentation
 
 Generate Javadocs:
+
 ```shell
 mvn javadoc:javadoc
 ```
 
 View documentation in your browser:
+
 ```shell
 <browser> target/reports/apidocs/index.html
 ```
@@ -91,36 +164,44 @@ View documentation in your browser:
 
 When submitting a PR, CI will automatically run several checks. To avoid surprises, run these checks locally first.
 
-#### Prerequisites
-- [Podman](https://podman.io/)
-
 #### Running Code Quality Checks Locally
 
-1. Run the quality check script:
-   ```shell
-   ./development/code_quality.sh
-   ```
-2. Fix any identified issues
-3. Update your PR with fixes
-4. Verify CI passes in the updated PR
+```shell
+# Run all checks
+just verify
+
+# Or run linting only
+just lint-all
+```
 
 #### Quality Check Details
 
-- **Linting with megalinter**: BASH, Markdown, YAML, GitHub Actions, security scanning
+- **Java Linting**: Checkstyle, PMD, SpotBugs
+- **General Linting**: Shell, YAML, Markdown, GitHub Actions, XML
+- **Security**: Secret scanning with gitleaks
 - **License Compliance**: REUSE tool ensures proper copyright information
 - **Commit Structure**: Conform checks commit messages for changelog generation
-- **Dependency Analysis**: Scans for vulnerabilities, outdated packages, and license issues
-- **OpenSSF Scorecard**: Validates security best practices
 
 #### Handling Failed Checks
 
 If any checks fail in the CI pipeline:
 
 1. Review the CI error logs
-2. Run checks locally to reproduce the issues
-3. Make necessary fixes in your local environment
-4. Update your Pull Request
-5. Verify all checks pass in the updated PR
+2. Run checks locally to reproduce the issues:
+
+   ```shell
+   just lint-all
+   ```
+
+3. Auto-fix where possible:
+
+   ```shell
+   just lint-fix
+   ```
+
+4. Make necessary manual fixes
+5. Update your Pull Request
+6. Verify all checks pass in the updated PR
 
 ## The Release Workflow
 
@@ -141,6 +222,7 @@ Releases to Maven Central can be done via CI or locally.
 ### CI Release Process
 
 1. **For SNAPSHOT releases**:
+
    ```shell
    # Tag with -SNAPSHOT suffix (use -f to force if tag already exists)
    git tag -sf v0.0.3-SNAPSHOT -m 'v0.0.3-SNAPSHOT'
@@ -151,6 +233,7 @@ Releases to Maven Central can be done via CI or locally.
    > **NOTE**: Always use the same SNAPSHOT tag version until ready for a production release.
 
 2. **For Production releases**:
+
    ```shell
    # Tag with the desired version (no SNAPSHOT suffix)
    git tag -s v1.0.0 -m 'v1.0.0'
@@ -172,6 +255,7 @@ Releases to Maven Central can be done via CI or locally.
    - Make sure your GPG key is available in your environment
 
 2. **Run the deploy command**:
+
    ```shell
    mvn deploy --settings .mvn/settings.xml -Pcentral-release
    ```

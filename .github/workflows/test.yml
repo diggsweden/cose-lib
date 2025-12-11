@@ -2,10 +2,9 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
----
 name: Maven Test
 
-on: [workflow_call]  # yamllint disable-line rule:truthy
+on: [workflow_call] # yamllint disable-line rule:truthy
 
 permissions:
   contents: read
@@ -16,16 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-version: ['21'] 
+        java-version: ['21']
         os: [ubuntu-latest]
 
-    env: 
+    env:
       MAVEN_CLI_OPTS: "--batch-mode --no-transfer-progress --errors --fail-at-end -Dstyle.color=always -DinstallAtEnd=true -DdeployAtEnd=true"
-    
+
     permissions:
       contents: read
       packages: read
-    
+
     steps:
       - name: Harden GitHub runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
@@ -39,13 +38,11 @@ jobs:
         uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
         with:
           java-version: ${{ matrix.java-version }}
-          distribution: 'temurin'  # Popular Java distribution
-          cache: 'maven'  # Enables Maven caching
+          distribution: 'temurin' # Popular Java distribution
+          cache: 'maven' # Enables Maven caching
 
       - name: Run tests
-        env: 
+        env:
           GITHUB_ACTOR: ${{ github.actor }}
           PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # shellcheck disable=SC2086 
-          mvn $MAVEN_CLI_OPTS test
+        run: "# shellcheck disable=SC2086 \nmvn $MAVEN_CLI_OPTS test\n"
