@@ -5,7 +5,8 @@ This guide outlines core essentials for developing in this project.
 ## Table of Contents
 
 - [Setup and Configuration](#setup-and-configuration)
-  - [Prerequisites](#prerequisites)
+  - [Prerequisites - Linux](#prerequisites---linux)
+  - [Prerequisites - macOS](#prerequisites---macos)
   - [IDE Setup](#ide-setup)
   - [Consuming SNAPSHOTS](#consuming-snapshots-from-maven-central)
 - [Development Workflow](#development-workflow)
