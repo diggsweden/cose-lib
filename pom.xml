@@ -63,7 +63,7 @@
     <formatter-maven-plugin.version>2.29.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     <checkstyle.version>12.2.0</checkstyle.version>
-    <maven-pmd-plugin.version>3.27.0</maven-pmd-plugin.version>
+    <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
     <spotbugs-maven-plugin.version>4.9.8.2</spotbugs-maven-plugin.version>
   </properties>
 
