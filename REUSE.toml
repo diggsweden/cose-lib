@@ -11,6 +11,7 @@ path = [
     "README.md",
     "docs/DEVELOPMENT.md",
     "REUSE.toml",
+    ".gommitlint.yaml",
     "pom.xml",
     "**/*.cddl",
     "renovate.json",
