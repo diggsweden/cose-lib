@@ -21,17 +21,16 @@ permissions:
 
 jobs:
   release:
-    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@2afbedbefbb457a5fc6175de232e4644cab58a69 # v2.7.3
+    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@3f8f8b2b29b7524d81bf7707261cdb13533f6d25 # feat/write-security-events-with-token
     permissions:
-      contents: write # Create GitHub releases and tags
-      packages: write # Publish to GitHub Packages (backup)
-      id-token: write # Generate OIDC token for Maven Central
-      actions: read # Needed by container job (even if skipped)
-      attestations: write # Needed by container job (even if skipped)
-      security-events: write # Needed by container job (even if skipped)
-    secrets: inherit # Use org-level MAVEN_CENTRAL credentials and GPG keys
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
+      attestations: write
+    secrets: inherit
     with:
-      reusable-ci-ref: v2.7.3
+      reusable-ci-ref: feat/write-security-events-with-token
       artifacts-config: .github/artifacts.yml
       changelog-creator: git-cliff
       release-publisher: github-cli

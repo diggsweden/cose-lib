@@ -17,14 +17,13 @@ permissions:
 
 jobs:
   pr-checks:
-    uses: diggsweden/reusable-ci/.github/workflows/pullrequest-orchestrator.yml@2afbedbefbb457a5fc6175de232e4644cab58a69 # v2.7.3
-    secrets: inherit # Pass org-level secrets (for private dependencies if any)
+    uses: diggsweden/reusable-ci/.github/workflows/pullrequest-orchestrator.yml@3f8f8b2b29b7524d81bf7707261cdb13533f6d25 # feat/write-security-events-with-token
+    secrets: inherit
     permissions:
-      contents: read # Clone repository and read source code
-      packages: read # Access GitHub Packages for Maven dependencies
-      security-events: write # Upload SpotBugs/dependency check results to Security tab
+      contents: read
+      packages: read
     with:
-      reusable-ci-ref: v2.7.3
+      reusable-ci-ref: feat/write-security-events-with-token
       project-type: maven
       # Use devbase-check linting (replaces megalint, commitlint, licenselint)
       linters.devbasecheck: true
