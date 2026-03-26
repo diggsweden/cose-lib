@@ -14,7 +14,7 @@ The library is built using **Bouncy Castle** for cryptographic operations and **
 
 ## Credits
 
-This implementation is entirely based on the IETF reference implementation, originally developed by the late **Jim Schaad**, a valued friend and contributor to the IETF. Jim's selfless and generous contributions to the community have left a lasting impact.
+dThis implementation is entirely based on the IETF reference implementation, originally developed by the late **Jim Schaad**, a valued friend and contributor to the IETF. Jim's selfless and generous contributions to the community have left a lasting impact.
 
 The original library is available at [COSE-JAVA on GitHub](https://github.com/cose-wg/COSE-JAVA),
 but has unfortunately not been updated for a long time.
