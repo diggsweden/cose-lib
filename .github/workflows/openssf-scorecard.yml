@@ -20,7 +20,7 @@ jobs:
       contents: read
       id-token: write
     secrets: inherit
-    uses: diggsweden/reusable-ci/.github/workflows/security-openssf-scorecard.yml@141575e1ce88ec442fb7bb021556bd81ad2cbadf # feat/write-security-events-with-token
+    uses: diggsweden/reusable-ci/.github/workflows/security-openssf-scorecard.yml@fc97630f0cef2b76d5197a6fa377b1395ba8a408 # feat/write-security-events-with-token
     with:
       publish-results: true
       reusable-ci-ref: feat/write-security-events-with-token
