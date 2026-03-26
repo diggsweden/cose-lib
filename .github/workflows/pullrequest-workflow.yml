@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   pr-checks:
-    uses: diggsweden/reusable-ci/.github/workflows/pullrequest-orchestrator.yml@f04adbd8a18b02f04fc36560d7ba3ef076aa0ea4 # feat/write-security-events-with-token
+    uses: diggsweden/reusable-ci/.github/workflows/pullrequest-orchestrator.yml@141575e1ce88ec442fb7bb021556bd81ad2cbadf # feat/write-security-events-with-token
     secrets: inherit
     permissions:
       contents: read
