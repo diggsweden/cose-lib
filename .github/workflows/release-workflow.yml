@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   release:
-    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@3f8f8b2b29b7524d81bf7707261cdb13533f6d25 # feat/write-security-events-with-token
+    uses: diggsweden/reusable-ci/.github/workflows/release-orchestrator.yml@f04adbd8a18b02f04fc36560d7ba3ef076aa0ea4 # feat/write-security-events-with-token
     permissions:
       contents: write
       packages: write
