@@ -5,11 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0-SNAPSHOT] - 2026-05-05
+
+### Changed
+
+- Bump reusable-ci to v2.8.2
+- Update step-security/harden-runner action to v2.19.0 (#99)
+- Update step-security/harden-runner action to v2.18.0 (#98)
+- Update step-security/harden-runner action to v2.17.0 (#97)
+- Update dependency org.bouncycastle:bcpkix-jdk18on to v1.84 [security] (#96)
+- Update step-security/harden-runner action to v2.16.1 (#90)
+- Bump gommitlint to 0.9.10, switch rumdl from ubi to aqua
+- Bump reusable-ci to v2.7.9
+- Update dependency com.puppycrawl.tools:checkstyle to v13.4.0 (#92)
+- Update dependency com.github.spotbugs:spotbugs-maven-plugin to v4.9.8.3 (#91)
+- Scorecard should not have ref field
+- Scorecard should not use ref-ci field
+- Update reusable-ci to v2.7.3
+- Update step-security/harden-runner action to v2.16.0 (#78)
+- Upgrade to reusable-ci 2.7.1
+- Clean up to use reusable ci 2.7
+- Use reusable-ci 2.7.0
+- Update github actions (#75)
+- Update actions/checkout action to v6
+- Update dependency com.puppycrawl.tools:checkstyle to v13
+- Update step-security/harden-runner action to v2.15.0 (#74)
+- Update step-security/harden-runner action to v2.14.2 (#73)
+- Update dependency org.apache.maven.plugins:maven-compiler-plugin to v3.15.0 (#72)
+- Update step-security/harden-runner action to v2.14.1 (#71)
+- Update actions/setup-java action to v5.2.0 (#70)
+- Update dependency org.sonatype.central:central-publishing-maven-plugin to v0.10.0 (#68)
+- Update github actions (#67)
+- Update dependency org.apache.maven.plugins:maven-pmd-plugin to v3.28.0 (#66)
+- Update dependency com.github.spotbugs:spotbugs-maven-plugin to v4.9.8.2 (#63)
+- Use reuseable ci 2.6.0
+- Change name, improve dev doc
+- Update justfile and reuseableci
+- Update dependency com.puppycrawl.tools:checkstyle to v12.2.0 (#64)
+- Update bouncy castle to v1.83 (#62)
+
+### Fixed
+
+- Allow any signed format
+- Correct lintwarnings for docs, checkstyle
+
 ## [2.0.4-SNAPSHOT] - 2025-12-01
 
 ### Changed
 
 - Use reuseable ci 2.4.1
+
 
 ## [2.0.3-SNAPSHOT] - 2025-12-01
 
@@ -93,6 +138,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update README.md
 - Initial commit
 
+[2.7.0-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.4-SNAPSHOT..v2.7.0-SNAPSHOT
 [2.0.4-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.3-SNAPSHOT..v2.0.4-SNAPSHOT
 [2.0.3-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.2-SNAPSHOT..v2.0.3-SNAPSHOT
 [2.0.2-SNAPSHOT]: https://github.com/diggsweden/cose-lib/compare/v2.0.1-SNAPSHOT..v2.0.2-SNAPSHOT
